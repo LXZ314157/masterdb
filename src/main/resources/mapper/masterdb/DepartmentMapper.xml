@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icicle.masterdb.dao.masterdb.DepartmentMapper">
+  <resultMap id="BaseResultMap" type="com.icicle.masterdb.model.Department">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="department_id" jdbcType="VARCHAR" property="departmentId" />
+    <result column="lan_code" jdbcType="VARCHAR" property="lanCode" />
+    <result column="source_id" jdbcType="VARCHAR" property="sourceId" />
+    <result column="department_name" jdbcType="NVARCHAR" property="departmentName" />
+    <result column="pa_department_id" jdbcType="VARCHAR" property="paDepartmentId" />
+    <result column="department_level" jdbcType="INTEGER" property="departmentLevel" />
+    <result column="department_state" jdbcType="INTEGER" property="departmentState" />
+    <result column="department_path" jdbcType="NVARCHAR" property="departmentPath" />
+    <result column="reference_prop1" jdbcType="VARCHAR" property="referenceProp1" />
+    <result column="reference_id1" jdbcType="VARCHAR" property="referenceId1" />
+    <result column="reference_id2" jdbcType="VARCHAR" property="referenceId2" />
+    <result column="reference_id3" jdbcType="VARCHAR" property="referenceId3" />
+    <result column="reference_id4" jdbcType="VARCHAR" property="referenceId4" />
+    <result column="reference_id5" jdbcType="VARCHAR" property="referenceId5" />
+    <result column="creater" jdbcType="VARCHAR" property="creater" />
+    <result column="createtime" jdbcType="TIMESTAMP" property="createtime" />
+    <result column="lasteditor" jdbcType="VARCHAR" property="lasteditor" />
+    <result column="lastedittime" jdbcType="TIMESTAMP" property="lastedittime" />
+    <result column="reference_prop2" jdbcType="VARCHAR" property="referenceProp2" />
+    <result column="reference_prop3" jdbcType="VARCHAR" property="referenceProp3" />
+    <result column="reference_prop4" jdbcType="VARCHAR" property="referenceProp4" />
+    <result column="reference_prop5" jdbcType="VARCHAR" property="referenceProp5" />
+  </resultMap>
+
+  <select id="getFirstLvlDept" resultMap="BaseResultMap">
+      SELECT department_id,source_id , lan_code ,department_name,pa_department_id,department_level,reference_prop1,reference_id1 from department WHERE department_level=1 AND lan_code='zhs'
+  </select>
+
+  <select id="getSecondLvlDept" resultMap="BaseResultMap">
+      SELECT department_id,source_id , lan_code ,department_name,pa_department_id,department_level,reference_prop1,reference_id1 from department WHERE department_level=2 AND lan_code='zhs'
+  </select>
+
+  <select id="getThirdLvlDept" resultMap="BaseResultMap">
+      SELECT department_id,source_id , lan_code ,department_name,pa_department_id,department_level,reference_prop1,reference_id1 from department WHERE department_level=3 AND lan_code='zhs'
+  </select>
+
+  <select id="getFourthLvlDept" resultMap="BaseResultMap">
+      SELECT department_id,source_id , lan_code ,department_name,pa_department_id,department_level,reference_prop1,reference_id1 from department WHERE department_level=4 AND lan_code='zhs'
+  </select>
+
+  <select id="getFifthLvlDept" resultMap="BaseResultMap">
+      SELECT department_id,source_id , lan_code ,department_name,pa_department_id,department_level,reference_prop1,reference_id1 from department WHERE department_level=5 AND lan_code='zhs'
+  </select>
+
+  <select id="getSixthLvlDept" resultMap="BaseResultMap">
+      SELECT department_id,source_id , lan_code ,department_name,pa_department_id,department_level,reference_prop1,reference_id1 from department WHERE department_level=6 AND lan_code='zhs'
+  </select>
+
+  <select id="getSeventhLvlDept" resultMap="BaseResultMap">
+      SELECT department_id,source_id , lan_code ,department_name,pa_department_id,department_level,reference_prop1,reference_id1 from department WHERE department_level=7 AND lan_code='zhs'
+  </select>
+
+    <select id="getDepartmentList" resultType="com.icicle.masterdb.pojo.vo.DepartmentVO">
+      select createtime,department_id departmentId,department_level departmentLevel,department_name departmentName,department_path departmentPath,department_state departmentState,
+      lan_code lanCode,lasteditor,lastedittime,pa_department_id paDepartmentId,reference_id1 referenceId1,reference_id2 referenceId2,reference_prop1 referenceProp1,
+        source_id sourceId from department;
+    </select>
+
+    <select id="getDepartmentById" resultType="com.icicle.masterdb.pojo.vo.DepartmentVO">
+        select d.reference_id2 referenceId2,d.department_id departmentId,d.department_state departmentState,
+        d.department_level departmentLevel,d.department_name departmentName,
+        (select department_name from department where department_id=#{departmentId} and lan_code='en') departmentNameEn,
+        d.pa_department_id paDepartmentId,(SELECT DISTINCT ISNULL(d1.department_id,'') FROM masterdbv2.dbo.department d
+        JOIN(SELECT * FROM masterdbv2.dbo.department WHERE department_level = 2) d1 ON CHARINDEX(d1.department_name,
+        d.department_path)>0 WHERE d.department_id = #{departmentId} ) boardId
+        from department d where d.department_id=#{departmentId}  and d.lan_code='zhs'
+    </select>
+
+</mapper>

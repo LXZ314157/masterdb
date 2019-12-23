@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icicle.masterdb.dao.masterdb.ExchangeRateMapper">
+  <resultMap id="BaseResultMap" type="com.icicle.masterdb.model.ExchangeRate">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="from_currency" jdbcType="VARCHAR" property="fromCurrency" />
+    <result column="to_currency" jdbcType="VARCHAR" property="toCurrency" />
+    <result column="conversion_date" jdbcType="TIMESTAMP" property="conversionDate" />
+    <result column="conversion_end_date" jdbcType="TIMESTAMP" property="conversionEndDate" />
+    <result column="conversion_rate" jdbcType="DECIMAL" property="conversionRate" />
+    <result column="created_by" jdbcType="VARCHAR" property="createdBy" />
+    <result column="creation_date" jdbcType="TIMESTAMP" property="creationDate" />
+    <result column="last_updated_by" jdbcType="VARCHAR" property="lastUpdatedBy" />
+    <result column="last_update_date" jdbcType="TIMESTAMP" property="lastUpdateDate" />
+  </resultMap>
+  <update id="updateByDate" parameterType="java.util.List">
+    UPDATE exchange_rate
+     SET from_currency =#{fromCurrency}
+      ,to_currency =#{toCurrency}
+      ,conversion_date=#{conversionDate}
+      ,conversion_rate =#{conversionRate}
+      ,last_updated_by =#{lastUpdatedBy}
+      ,last_update_date =#{lastUpdateDate}
+     WHERE  from_currency =#{fromCurrency} AND to_currency =#{toCurrency} AND conversion_date=#{conversionDate}
+  </update>
+
+    <insert id="saveExchangeRate" useGeneratedKeys="true" keyProperty="id">
+      insert into exchange_rate (from_currency,to_currency,conversion_date,conversion_end_date,conversion_rate,created_by,creation_date,last_update_date)
+      values(#{fromCurrency},#{toCurrency},#{conversionDate},#{conversionEndDate},#{conversionRate},#{createdBy},GETDATE(),GETDATE());
+    </insert>
+</mapper>

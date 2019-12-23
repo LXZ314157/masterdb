@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icicle.masterdb.dao.masterdb.BuyerMapper">
+    <resultMap id="BaseResultMap" type="com.icicle.masterdb.model.Buyer">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="buyer_id" jdbcType="VARCHAR" property="buyerId"/>
+        <result column="buyer_no" jdbcType="INTEGER" property="buyerNo"/>
+        <result column="buyer_type_id" jdbcType="INTEGER" property="buyerTypeId"/>
+        <result column="buyer_full_name" jdbcType="NVARCHAR" property="buyerFullName"/>
+        <result column="buyer_name" jdbcType="NVARCHAR" property="buyerName"/>
+        <result column="buyer_short_name" jdbcType="NVARCHAR" property="buyerShortName"/>
+        <result column="buyer_spell" jdbcType="VARCHAR" property="buyerSpell"/>
+        <result column="buyer_state" jdbcType="INTEGER" property="buyerState"/>
+        <result column="buyer_contact" jdbcType="NVARCHAR" property="buyerContact"/>
+        <result column="buyer_phone" jdbcType="VARCHAR" property="buyerPhone"/>
+        <result column="buyer_mobile" jdbcType="VARCHAR" property="buyerMobile"/>
+        <result column="buyer_email" jdbcType="VARCHAR" property="buyerEmail"/>
+        <result column="buyer_fax" jdbcType="VARCHAR" property="buyerFax"/>
+        <result column="city_id" jdbcType="INTEGER" property="cityId"/>
+        <result column="zone_id" jdbcType="INTEGER" property="zoneId"/>
+        <result column="buyer_deposit" jdbcType="DECIMAL" property="buyerDeposit"/>
+        <result column="buyer_joinning_fee" jdbcType="DECIMAL" property="buyerJoinningFee"/>
+        <result column="buyer_desc" jdbcType="NVARCHAR" property="buyerDesc"/>
+        <result column="buyer_start_date" jdbcType="TIMESTAMP" property="buyerStartDate"/>
+        <result column="buyer_end_date" jdbcType="TIMESTAMP" property="buyerEndDate"/>
+        <result column="created_by" jdbcType="VARCHAR" property="createdBy"/>
+        <result column="creation_date" jdbcType="TIMESTAMP" property="creationDate"/>
+        <result column="last_updated_by" jdbcType="VARCHAR" property="lastUpdatedBy"/>
+        <result column="last_update_date" jdbcType="TIMESTAMP" property="lastUpdateDate"/>
+    </resultMap>
+    <insert id="saveBuyer" useGeneratedKeys="true" keyProperty="buyerNo">
+INSERT INTO buyer
+  ( buyer_id, buyer_type_id, buyer_full_name,manage_center_id, buyer_name, buyer_short_name,buyer_spell,buyer_state,buyer_contact,buyer_phone,buyer_mobile,buyer_email,buyer_fax,city_id,zone_id,buyer_deposit,buyer_joinning_fee,buyer_desc,buyer_start_date,buyer_end_date,created_by,last_updated_by,creation_date,buyer_address,tax_number,company_name,legal_person,last_update_date)
+  VALUES
+  (#{buyerId}, #{buyerTypeId},#{buyerFullName},#{manageCenterId}, #{buyerName}, #{buyerShortName},#{buyerSpell},#{buyerState},#{buyerContact},#{buyerPhone},#{buyerMobile},#{buyerEmail},#{buyerFax},#{cityId},#{zoneId},#{buyerDeposit},#{buyerJoinningFee},#{buyerDesc},#{buyerStartDate},#{buyerEndDate},#{createdBy},#{lastUpdatedBy},#{creationDate},#{buyerAddress},#{taxNumber},#{companyName},#{legalPerson},GETDATE());
+
+  </insert>
+    <update id="updateBuyer">
+  UPDATE buyer
+  SET buyer_type_id=#{buyerTypeId},buyer_full_name=#{buyerFullName},buyer_name=#{buyerName},manage_center_id=#{manageCenterId},buyer_short_name=#{buyerShortName},buyer_spell=#{buyerSpell},buyer_state=#{buyerState},buyer_contact=#{buyerContact},buyer_phone=#{buyerPhone},buyer_mobile=#{buyerMobile},buyer_email=#{buyerEmail},buyer_fax=#{buyerFax},
+  city_id=#{cityId},zone_id=#{zoneId},buyer_deposit=#{buyerDeposit},buyer_joinning_fee=#{buyerJoinningFee},buyer_desc=#{buyerDesc},buyer_start_date=#{buyerStartDate},buyer_end_date=#{buyerEndDate},last_updated_by=#{lastUpdatedBy},last_update_date=#{lastUpdateDate},buyer_address=#{buyerAddress},tax_number=#{taxNumber},
+  company_name=#{companyName},legal_person=#{legalPerson}
+  WHERE buyer_id=#{buyerId};
+  </update>
+
+    <select id="findBuyerVO" resultMap="BaseResultMap">
+      SELECT buyer_id,buyer_no,buyer_name from buyer
+    </select>
+
+    <select id="findAccountByBuyerNo" resultType="com.icicle.masterdb.model.BuyerAccount">
+      SELECT bank_name bankName,bank_account bankAccount from buyer_account where buyer_no= #{buyerNo}
+    </select>
+
+
+    <insert id="saveAccountByBuyerNo">
+      INSERT INTO buyer_account( buyer_no,bank_name, bank_account,created_by,creation_date,last_update_date) VALUES (#{buyerNo},#{bankName},#{bankAccount},#{createdBy},#{creationDate},GETDATE());
+    </insert>
+
+    <update id="updateAccountByBuyerNo">
+        UPDATE buyer_account
+        <set>
+            <if test="bankName!=null">bank_name=#{bankName},</if>
+            <if test="bankAccount!=null">bank_account =#{bankAccount},</if>
+        </set>
+        ,last_updated_by=#{lastUpdatedBy}
+        ,last_update_date =#{lastUpdateDate}
+        WHERE buyer_no=#{buyerNo}
+    </update>
+
+    <update id="updateBuyerId">
+        update buyer set buyer_id=#{buyerId},last_update_date=GETDATE() where buyer_no=#{buyerNo}
+    </update>
+
+    <select id="checkBuyerId" parameterType="java.lang.String" resultType="java.lang.Integer">
+      select count(1) from buyer where buyer_id = #{buyerId};
+    </select>
+
+    <select id="findByQueryCondition" parameterType="java.lang.String" resultType="com.icicle.masterdb.pojo.vo.BuyerVO">
+      SELECT
+        b.buyer_id buyerId,b.buyer_no buyerNo,bt.buyer_type_name buyerTypeName,b.buyer_full_name buyerFullName,
+        b.buyer_name buyerName,b.buyer_short_name buyerShortName,b.buyer_spell buyerSpell,
+        case b.buyer_state when 1 then '正常' when 0 then '结束合作' end buyerStateName,
+        b.buyer_contact buyerContact,b.buyer_phone buyerPhone,b.buyer_mobile buyerMobile,b.buyer_email buyerEmail,
+        b.buyer_fax buyerFax,c.city_name cityName,z.zone_name zoneName,b.buyer_deposit buyerDeposit,b.buyer_joinning_fee buyerJoinningFee,
+        b.buyer_desc buyerDesc,b.buyer_start_date buyerStartDate,b.buyer_end_date buyerEndDate,b.legal_person legalPerson,
+        m.manager_center_name manageCenterName,b.tax_number taxNumber,b.buyer_address buyerAddress,b.company_name companyName,ba.bank_name bankName,ba.bank_account bankAccount
+        FROM
+            buyer b
+        LEFT JOIN buyer_type bt on b.buyer_type_id=bt.buyer_type_id LEFT JOIN city c on b.city_id=c.city_id LEFT JOIN zone z on b.zone_id=z.zone_id
+        LEFT JOIN manage_center m on b.manage_center_id=m.manager_center_id LEFT JOIN buyer_account ba on b.buyer_no=ba.buyer_no where 1 = 1
+
+        <if test="buyerNameOrId != null  and buyerNameOrId != '' "> and ( b.buyer_id like '%'+#{buyerNameOrId}+'%' or b.buyer_name like  '%'+#{buyerNameOrId}+'%' ) </if>
+        <if test="buyerState != null  and buyerState != '' "> and b.buyer_state = #{buyerState}</if>
+    </select>
+
+    <select id="getSyncBuyerById" resultType="com.icicle.masterdb.pojo.vo.SyncBuyerVO">
+        SELECT buyer_id as buyer_id, buyer_name, buyer_desc, (case buyer_state WHEN 1 THEN 0 ELSE 1 END) AS buyer_state, buyer_address,
+        buyer_contact, buyer_phone,0 AS is_provider,1 AS is_customer,0 AS is_processor
+        FROM dbo.buyer WHERE buyer_state = 1 and buyer_id=#{buyerId};
+    </select>
+
+    <select id="getSyncBurgeonBuyerById" resultType="com.icicle.masterdb.pojo.vo.SyncBuyerVO">
+      SELECT b.buyer_no,buyer_id AS old_buyer_id,buyer_id as buyer_num,buyer_name,
+        '品牌公司' as buyer_up_name,
+        '一级' as buyer_type_name,
+        isnull((SELECT  ai.buyer_attrib_item_name FROM dbo.buyer_attribute ba
+        JOIN dbo.buyer_attrib_item ai ON ai.buyer_attrib_item_id = ba.attrib_item_id
+        JOIN dbo.buyer_attrib_defined ad ON ad.buyer_attrib_def_id = ai.buyer_attrib_def_id
+        WHERE ad.buyer_attrib_def_code = 'buyer_mng_level' AND ba.buyer_no = b.buyer_no
+        ),'') AS buyer_manage_level,
+        isnull((SELECT  DISTINCT ai.buyer_attrib_item_code FROM dbo.buyer_attribute ba
+        JOIN dbo.buyer_attrib_item ai ON ai.buyer_attrib_item_id = ba.attrib_item_id
+        JOIN dbo.buyer_attrib_defined ad ON ad.buyer_attrib_def_id = ai.buyer_attrib_def_id
+        WHERE ad.buyer_attrib_def_code = 'buyer_pattern' AND ba.buyer_no = b.buyer_no
+        ),'') AS buyer_pattern,
+        isnull((
+         SELECT manager_center_name FROM dbo.manage_center
+         WHERE manager_center_id = b.manage_center_id
+        ),'') AS manage_center,
+        cl.city_level_name,
+
+        isnull((SELECT  ai.buyer_attrib_item_name FROM dbo.buyer_attribute ba
+        JOIN dbo.buyer_attrib_item ai ON ai.buyer_attrib_item_id = ba.attrib_item_id
+        JOIN dbo.buyer_attrib_defined ad ON ad.buyer_attrib_def_id = ai.buyer_attrib_def_id
+        WHERE ad.buyer_attrib_def_code = 'agent_scope' AND ba.buyer_no = b.buyer_no
+        ),'') AS agent_scope_name,
+
+        isnull(ct.CountryName,'') AS country_name,
+        ISNULL(p.ProvinceName,'') AS province_name,
+        c.city_id,
+        REPLACE( c.city_name,'市','') as city_name,
+        legal_person,
+        buyer_contact,
+        buyer_phone,
+        buyer_mobile,
+        buyer_address,
+        buyer_fax,
+        buyer_email,
+        isnull(bank_name,'') as bank_name,
+        isnull(bank_account,'') as  bank_account,
+        isnull(account_name,'') as account_name,
+        isnull(tax_number,'') as tax_number,
+        convert(varchar(20),buyer_start_date,112) as buyer_start_date,
+        convert(varchar(20),isnull(buyer_end_date,buyer_start_date),112) as buyer_end_date,
+        (case buyer_state when 1 then 1 else 2 end) buyer_state
+         FROM buyer b
+        JOIN dbo.buyer_type t ON t.buyer_type_id = b.buyer_type_id
+        LEFT JOIN city c ON b.city_id = c.city_id
+        LEFT JOIN city_level cl ON cl.city_level_id = c.city_level_id
+        LEFT JOIN Provinces p ON c.province_id = p.ProvinceID
+        LEFT JOIN Countries ct on ct.CountryId = p.CountryId
+        LEFT JOIN dbo.buyer_account bc ON bc.buyer_no = b.buyer_no
+        where b.buyer_id=#{buyerId};
+    </select>
+
+
+    <select id="getSyncYxtStoreByNo" parameterType="java.lang.String" resultType="com.icicle.masterdb.pojo.vo.SyncZoneVO">
+      SELECT b.buyer_id AS orgOuCode,b.buyer_name AS ouName,b.zone_id AS parentID,ISNULL((
+      SELECT buyer_attri_value FROM buyer_attribute WHERE attrib_def_id=(
+      SELECT buyer_attrib_def_id FROM buyer_attrib_defined WHERE buyer_attrib_def_code='buyer_pattern')
+      AND buyer_no=b.buyer_no),'') AS buyerPattern FROM buyer b WHERE b.buyer_id=#{ buyerId };
+    </select>
+
+</mapper>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icicle.masterdb.dao.masterdb.ExpenditureCategoryMapper">
+  <resultMap id="BaseResultMap" type="com.icicle.masterdb.model.ExpenditureCategory">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="excategory_id" jdbcType="VARCHAR" property="excategoryId" />
+    <id column="lan_code" jdbcType="VARCHAR" property="lanCode" />
+    <result column="source_id" jdbcType="VARCHAR" property="sourceId" />
+    <result column="excategory_name" jdbcType="NVARCHAR" property="excategoryName" />
+    <result column="extype" jdbcType="INTEGER" property="extype" />
+    <result column="costcenter_id" jdbcType="VARCHAR" property="costcenterId" />
+    <result column="excategory_desc" jdbcType="NVARCHAR" property="excategoryDesc" />
+    <result column="effective_date" jdbcType="TIMESTAMP" property="effectiveDate" />
+    <result column="reference_id1" jdbcType="VARCHAR" property="referenceId1" />
+    <result column="reference_id2" jdbcType="VARCHAR" property="referenceId2" />
+    <result column="reference_id3" jdbcType="VARCHAR" property="referenceId3" />
+    <result column="reference_id4" jdbcType="VARCHAR" property="referenceId4" />
+    <result column="reference_id5" jdbcType="VARCHAR" property="referenceId5" />
+    <result column="excategory_state" jdbcType="INTEGER" property="excategoryState" />
+    <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="last_edit_by" jdbcType="VARCHAR" property="lastEditBy" />
+    <result column="last_edit_time" jdbcType="TIMESTAMP" property="lastEditTime" />
+  </resultMap>
+
+    <select id="findExInfoByExcategoryId" parameterType="java.lang.String" resultType="com.icicle.masterdb.pojo.vo.ExpenditureCategoryVO">
+        select distinct ec.excategory_id excategoryId,l.lan_name lanCode,ec.source_id sourceId,ec.excategory_name excategoryName,
+        ec.effective_date effectiveDate,ec.excategory_desc excategoryDesc,case ec.excategory_state when '1' then '有效'
+        when '2' then '无效' else '' end  excategoryState,c.cost_center_name costcenterId
+        from expenditure_category ec
+        LEFT JOIN [language] l on ec.lan_code=l.lan_code LEFT JOIN costcenter c on ec.costcenter_id=c.costcenter_id
+        where ec.excategory_id=#{excategoryId} and ec.lan_code=#{lanCode}
+
+    </select>
+
+
+    <select id="getSyncExCategoryInfo" resultType="com.icicle.masterdb.pojo.vo.SyncPropertyVO">
+      select source_id AS mainSysId,2 AS operationStatus,'C_PAYTYPE' AS tableName,
+      '' AS dimFlag,convert(nvarchar(20),excategory_id) as code,convert(nvarchar(50),excategory_name ) AS [description]
+      from expenditure_category where excategory_state = 1 and lan_code = #{lanCode} and excategory_id in
+        <foreach open="(" separator="," close=")" collection="excategoryIdList" item="item">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="findByQueryCondition" resultType="com.icicle.masterdb.pojo.vo.ExpenditureCategoryVO">
+        select ec.excategory_id excategoryId ,l.lan_name lanCode,ec.excategory_name excategoryName,
+        ISNULL((select cost_center_name from costcenter where lan_code='zhs' and costcenter_id=ec.costcenter_id), '')costcenterId,
+        ec.excategory_desc excategoryDesc,ec.effective_date effectiveDate,
+        case ec.excategory_state when 1 then '有效' else '无效' end excategoryState
+        from expenditure_category ec
+        LEFT JOIN [language] l on ec.lan_code=l.lan_code where 1=1
+        <if test="exIdOrName != null  and exIdOrName != '' "> and ( ec.excategory_id like  '%'+#{exIdOrName}+'%' or ec.excategory_name like  '%'+#{exIdOrName}+'%' ) </if>
+        <if test="lanCode != null  and lanCode != '' "> and ec.lan_code = #{lanCode}</if>
+    </select>
+
+</mapper>

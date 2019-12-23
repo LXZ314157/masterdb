@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icicle.masterdb.dao.masterdb.ProductExtendAttributeItemMapper">
+  <resultMap id="BaseResultMap" type="com.icicle.masterdb.model.ProductExtendAttributeItem">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="def_id" jdbcType="INTEGER" property="defId" />
+    <result column="code" jdbcType="VARCHAR" property="code" />
+    <result column="name" jdbcType="NVARCHAR" property="name" />
+    <result column="status" jdbcType="BIT" property="status" />
+    <result column="created_by" jdbcType="VARCHAR" property="createdBy" />
+    <result column="creation_date" jdbcType="TIMESTAMP" property="creationDate" />
+    <result column="last_updated_by" jdbcType="VARCHAR" property="lastUpdatedBy" />
+    <result column="last_update_date" jdbcType="TIMESTAMP" property="lastUpdateDate" />
+  </resultMap>
+
+    <update id="updateExtendAttributeItem" parameterType="java.util.List">
+        <foreach collection="list" item="item" separator=";">
+            update product_extend_attribute_item
+            <set>
+                <if test="item.defId!=null">def_id = #{item.defId},</if>
+                <if test="item.code!=null">code = #{item.code},</if>
+                <if test="item.name!=null">name = #{item.name},</if>
+                status = #{item.status},last_updated_by=#{item.lastUpdatedBy},last_update_date = getDate()
+            </set>
+            where id=#{item.id}
+        </foreach>
+    </update>
+
+
+</mapper>

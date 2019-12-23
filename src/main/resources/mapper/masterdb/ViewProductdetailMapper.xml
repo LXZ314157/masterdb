@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icicle.masterdb.dao.masterdb.ViewProductdetailMapper">
+  <resultMap id="BaseResultMap" type="com.icicle.masterdb.model.ViewProductdetail">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <result column="product_code" jdbcType="VARCHAR" property="productCode" />
+    <result column="product_name" jdbcType="NVARCHAR" property="productName" />
+    <result column="uom" jdbcType="VARCHAR" property="uom" />
+    <result column="unit_price" jdbcType="DECIMAL" property="unitPrice" />
+    <result column="standard_cost" jdbcType="DECIMAL" property="standardCost" />
+    <result column="cate_dl" jdbcType="CHAR" property="cateDl" />
+    <result column="cate_zl" jdbcType="CHAR" property="cateZl" />
+    <result column="cate_xl" jdbcType="CHAR" property="cateXl" />
+    <result column="product_desc" jdbcType="NVARCHAR" property="productDesc" />
+    <result column="status" jdbcType="BIT" property="status" />
+    <result column="sync_status" jdbcType="INTEGER" property="syncStatus" />
+    <result column="sync_record" jdbcType="BIT" property="syncRecord" />
+    <result column="created_by" jdbcType="VARCHAR" property="createdBy" />
+    <result column="creation_date" jdbcType="TIMESTAMP" property="creationDate" />
+    <result column="last_updated_by" jdbcType="VARCHAR" property="lastUpdatedBy" />
+    <result column="last_update_date" jdbcType="TIMESTAMP" property="lastUpdateDate" />
+    <result column="security_code" jdbcType="VARCHAR" property="securityCode" />
+    <result column="estimated_rate" jdbcType="VARCHAR" property="estimatedRate" />
+    <result column="order_no" jdbcType="VARCHAR" property="orderNo" />
+    <result column="dev_no" jdbcType="VARCHAR" property="devNo" />
+    <result column="style_no" jdbcType="VARCHAR" property="styleNo" />
+    <result column="model_no" jdbcType="VARCHAR" property="modelNo" />
+    <result column="line" jdbcType="VARCHAR" property="line" />
+    <result column="material_no" jdbcType="VARCHAR" property="materialNo" />
+    <result column="material_name" jdbcType="NVARCHAR" property="materialName" />
+    <result column="color_name" jdbcType="NVARCHAR" property="colorName" />
+    <result column="product_class" jdbcType="VARCHAR" property="productClass" />
+    <result column="productclass_value" jdbcType="NVARCHAR" property="productclassValue" />
+    <result column="year" jdbcType="INTEGER" property="year" />
+    <result column="nature_season" jdbcType="VARCHAR" property="natureSeason" />
+    <result column="dev_season" jdbcType="VARCHAR" property="devSeason" />
+    <result column="wave" jdbcType="VARCHAR" property="wave" />
+    <result column="band" jdbcType="VARCHAR" property="band" />
+    <result column="icicle_group" jdbcType="VARCHAR" property="icicleGroup" />
+    <result column="sales_date" jdbcType="VARCHAR" property="salesDate" />
+    <result column="color_card_no" jdbcType="VARCHAR" property="colorCardNo" />
+    <result column="color_card_name" jdbcType="NVARCHAR" property="colorCardName" />
+    <result column="colour_system" jdbcType="NVARCHAR" property="colourSystem" />
+    <result column="work_group" jdbcType="VARCHAR" property="workGroup" />
+    <result column="workgroup_value" jdbcType="NVARCHAR" property="workgroupValue" />
+    <result column="size_group" jdbcType="VARCHAR" property="sizeGroup" />
+    <result column="brand" jdbcType="VARCHAR" property="brand" />
+    <result column="code" jdbcType="VARCHAR" property="code" />
+    <result column="standard" jdbcType="VARCHAR" property="standard" />
+    <result column="batch" jdbcType="INTEGER" property="batch" />
+    <result column="style_rule" jdbcType="NVARCHAR" property="styleRule" />
+    <result column="opr" jdbcType="VARCHAR" property="opr" />
+    <result column="op_date" jdbcType="VARCHAR" property="opDate" />
+    <result column="supplier" jdbcType="VARCHAR" property="supplier" />
+  </resultMap>
+
+    <select id="getDetails" resultMap="BaseResultMap">
+        SELECT * FROM view_productdetail WHERE product_code IN
+        <foreach close=")" collection="products" item="code" open="(" separator=",">
+            #{code}
+        </foreach>
+    </select>
+
+    <select id="exportContent" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT * FROM view_productdetail
+        <where>
+            <if test="syncStatus!=null and syncStatus.intValue()!=-1 ">
+                and sync_status=#{syncStatus}
+            </if>
+
+            <if test="syncRecord!=null and syncRecord.intValue()!=-1 ">
+                and sync_record=#{syncRecord}
+            </if>
+            <if test="iline!=null and iline!='' ">
+                and line=#{iline}
+            </if>
+            <if test="productClass!=null and productClass!=''">
+                and product_class=#{productClass}
+            </if>
+            <if test="year!=null and year!=0">
+                and year=#{year}
+            </if>
+            <if test="season!=null and season!=''">
+                and nature_season=#{season}
+            </if>
+            <if test="devSeason!=null and devSeason!=''">
+                and dev_season=#{devSeason}
+            </if>
+            <if test="wave!=null and wave!=''">
+                and wave=#{wave}
+            </if>
+            <if test="iband!=null and iband!=''">
+                and band=#{iband}
+            </if>
+            <if test="icicleGroup!=null and icicleGroup!=''">
+                and icicle_group=#{icicleGroup}
+            </if>
+            <if test="workGroup!=null and workGroup!=''">
+                and work_group=#{workGroup}
+            </if>
+            and status=1
+        </where>
+    </select>
+</mapper>

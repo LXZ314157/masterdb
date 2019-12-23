@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icicle.masterdb.dao.masterdb.ViewAttriItemMapper">
+  <resultMap id="BaseResultMap" type="com.icicle.masterdb.model.ViewAttriItem">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <result column="id" jdbcType="INTEGER" property="id" />
+    <result column="def_id" jdbcType="INTEGER" property="defId" />
+    <result column="code" jdbcType="INTEGER" property="code" />
+    <result column="name" jdbcType="NVARCHAR" property="name" />
+    <result column="def_code" jdbcType="VARCHAR" property="defCode" />
+  </resultMap>
+</mapper>

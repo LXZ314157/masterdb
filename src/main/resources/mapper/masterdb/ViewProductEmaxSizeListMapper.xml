@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icicle.masterdb.dao.masterdb.ViewProductEmaxSizeListMapper">
+    <resultMap id="BaseResultMap" type="com.icicle.masterdb.model.ViewProductEmaxSizeList">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <result column="color" jdbcType="NVARCHAR" property="color"/>
+        <result column="size" jdbcType="VARCHAR" property="size"/>
+        <result column="product_code" jdbcType="VARCHAR" property="productCode"/>
+        <result column="sku" jdbcType="VARCHAR" property="sku"/>
+    </resultMap>
+
+    <select id="getSizeList" resultMap="BaseResultMap">
+        SELECT * FROM view_product_emax_size_list WHERE product_code IN
+        <foreach open="(" separator="," close=")" collection="products" item="code">
+            #{code}
+        </foreach>
+    </select>
+</mapper>

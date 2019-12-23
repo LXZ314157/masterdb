@@ -1,0 +1,1 @@
+<script src="${base}/static/content/js/page/product/updatemessage.js?v=20180929"></script>

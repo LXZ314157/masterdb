@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icicle.masterdb.dao.masterdb.ProductAttributeExtendMapper">
+    <resultMap id="BaseResultMap" type="com.icicle.masterdb.model.ProductAttributeExtend">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="product_code" jdbcType="VARCHAR" property="productCode"/>
+        <result column="security_code" jdbcType="VARCHAR" property="securityCode"/>
+        <result column="estimated_rate" jdbcType="VARCHAR" property="estimatedRate"/>
+        <result column="order_no" jdbcType="VARCHAR" property="orderNo"/>
+        <result column="dev_no" jdbcType="VARCHAR" property="devNo"/>
+        <result column="style_no" jdbcType="VARCHAR" property="styleNo"/>
+        <result column="model_no" jdbcType="VARCHAR" property="modelNo"/>
+        <result column="line" jdbcType="VARCHAR" property="line"/>
+        <result column="material_no" jdbcType="VARCHAR" property="materialNo"/>
+        <result column="material_name" jdbcType="NVARCHAR" property="materialName"/>
+        <result column="color_name" jdbcType="NVARCHAR" property="colorName"/>
+        <result column="product_class" jdbcType="VARCHAR" property="productClass"/>
+        <result column="year" jdbcType="INTEGER" property="year"/>
+        <result column="nature_season" jdbcType="VARCHAR" property="natureSeason"/>
+        <result column="dev_season" jdbcType="VARCHAR" property="devSeason"/>
+        <result column="wave" jdbcType="VARCHAR" property="wave"/>
+        <result column="band" jdbcType="VARCHAR" property="icicleBand"/>
+        <result column="icicle_group" jdbcType="VARCHAR" property="icicleGroup"/>
+        <result column="sales_date" jdbcType="VARCHAR" property="salesDate"/>
+        <result column="color_card_no" jdbcType="VARCHAR" property="colorCardNo"/>
+        <result column="color_card_name" jdbcType="NVARCHAR" property="colorCardName"/>
+        <result column="colour_system" jdbcType="NVARCHAR" property="colourSystem"/>
+        <result column="work_group" jdbcType="VARCHAR" property="workGroup"/>
+        <result column="size_group" jdbcType="VARCHAR" property="sizeGroup"/>
+        <result column="code" jdbcType="VARCHAR" property="code"/>
+        <result column="standard" jdbcType="VARCHAR" property="standard"/>
+        <result column="batch" jdbcType="INTEGER" property="batch"/>
+        <result column="style_rule" jdbcType="NVARCHAR" property="styleRule"/>
+        <result column="supplier" jdbcType="VARCHAR" property="supplier"/>
+        <result column="opr" jdbcType="VARCHAR" property="opr"/>
+        <result column="op_date" jdbcType="VARCHAR" property="opDate"/>
+        <result column="material_name_tag" jdbcType="VARCHAR" property="materialNameTag"/>
+    </resultMap>
+    <insert id="insertAttributeExtendList" parameterType="java.util.List">
+
+        INSERT INTO product_costume
+        (product_code
+        ,security_code
+        ,order_no
+        ,dev_no
+        ,style_no
+        ,model_no
+        ,material_no
+        ,material_name
+        ,material_name_tag
+        ,color_name
+        ,product_class
+        ,nature_season
+        ,sales_date
+        ,color_card_no
+        ,color_card_name
+        ,colour_system
+        ,wave
+        ,band
+        ,icicle_group
+        ,line
+        ,year
+        ,dev_season
+        ,work_group
+        ,code
+        ,standard
+        ,batch
+        ,style_rule
+        ,supplier
+        ,estimated_rate
+        ,size_group
+        ,opr
+        ,op_date)
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+            (#{item.productCode},#{item.securityCode},#{item.orderNo},#{item.devNo},#{item.styleNo},#{item.modelNo},#{item.materialNo},
+            #{item.materialName},#{item.materialNameTag},#{item.colorName},#{item.productClass},#{item.natureSeason},#{item.salesDate},
+            #{item.colorCardNo},#{item.colorCardName},#{item.colourSystem},#{item.wave},#{item.icicleBand},#{item.icicleGroup},#{item.line},#{item.year},#{item.devSeason},#{item.workGroup},#{item.code},#{item.standard},#{item.batch},
+            #{item.styleRule},#{item.supplier},#{item.estimatedRate},#{item.sizeGroup},#{item.opr},#{item.opDate})
+        </foreach>
+    </insert>
+
+    <select id="searchByCondition" resultMap="BaseResultMap" parameterType="java.lang.String">
+       SELECT
+            product_code
+          ,security_code
+          ,estimated_rate
+          ,order_no
+          ,dev_no
+          ,style_no
+          ,model_no
+          ,line
+          ,material_no
+          ,material_name
+          ,color_name
+          ,product_class
+          ,year
+          ,nature_season
+          ,dev_season
+          ,wave
+          ,band
+          ,icicle_group
+          ,sales_date
+          ,color_card_no
+          ,color_card_name
+          ,colour_system
+          ,work_group
+          ,size_group
+          ,code
+          ,standard
+          ,batch
+          ,style_rule
+          ,supplier
+          ,opr
+          ,op_date
+          ,material_name_tag
+      FROM product_costume WHERE product_code=#{productCode}
+    </select>
+    <update id="updateAttributePart" parameterType="java.util.List">
+        <foreach collection="list" index="index" item="item" separator=";">
+            UPDATE product_costume
+            <set>
+                <if test="item.productCode !=null and item.productCode!=''">product_code=#{item.productCode},</if>
+                <if test="item.securityCode!=null and item.securityCode!='' ">security_code =#{item.securityCode},</if>
+                <if test="item.orderNo!=null and item.orderNo!=''">order_no =#{item.orderNo},</if>
+                <if test="item.devNo!=null and item.devNo!=''">dev_no = #{item.devNo},</if>
+                <if test="item.styleNo!=null and item.styleNo!=''">style_no= #{item.styleNo},</if>
+                <if test="item.modelNo!=null and item.modelNo!=''">model_no= #{item.modelNo},</if>
+                <if test="item.materialNo!=null and item.materialNo!=''">material_no =#{item.materialNo},</if>
+                <if test="item.materialName!=null and item.materialName!=''">material_name=#{item.materialName},</if>
+                <if test="item.colorName!=null and item.colorName!=''">color_name= #{item.colorName},</if>
+                <if test="item.productClass!=null and item.productClass!=''">product_class =#{item.productClass},</if>
+                <if test="item.natureSeason!=null and item.natureSeason!=''">nature_season=#{item.natureSeason},</if>
+                <if test="item.devSeason!=null and item.devSeason!=''">dev_season=#{item.devSeason},</if>
+                <if test="item.salesDate!=null and item.salesDate!=''">sales_date = #{item.salesDate},</if>
+                <if test="item.colorCardNo!=null and item.colorCardNo!=''">color_card_no = #{item.colorCardNo},</if>
+                <if test="item.colorCardName!=null and item.colorCardName!=''">color_card_name =#{item.colorCardName},</if>
+                <if test="item.materialNameTag!=null and item.materialNameTag!=''">material_name_tag =#{item.materialNameTag},</if>
+                <if test="item.colourSystem!=null and item.colourSystem!=''">colour_system = #{item.colourSystem},</if>
+                <if test="item.wave!=null and item.wave!=''">wave=#{item.wave},</if>
+                <if test="item.icicleBand!=null and item.icicleBand!=''">band=#{item.icicleBand},</if>
+                <if test="item.icicleGroup!=null and item.icicleGroup!=''">icicle_group=#{item.icicleGroup},</if>
+                <if test="item.line!=null and item.line!=''">line =#{item.line},</if>
+                <if test="item.year!=null and item.year!=''">year =#{item.year},</if>
+                <if test="item.workGroup!=null and item.workGroup!=''">work_group= #{item.workGroup},</if>
+                <if test="item.code!=null and item.code!=''">code = #{item.code},</if>
+                <if test="item.standard!=null and item.standard!=''">standard = #{item.standard},</if>
+                <if test="item.batch!=null">batch = #{item.batch},</if>
+                <if test="item.styleRule!=null and item.styleRule!=''">style_rule= #{item.styleRule},</if>
+                <if test="item.supplier!=null and item.supplier!=''">supplier =#{item.supplier},</if>
+                <if test="item.estimatedRate!=null and item.estimatedRate!=''">estimated_rate =#{item.estimatedRate},</if>
+                <if test="item.sizeGroup!=null">size_group =#{item.sizeGroup},</if>
+                <if test="item.opr!=null and item.opr!=''">opr =#{item.opr},</if>
+                <if test="item.opDate!=null and item.opDate!=''">op_date =#{item.opDate}</if>
+            </set>
+            WHERE product_code =#{item.productCode}
+        </foreach>
+    </update>
+     <delete id="deleteUnSycn" parameterType="java.lang.String">
+         DELETE FROM dbo.product_costume WHERE product_code=#{productCode}
+     </delete>
+
+    <insert id="batchUpdateFabric">
+        <foreach collection="list" index="index" item="item" separator=";">
+            UPDATE dbo.product_costume SET material_name = #{item.fabricName}
+            WHERE material_no = #{item.fabricCode}
+        </foreach>
+    </insert>
+</mapper>

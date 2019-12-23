@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icicle.masterdb.dao.masterdb.StoreAddressMapper">
+  <resultMap id="BaseResultMap" type="com.icicle.masterdb.model.StoreAddress">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="address_id" jdbcType="INTEGER" property="addressId" />
+    <result column="store_no" jdbcType="INTEGER" property="storeNo" />
+    <result column="address_type" jdbcType="INTEGER" property="addressType" />
+    <result column="is_default" jdbcType="BIT" property="isDefault" />
+    <result column="contact" jdbcType="NVARCHAR" property="contact" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="mobile_phone" jdbcType="VARCHAR" property="mobilePhone" />
+    <result column="address" jdbcType="NVARCHAR" property="address" />
+    <result column="address_state" jdbcType="INTEGER" property="addressState" />
+    <result column="created_by" jdbcType="VARCHAR" property="createdBy" />
+    <result column="creation_date" jdbcType="TIMESTAMP" property="creationDate" />
+    <result column="last_updated_by" jdbcType="VARCHAR" property="lastUpdatedBy" />
+    <result column="last_update_date" jdbcType="TIMESTAMP" property="lastUpdateDate" />
+  </resultMap>
+
+  <delete id="deleteStoreAressByAdressId" parameterType="java.lang.String">
+    DELETE FROM dbo.store_address WHERE address_id=#{addressId}
+  </delete>
+
+  <select id="selectStoreAddrDefault" resultMap="BaseResultMap">
+    SELECT * from dbo.store_address WHERE address_type=#{addressType} and is_default='1';
+  </select>
+
+  <update id="updateStoreAddressList" parameterType="java.lang.String">
+    UPDATE dbo.store_address SET is_default = 0 WHERE address_type = #{addressType};
+  </update>
+
+  <update id="updateStoreAressByAdressId" parameterType="java.lang.String">
+    UPDATE dbo.store_address SET is_default = 1 WHERE address_id = #{addressId};
+  </update>
+
+  <update id="updateStoreAddr">
+    UPDATE dbo.store_address SET address_type = #{addressType},is_default = #{isDefault},contact = #{contact},phone = #{phone},mobile_phone = #{mobilePhone},
+    address = #{address},address_state = #{addressState},last_updated_by = #{lastUpdatedBy},last_update_date = #{lastUpdateDate} WHERE address_id = #{addressId};
+  </update>
+
+  <insert id="addstoreAddr" keyProperty="addressId" useGeneratedKeys="true">
+    INSERT INTO dbo.store_address
+        ( store_no,address_type ,is_default ,contact ,phone ,mobile_phone,address ,address_state,created_by ,creation_date,last_updated_by,last_update_date)
+         VALUES  ( #{storeNo},#{addressType},#{isDefault},#{contact},#{phone},#{mobilePhone},#{address},#{addressState},#{createdBy},#{creationDate},#{lastUpdatedBy},#{lastUpdateDate})
+  </insert>
+
+    <select id="getSyncAddressById" resultType="com.icicle.masterdb.pojo.vo.SyncStoreVO" >
+        select address_id as main_sys_id,
+       (case is_default when 1 then 'Y' else 'N' end) as is_default,
+       s.store_name as store_name,
+       address_id,
+       (case address_type when 4 then 3 else address_type end) as address_type,
+       contact,
+       '' as email,
+       address,
+       mobile_phone,
+       phone,
+       '' as remark
+       from store_address  sa
+       join store s
+       on sa.store_no = s.store_no
+       where sa.address_state = 1 and sa.address_id=#{addressId};
+    </select>
+
+</mapper>

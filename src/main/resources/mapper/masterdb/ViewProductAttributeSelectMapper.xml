@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icicle.masterdb.dao.masterdb.ViewProductAttributeSelectMapper">
+  <resultMap id="BaseResultMap" type="com.icicle.masterdb.model.ViewProductAttributeSelect">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <result column="def_code" jdbcType="VARCHAR" property="defCode" />
+    <result column="code" jdbcType="INTEGER" property="code" />
+    <result column="name" jdbcType="NVARCHAR" property="name" />
+  </resultMap>
+
+  <select id="findByDefindCode" resultMap="BaseResultMap">
+    SELECT def_code, code, name FROM view_product_attribute_select WHERE def_code = #{defCode}
+  </select>
+</mapper>

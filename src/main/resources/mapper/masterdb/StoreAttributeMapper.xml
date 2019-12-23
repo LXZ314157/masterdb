@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icicle.masterdb.dao.masterdb.StoreAttributeMapper">
+    <resultMap id="BaseResultMap" type="com.icicle.masterdb.model.StoreAttribute">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="store_no" jdbcType="INTEGER" property="storeNo"/>
+        <result column="attrib_def_id" jdbcType="INTEGER" property="attribDefId"/>
+        <result column="attrib_item_id" jdbcType="INTEGER" property="attribItemId"/>
+        <result column="store_attrib_value" jdbcType="NVARCHAR" property="storeAttribValue"/>
+    </resultMap>
+
+    <update id="updateStoreAttributeList" parameterType="java.util.List">
+        <foreach collection="list" separator=";" item="item">
+            UPDATE store_attribute set store_attrib_value = #{item.storeAttribValue},attrib_item_id=#{item.attribItemId}
+            WHERE store_no = #{item.storeNo} and attrib_def_id = #{item.attribDefId}
+        </foreach>
+    </update>
+
+    <select id="findByStoreNo" resultMap="BaseResultMap">
+        SELECT id,store_no,attrib_def_id,attrib_item_id,store_attrib_value
+        from store_attribute where store_no = #{storeNo}
+    </select>
+</mapper>

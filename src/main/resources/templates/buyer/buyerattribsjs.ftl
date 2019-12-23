@@ -1,0 +1,1 @@
+<script src="${base}/static/content/js/page/buyer/buyerattributes.js?v=20180831"/></script>

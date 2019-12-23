@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icicle.masterdb.dao.masterdb.DepartmentMatrixMapper">
+  <resultMap id="BaseResultMap" type="com.icicle.masterdb.model.DepartmentMatrix">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="department_id" jdbcType="VARCHAR" property="departmentId" />
+    <result column="principal_level1" jdbcType="VARCHAR" property="principalLevel1" />
+    <result column="principal_level2" jdbcType="VARCHAR" property="principalLevel2" />
+    <result column="chief" jdbcType="VARCHAR" property="chief" />
+    <result column="vice_president" jdbcType="VARCHAR" property="vicePresident" />
+    <result column="president" jdbcType="VARCHAR" property="president" />
+    <result column="hr_bp" jdbcType="VARCHAR" property="hrBp" />
+    <result column="member01" jdbcType="VARCHAR" property="member01" />
+    <result column="member02" jdbcType="VARCHAR" property="member02" />
+    <result column="member03" jdbcType="VARCHAR" property="member03" />
+    <result column="member04" jdbcType="VARCHAR" property="member04" />
+    <result column="member05" jdbcType="VARCHAR" property="member05" />
+    <result column="member06" jdbcType="VARCHAR" property="member06" />
+    <result column="member07" jdbcType="VARCHAR" property="member07" />
+    <result column="member08" jdbcType="VARCHAR" property="member08" />
+    <result column="member09" jdbcType="VARCHAR" property="member09" />
+    <result column="member10" jdbcType="VARCHAR" property="member10" />
+    <result column="creater" jdbcType="VARCHAR" property="creater" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="last_update_by" jdbcType="VARCHAR" property="lastUpdateBy" />
+    <result column="last_update_date" jdbcType="TIMESTAMP" property="lastUpdateDate" />
+  </resultMap>
+
+</mapper>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icicle.masterdb.dao.masterdb.MaterialMapper">
+    <resultMap id="BaseResultMap" type="com.icicle.masterdb.model.Material">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="material_code" jdbcType="VARCHAR" property="materialCode"/>
+        <result column="material_type" jdbcType="INTEGER" property="materialType"/>
+        <result column="material_name" jdbcType="NVARCHAR" property="materialName"/>
+        <result column="uom" jdbcType="VARCHAR" property="uom"/>
+        <result column="vendor_price" jdbcType="DECIMAL" property="vendorPrice"/>
+        <result column="unit_price" jdbcType="DECIMAL" property="unitPrice"/>
+        <result column="currency_code" jdbcType="VARCHAR" property="currencyCode"/>
+        <result column="material_desc" jdbcType="NVARCHAR" property="materialDesc"/>
+        <result column="cate_dl" jdbcType="CHAR" property="cateDl"/>
+        <result column="cate_zl" jdbcType="CHAR" property="cateZl"/>
+        <result column="cate_xl" jdbcType="CHAR" property="cateXl"/>
+        <result column="catalog_type" jdbcType="INTEGER" property="catalogType"/>
+        <result column="item_template_type" jdbcType="INTEGER" property="itemTemplateType"/>
+        <result column="status" jdbcType="BIT" property="status"/>
+        <result column="sync_status" jdbcType="INTEGER" property="syncStatus"/>
+        <result column="created_by" jdbcType="VARCHAR" property="createdBy"/>
+        <result column="creation_date" jdbcType="TIMESTAMP" property="creationDate"/>
+        <result column="last_updated_by" jdbcType="VARCHAR" property="lastUpdatedBy"/>
+        <result column="last_update_date" jdbcType="TIMESTAMP" property="lastUpdateDate"/>
+    </resultMap>
+
+    <update id="updateStatus">
+        update material set sync_status = 1,last_updated_date = getDate(),last_updated_by = #{param2} where material_code = #{param1}
+    </update>
+
+    <update id="updateSyncStatus">
+        update material set sync_status = 0,last_sync_date = getDate() where material_code in
+        <foreach open="(" separator="," close=")" collection="array" item="id">
+            #{id}
+        </foreach>
+    </update>
+
+    <select id="findByQueryCondition" parameterType="java.lang.String" resultType="com.icicle.masterdb.pojo.vo.MaterialVO">
+        select m.material_code as materialCode,m.material_name as materialName,m.cate_dl as cateDl,m.cate_zl as cateZl,m.cate_xl as cateXl,
+        m.material_type as materialType,m.uom,m.material_desc as materialDesc,m.vendor_price as vendorPrice,m.unit_price as unitPrice,m.currency_code as currencyName,
+        case m.sync_status when 0 then '已更新' when 1 then '有更新' when 2 then '新增' else '' end as syncStatus
+        from material m where 1=1
+        <if test="materialNameOrNo != null  and materialNameOrNo != '' "> and ( m.material_code like  '%'+#{materialNameOrNo}+'%' or m.material_name like  '%'+#{materialNameOrNo}+'%' ) </if>
+    </select>
+
+    <select id="getCatalogList" resultType="java.util.Map">
+      select catalog_no,catalog_level,catalog_desc from catalog
+    </select>
+
+    <select id="getMaterialTypeList" resultType="java.util.Map">
+      select material_type,material_type_desc from material_type
+    </select>
+
+    <select id="getCurrencyList" resultType="java.util.Map">
+      select currency_code,currency_name from currency
+    </select>
+
+</mapper>

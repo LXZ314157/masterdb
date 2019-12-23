@@ -1,0 +1,15 @@
+control-label {
+    text-align: right;
+    line-height: 34px;
+}
+.btn.btn-outline.dark.active, .btn.btn-outline.dark:active, .btn.btn-outline.dark:active:focus, .btn.btn-outline.dark:active:hover, .btn.btn-outline.dark:focus, .btn.btn-outline.dark:hover {
+     border-color: #32c5d2;
+     color: #FFF;
+     background-color: #6dc5d2;
+ }
+.btn{
+    border-color: #32c5d2;
+}
+#buyerlist_paginate{
+    text-align: right;
+}

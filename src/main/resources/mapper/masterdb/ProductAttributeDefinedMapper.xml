@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icicle.masterdb.dao.masterdb.ProductAttributeDefinedMapper">
+    <resultMap id="BaseResultMap" type="com.icicle.masterdb.model.ProductAttributeDefined">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="def_code" jdbcType="VARCHAR" property="defCode"/>
+        <result column="def_name" jdbcType="NVARCHAR" property="defName"/>
+        <result column="def_desc" jdbcType="NVARCHAR" property="defDesc"/>
+        <result column="def_type" jdbcType="VARCHAR" property="defType"/>
+        <result column="def_length" jdbcType="INTEGER" property="defLength"/>
+        <result column="has_item" jdbcType="INTEGER" property="hasItem"/>
+        <result column="status" jdbcType="BIT" property="status"/>
+        <result column="is_sync" jdbcType="BIT" property="isSync"/>
+        <result column="created_by" jdbcType="VARCHAR" property="createdBy"/>
+        <result column="creation_date" jdbcType="TIMESTAMP" property="creationDate"/>
+        <result column="last_updated_by" jdbcType="VARCHAR" property="lastUpdatedBy"/>
+        <result column="last_update_date" jdbcType="TIMESTAMP" property="lastUpdateDate"/>
+        <result column="select_table" jdbcType="VARCHAR" property="selectTable"/>
+        <result column="def_group" jdbcType="INTEGER" property="defGroup"/>
+        <result column="model_value" jdbcType="VARCHAR" property="modelValue"/>
+    </resultMap>
+
+    <select id="findAllAttributeDefied" resultMap="BaseResultMap">
+        SELECT id,def_code,def_name,def_desc,def_type,def_length,has_item,status,select_table,def_group
+        FROM dimension_attribute_defined where def_group= 1
+    </select>
+    <select id="findAllProductCategoryAttributeDefined" resultMap="BaseResultMap">
+        SELECT id,def_code,def_name,def_desc,def_type,model_value,def_length,has_item,status,is_sync,select_table,def_group
+        FROM product_extend_attribute_defined where status=1 and ( def_group= 2 or def_group= 0 )
+    </select>
+    <insert id="insertAll" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO dimension_attribute_defined
+           (def_code
+           ,def_name
+           ,def_desc
+           ,def_type
+           ,def_length
+           ,has_item
+           ,status
+           ,select_table
+           ,def_group
+           ,created_by
+           ,creation_date)
+     VALUES
+           (#{defCode},#{defName},#{defDesc},#{defType},#{defLength},#{hasItem},#{status},#{selectTable},1,#{createdBy},#{creationDate})
+    </insert>
+    <insert id="insertAllProductCategoryAttri" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO product_extend_attribute_defined
+           (def_code
+           ,def_name
+           ,def_desc
+           ,def_type
+           ,def_length
+           ,has_item
+           ,status
+           ,is_sync
+           ,select_table
+           ,def_group
+           ,model_value
+           ,created_by
+           ,creation_date)
+     VALUES
+           (#{defCode},#{defName},#{defDesc},#{defType},#{defLength},#{hasItem},#{status},#{isSync},#{selectTable},#{defGroup},#{modelValue},#{createdBy},#{creationDate})
+    </insert>
+
+    <select id="searchByAttributeId" resultMap="BaseResultMap">
+        SELECT id
+        ,def_code
+        ,def_type
+        ,def_length
+        FROM dimension_attribute_defined WHERE id IN
+        <foreach close=")" collection="list" index="index" item="item" open="(" separator=",">
+            #{item.attributeId}
+        </foreach>
+    </select>
+
+    <select id="searchByAttributeIds" resultMap="BaseResultMap">
+        SELECT id
+        ,def_code
+        ,def_type
+        ,def_length
+        FROM product_extend_attribute_defined WHERE id IN
+        <foreach close=")" collection="list" index="index" item="item" open="(" separator=",">
+            #{item.productAttributeDefineId}
+        </foreach>
+    </select>
+
+    <update id="updateDefindItem">
+        UPDATE product_extend_attribute_defined
+        <set>
+            <if test="defName!=null">def_name = #{defName},</if>
+            <if test="defDesc!=null">def_desc=#{defDesc},</if>
+            <if test="defType!=null">def_type = #{defType},</if>
+            <if test="defLength!=null">def_length =#{defLength},</if>
+            <if test="isSync!=null">is_sync =#{isSync},</if>
+            <if test="hasItem!=null">has_item =#{hasItem},</if>
+            <if test="status!=null">status = #{status},</if>
+            <if test="defGroup!=null">def_group = #{defGroup},</if>
+            <if test="modelValue!=null">model_value = #{modelValue},</if>
+        </set>
+        ,last_updated_by= #{lastUpdatedBy}
+        ,last_update_date= #{lastUpdateDate}
+        ,select_table=#{selectTable}
+        WHERE id=#{id}
+    </update>
+
+    <update id="updateDimensionAttributeDef">
+        UPDATE dimension_attribute_defined
+        <set>
+            <if test="defName!=null">def_name = #{defName},</if>
+            <if test="defDesc!=null">def_desc=#{defDesc},</if>
+            <if test="defType!=null">def_type = #{defType},</if>
+            <if test="defLength!=null">def_length =#{defLength},</if>
+            <if test="hasItem!=null">has_item =#{hasItem},</if>
+            <if test="status!=null">status = #{status},</if>
+            <if test="defGroup!=null">def_group = #{defGroup},</if>
+            <if test="modelValue!=null">model_value = #{modelValue},</if>
+        </set>
+        ,last_updated_by= #{lastUpdatedBy}
+        ,last_update_date= #{lastUpdateDate}
+        ,select_table=#{selectTable}
+        WHERE id=#{id}
+    </update>
+</mapper>

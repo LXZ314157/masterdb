@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icicle.masterdb.dao.imagesearch.AccountMapper">
+    <resultMap id="BaseResultMap" type="com.icicle.masterdb.model.Account">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="loginname" jdbcType="VARCHAR" property="loginname"/>
+        <result column="truename" jdbcType="NVARCHAR" property="truename"/>
+        <result column="domain_id" jdbcType="INTEGER" property="domainId"/>
+        <result column="manager" jdbcType="BIT" property="manager"/>
+    </resultMap>
+
+    <insert id="insertAccount" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO account(loginname, truename, domain_id, manager) VALUES(#{loginname}, #{truename}, #{domainId}, 0)
+    </insert>
+</mapper>

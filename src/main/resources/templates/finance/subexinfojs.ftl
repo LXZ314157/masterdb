@@ -1,0 +1,1 @@
+<script src="${base}/static/content/js/page/finance/subexinfo.js?v=20180124"/></script>

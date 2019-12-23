@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icicle.masterdb.dao.masterdb.StoreProductLineMapper">
+  <resultMap id="BaseResultMap" type="com.icicle.masterdb.model.StoreProductLine">
+    <id column="store_no" jdbcType="INTEGER" property="storeNo" />
+    <id column="product_line_no" jdbcType="INTEGER" property="productLineNo" />
+  </resultMap>
+
+  <select id="findProductLineByStoreNo" resultMap="BaseResultMap">
+    select * from store_product_line where store_no = #{storeNo}
+  </select>
+</mapper>

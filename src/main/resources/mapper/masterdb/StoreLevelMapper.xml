@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icicle.masterdb.dao.masterdb.StoreLevelMapper">
+    <resultMap id="BaseResultMap" type="com.icicle.masterdb.model.StoreLevel">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="store_level_id" jdbcType="INTEGER" property="storeLevelId"/>
+        <result column="store_level_name" jdbcType="VARCHAR" property="storeLevelName"/>
+        <result column="store_level_desc" jdbcType="VARCHAR" property="storeLevelDesc"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="created_by" jdbcType="VARCHAR" property="createdBy"/>
+        <result column="creation_date" jdbcType="TIMESTAMP" property="creationDate"/>
+        <result column="last_updated_by" jdbcType="VARCHAR" property="lastUpdatedBy"/>
+        <result column="last_update_date" jdbcType="TIMESTAMP" property="lastUpdateDate"/>
+    </resultMap>
+
+    <insert id="saveStoreLevel" useGeneratedKeys="true" keyProperty="storeLevelId">
+    INSERT INTO store_level(store_level_name,store_level_desc,status,created_by,creation_date,last_updated_by,last_update_date)
+    VALUES (#{storeLevelName},#{storeLevelDesc},#{status},#{createdBy},#{creationDate},#{lastUpdatedBy},#{lastUpdateDate});
+  </insert>
+    <select id="findValidLevel" resultMap="BaseResultMap">
+        select store_level_id,store_level_name,store_level_desc,status,created_by,creation_date,last_updated_by,last_update_date
+        from store_level where  status = 1
+    </select>
+</mapper>

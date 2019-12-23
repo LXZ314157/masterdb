@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icicle.masterdb.dao.masterdb.StoreAttribDefinedMapper">
+    <resultMap id="BaseResultMap" type="com.icicle.masterdb.model.StoreAttribDefined">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="store_attrib_def_id" jdbcType="INTEGER" property="storeAttribDefId"/>
+        <result column="store_attrib_def_code" jdbcType="VARCHAR" property="storeAttribDefCode"/>
+        <result column="store_attrib_def_name" jdbcType="VARCHAR" property="storeAttribDefName"/>
+        <result column="item_type" jdbcType="VARCHAR" property="itemType"/>
+        <result column="item_length" jdbcType="INTEGER" property="itemLength"/>
+        <result column="has_item" jdbcType="BIT" property="hasItem"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="define_order" jdbcType="INTEGER" property="defineOrder"/>
+        <result column="is_sycn" jdbcType="BIT" property="isSycn"/>
+        <result column="created_by" jdbcType="VARCHAR" property="createdBy"/>
+        <result column="creation_date" jdbcType="TIMESTAMP" property="creationDate"/>
+        <result column="last_updated_by" jdbcType="VARCHAR" property="lastUpdatedBy"/>
+        <result column="last_update_date" jdbcType="TIMESTAMP" property="lastUpdateDate"/>
+    </resultMap>
+    <insert id="insertStoreAttributeDef" useGeneratedKeys="true" keyProperty="storeAttribDefId">
+    insert INTO store_attrib_defined
+    (store_attrib_def_code,store_attrib_def_name,store_attrib_nature,item_type,item_length,has_item,status,created_by,creation_date,define_order,is_sycn)
+    VALUES
+    (#{storeAttribDefCode},#{storeAttribDefName},#{storeAttribNature},#{itemType},#{itemLength},#{hasItem},#{status},#{createdBy},#{creationDate},#{defineOrder},#{isSycn});
+  </insert>
+    <update id="updateStoreAttributeDef">
+        update store_attrib_defined set
+              store_attrib_def_name = #{storeAttribDefName},
+              item_type = #{itemType},
+              item_length = #{itemLength},
+              has_item = #{hasItem},
+              status = #{status},
+              define_order = #{defineOrder},
+              is_sycn = #{isSycn},
+              last_updated_by = #{lastUpdatedBy},
+              last_update_date = #{lastUpdateDate}
+        where store_attrib_def_id = #{storeAttribDefId}
+    </update>
+</mapper>

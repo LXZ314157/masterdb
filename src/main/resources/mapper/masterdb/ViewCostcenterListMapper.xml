@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icicle.masterdb.dao.masterdb.ViewCostcenterListMapper">
+  <resultMap id="BaseResultMap" type="com.icicle.masterdb.model.ViewCostcenterList">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <result column="costcenter_id" jdbcType="VARCHAR" property="costcenterId" />
+    <result column="lan_code" jdbcType="VARCHAR" property="lanCode" />
+    <result column="source_id" jdbcType="VARCHAR" property="sourceId" />
+    <result column="cost_center_name" jdbcType="NVARCHAR" property="costCenterName" />
+    <result column="department_id" jdbcType="VARCHAR" property="departmentId" />
+    <result column="costcenter_manager" jdbcType="VARCHAR" property="costcenterManager" />
+    <result column="costcenter_chief" jdbcType="VARCHAR" property="costcenterChief" />
+    <result column="costcenter_vp" jdbcType="VARCHAR" property="costcenterVp" />
+    <result column="costcenter_desc" jdbcType="VARCHAR" property="costcenterDesc" />
+    <result column="costcenter_state" jdbcType="VARCHAR" property="costcenterState" />
+    <result column="effective_date" jdbcType="DATE" property="effectiveDate" />
+  </resultMap>
+
+    <select id="findCostcenterInfoByCostcenterId" parameterType="java.lang.String" resultType="com.icicle.masterdb.pojo.vo.CostcenterVO">
+        select distinct c.costcenter_id costcenterId,l.lan_name lanCode,c.source_id sourceId,c.cost_center_name costCenterName,d.department_name departmentId,
+        s1.staff_name_local costcenterManager,s2.staff_name_local costcenterChief,s3.staff_name_local costcenterVp,c.costcenter_desc costcenterDesc,
+        case c.costcenter_state when '1' then '有效' when '0' then '无效' else '' end costcenterState,c.effective_date effectiveDate
+        from costcenter c
+        LEFT JOIN language l on c.lan_code=l.lan_code
+        LEFT JOIN department d on c.department_id=d.department_id
+        LEFT JOIN staff s1 on c.costcenter_manager=s1.staff_num
+        LEFT JOIN staff s2 on c.costcenter_chief=s2.staff_num
+        LEFT JOIN staff s3 on c.costcenter_vp=s3.staff_num
+        where c.costcenter_id=#{costcenterId} and c.lan_code=#{lanCode};
+    </select>
+
+    <select id="findByQueryCondition" parameterType="java.lang.String" resultType="com.icicle.masterdb.pojo.vo.CostcenterVO">
+        select c.costcenter_id costcenterId,l.lan_name lanCode,c.cost_center_name costCenterName,
+        ISNULL(s.staff_name_local, '') costcenterManager,
+        ISNULL(d.department_name, '') departmentId,
+        ISNULL(s1.staff_name_local, '') costcenterChief,
+        ISNULL(s2.staff_name_local, '') costcenterVp,
+        c.costcenter_desc costcenterDesc
+        from costcenter c
+        LEFT JOIN [language] l on c.lan_code=l.lan_code
+        LEFT JOIN (select staff_num,staff_name_local from staff) s
+        on c.costcenter_manager=s.staff_num
+        LEFT JOIN (select department_id,department_name from department) d
+        on c.department_id = d.department_id
+        LEFT JOIN (select staff_num,staff_name_local from staff) s1
+        on c.costcenter_chief=s1.staff_num
+        LEFT JOIN (select staff_num,staff_name_local from staff) s2
+        on c.costcenter_vp=s2.staff_num where 1=1
+        <if test="costcenterIdOrName != null  and costcenterIdOrName != '' "> and ( c.costcenter_id like  '%'+#{costcenterIdOrName}+'%' or c.cost_center_name like  '%'+#{costcenterIdOrName}+'%' ) </if>
+        <if test="lanCode != null  and lanCode != '' "> and c.lan_code = #{lanCode}</if>
+    </select>
+</mapper>
+

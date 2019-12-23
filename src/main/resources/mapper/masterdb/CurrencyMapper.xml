@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icicle.masterdb.dao.masterdb.CurrencyMapper">
+    <resultMap id="BaseResultMap" type="com.icicle.masterdb.model.Currency">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="currency_code" jdbcType="VARCHAR" property="currencyCode"/>
+        <result column="currency_name" jdbcType="NVARCHAR" property="currencyName"/>
+        <result column="currency_desc" jdbcType="NVARCHAR" property="currencyDesc"/>
+        <result column="currency_precision" jdbcType="SMALLINT" property="currencyPrecision"/>
+        <result column="status" jdbcType="BIT" property="status"/>
+        <result column="created_by" jdbcType="VARCHAR" property="createdBy"/>
+        <result column="creation_date" jdbcType="TIMESTAMP" property="creationDate"/>
+        <result column="last_updated_by" jdbcType="VARCHAR" property="lastUpdatedBy"/>
+        <result column="last_update_date" jdbcType="TIMESTAMP" property="lastUpdateDate"/>
+        <result column="language" jdbcType="VARCHAR" property="language"/>
+    </resultMap>
+    <insert id="saveCurrency" useGeneratedKeys="true" keyProperty="id">
+    INSERT INTO
+     currency(currency_code,currency_name,currency_desc,currency_precision,status,created_by,creation_date,last_updated_by,last_update_date,language)
+     VALUES(#{currencyCode},#{currencyName},#{currencyDesc},#{currencyPrecision},#{status},#{createdBy},#{creationDate},#{lastUpdatedBy},#{lastUpdateDate},#{language});
+  </insert>
+
+    <update id="updateCurrency">
+        UPDATE currency
+        <set>
+            <if test="currencyName!=null">currency_name=#{currencyName},</if>
+            <if test="currencyDesc!=null">currency_desc =#{currencyDesc},</if>
+            <if test="currencyPrecision!=null">currency_precision =#{currencyPrecision},</if>
+            <if test="status!=null">status=#{status},</if>
+            <if test="language!=null">language=#{language},</if>
+        </set>
+        ,last_updated_by=#{lastUpdatedBy}
+        ,last_update_date =#{lastUpdateDate}
+        WHERE id=#{id}
+    </update>
+</mapper>

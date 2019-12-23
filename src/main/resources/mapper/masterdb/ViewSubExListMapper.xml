@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icicle.masterdb.dao.masterdb.ViewSubExListMapper">
+  <resultMap id="BaseResultMap" type="com.icicle.masterdb.model.ViewSubExList">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <result column="sub_excategory_id" jdbcType="VARCHAR" property="subExcategoryId" />
+    <result column="lan_name" jdbcType="VARCHAR" property="lanName" />
+    <result column="source_id" jdbcType="VARCHAR" property="sourceId" />
+    <result column="sub_excategory_name" jdbcType="NVARCHAR" property="subExcategoryName" />
+    <result column="extype" jdbcType="INTEGER" property="extype" />
+    <result column="costcenter_id" jdbcType="VARCHAR" property="costcenterId" />
+    <result column="sub_excategory_desc" jdbcType="NVARCHAR" property="subExcategoryDesc" />
+    <result column="effective_date" jdbcType="TIMESTAMP" property="effectiveDate" />
+  </resultMap>
+</mapper>

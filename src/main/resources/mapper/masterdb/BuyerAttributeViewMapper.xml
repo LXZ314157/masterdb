@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icicle.masterdb.dao.masterdb.BuyerAttributeViewMapper">
+  <resultMap id="BaseResultMap" type="com.icicle.masterdb.model.BuyerAttributeView">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <result column="id" jdbcType="INTEGER" property="id" />
+    <result column="buyer_attrib_def_id" jdbcType="INTEGER" property="buyerAttribDefId" />
+    <result column="buyer_attrib_group_id" jdbcType="INTEGER" property="buyerAttribGroupId" />
+    <result column="buyer_attrib_group_name" jdbcType="VARCHAR" property="buyerAttribGroupName" />
+    <result column="buyer_attrib_def_name" jdbcType="VARCHAR" property="buyerAttribDefName" />
+  </resultMap>
+</mapper>

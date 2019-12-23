@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icicle.masterdb.dao.imagesearch.UserGroupMapper">
+  <resultMap id="BaseResultMap" type="com.icicle.masterdb.model.UserGroup">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="group_id" jdbcType="INTEGER" property="groupId" />
+  </resultMap>
+
+  <insert id="insertUserGroup">
+    INSERT INTO user_group(user_id, group_id) VALUES(#{userId}, #{groupId})
+  </insert>
+</mapper>

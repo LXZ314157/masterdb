@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icicle.masterdb.dao.masterdb.ProductAttributeMapper">
+    <resultMap id="BaseResultMap" type="com.icicle.masterdb.model.ProductAttribute">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="product_code" jdbcType="VARCHAR" property="productCode"/>
+        <result column="attr_code" jdbcType="VARCHAR" property="attrCode"/>
+        <result column="attr_value" jdbcType="NVARCHAR" property="attrValue"/>
+    </resultMap>
+
+    <select id="findAttributeByCode" resultMap="BaseResultMap">
+    select id,product_code,attr_code,attr_value
+    from product_attribute
+    where product_code = #{productCode}
+  </select>
+    <update id="updateAttributeList" parameterType="java.util.List">
+        <foreach collection="list" item="item" separator=";">
+            update product_attribute
+            set attr_value = #{item.attrValue}
+            where product_code = #{item.productCode}
+            and attr_code = #{item.attrCode}
+        </foreach>
+    </update>
+
+    <select id="findExistCodeList" resultType="java.lang.String" parameterType="java.util.List">
+        select product_code from product_dimension_merchandising where product_code IN
+        <foreach collection="list" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </select>
+</mapper>

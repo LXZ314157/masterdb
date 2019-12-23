@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icicle.masterdb.dao.masterdb.BuyerAttribGroupMapper">
+  <resultMap id="BaseResultMap" type="com.icicle.masterdb.model.BuyerAttribGroup">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="buyer_attrib_group_id" jdbcType="INTEGER" property="buyerAttribGroupId" />
+    <result column="buyer_attrib_group_code" jdbcType="VARCHAR" property="buyerAttribGroupCode" />
+    <result column="buyer_attrib_group_name" jdbcType="VARCHAR" property="buyerAttribGroupName" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="created_by" jdbcType="VARCHAR" property="createdBy" />
+    <result column="creation_date" jdbcType="TIMESTAMP" property="creationDate" />
+    <result column="last_updated_by" jdbcType="VARCHAR" property="lastUpdatedBy" />
+    <result column="last_update_date" jdbcType="TIMESTAMP" property="lastUpdateDate" />
+  </resultMap>
+</mapper>

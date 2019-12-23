@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icicle.masterdb.dao.imagesearch.DomainMapper">
+  <resultMap id="BaseResultMap" type="com.icicle.masterdb.model.Domain">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="domain_name" jdbcType="VARCHAR" property="domainName" />
+    <result column="domain_host" jdbcType="VARCHAR" property="domainHost" />
+    <result column="domain_port" jdbcType="SMALLINT" property="domainPort" />
+    <result column="domain_desc" jdbcType="NVARCHAR" property="domainDesc" />
+  </resultMap>
+</mapper>

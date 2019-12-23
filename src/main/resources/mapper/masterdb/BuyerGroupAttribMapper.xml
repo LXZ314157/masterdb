@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icicle.masterdb.dao.masterdb.BuyerGroupAttribMapper">
+  <resultMap id="BaseResultMap" type="com.icicle.masterdb.model.BuyerGroupAttrib">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="buyer_attrib_group_id" jdbcType="INTEGER" property="buyerAttribGroupId" />
+    <result column="buyer_attrib_def_id" jdbcType="INTEGER" property="buyerAttribDefId" />
+    <result column="status" jdbcType="BIT" property="status" />
+    <result column="created_by" jdbcType="VARCHAR" property="createdBy" />
+    <result column="creation_date" jdbcType="TIMESTAMP" property="creationDate" />
+    <result column="last_updated_by" jdbcType="VARCHAR" property="lastUpdatedBy" />
+    <result column="last_update_date" jdbcType="TIMESTAMP" property="lastUpdateDate" />
+  </resultMap>
+
+  <update id="updateBuyerGroup" parameterType="java.util.List">
+    <foreach collection="list" item="item" separator=";">
+      update buyer_group_attrib
+      <set>
+        <if test="item.buyerAttribGroupId!=null">buyer_attrib_group_id = #{item.buyerAttribGroupId},</if>
+        <if test="item.buyerAttribDefId!=null">buyer_attrib_def_id = #{item.buyerAttribDefId},</if>
+        status=#{item.status},
+        last_updated_by=#{item.lastUpdatedBy},
+        last_update_date=#{item.lastUpdateDate}
+      </set>
+      where buyer_attrib_group_id=#{item.buyerAttribGroupId} AND buyer_attrib_def_id= #{item.buyerAttribDefId}
+    </foreach>
+  </update>
+</mapper>

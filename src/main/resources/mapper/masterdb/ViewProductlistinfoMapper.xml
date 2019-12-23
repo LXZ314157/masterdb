@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icicle.masterdb.dao.masterdb.ViewProductlistinfoMapper">
+  <resultMap id="BaseResultMap" type="com.icicle.masterdb.model.ViewProductlistinfo">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <result column="product_code" jdbcType="VARCHAR" property="productCode" />
+    <result column="product_name" jdbcType="NVARCHAR" property="productName" />
+    <result column="product_type_id" jdbcType="INTEGER" property="productTypeId" />
+    <result column="standard_cost" jdbcType="DECIMAL" property="standardCost" />
+    <result column="status" jdbcType="BIT" property="status" />
+    <result column="nature_season" jdbcType="VARCHAR" property="natureSeason" />
+    <result column="material_no" jdbcType="VARCHAR" property="materialNo" />
+    <result column="material_name" jdbcType="NVARCHAR" property="materialName" />
+    <result column="color_card_no" jdbcType="VARCHAR" property="colorCardNo" />
+    <result column="color_card_name" jdbcType="NVARCHAR" property="colorCardName" />
+    <result column="color_name" jdbcType="NVARCHAR" property="colorName" />
+    <result column="color_name2" jdbcType="NVARCHAR" property="colorName2" />
+    <result column="unit_price" jdbcType="DECIMAL" property="unitPrice" />
+    <result column="last_updated_by" jdbcType="VARCHAR" property="lastUpdatedBy" />
+    <result column="sales_date" jdbcType="VARCHAR" property="salesDate" />
+    <result column="creation_date" jdbcType="TIMESTAMP" property="creationDate" />
+    <result column="created_by" jdbcType="VARCHAR" property="createdBy" />
+    <result column="last_update_date" jdbcType="TIMESTAMP" property="lastUpdateDate" />
+    <result column="sync_status" jdbcType="INTEGER" property="syncStatus" />
+  </resultMap>
+</mapper>

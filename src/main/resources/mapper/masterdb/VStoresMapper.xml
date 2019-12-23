@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icicle.masterdb.dao.masterdb.VStoresMapper">
+    <resultMap id="BaseResultMap" type="com.icicle.masterdb.model.VStores">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <result column="BuyerLevelid" jdbcType="INTEGER" property="buyerlevelid"/>
+        <result column="buyername" jdbcType="NVARCHAR" property="buyername"/>
+        <result column="buyershortname" jdbcType="NVARCHAR" property="buyershortname"/>
+        <result column="BuyerState" jdbcType="INTEGER" property="buyerstate"/>
+        <result column="cityid" jdbcType="INTEGER" property="cityid"/>
+        <result column="cityname" jdbcType="NVARCHAR" property="cityname"/>
+        <result column="citylevel" jdbcType="INTEGER" property="citylevel"/>
+        <result column="citylevelname" jdbcType="VARCHAR" property="citylevelname"/>
+        <result column="citycode" jdbcType="VARCHAR" property="citycode"/>
+        <result column="Zonename" jdbcType="VARCHAR" property="zonename"/>
+        <result column="storeunit" jdbcType="INTEGER" property="storeunit"/>
+        <result column="AreaCode" jdbcType="VARCHAR" property="areacode"/>
+        <result column="AreaName" jdbcType="VARCHAR" property="areaname"/>
+        <result column="levelname" jdbcType="VARCHAR" property="levelname"/>
+        <result column="storetypename" jdbcType="VARCHAR" property="storetypename"/>
+        <result column="storeid" jdbcType="VARCHAR" property="storeid"/>
+        <result column="storeNO" jdbcType="INTEGER" property="storeno"/>
+        <result column="storename" jdbcType="VARCHAR" property="storename"/>
+        <result column="shortname" jdbcType="VARCHAR" property="shortname"/>
+        <result column="storespell" jdbcType="VARCHAR" property="storespell"/>
+        <result column="storecity" jdbcType="INTEGER" property="storecity"/>
+        <result column="contact" jdbcType="VARCHAR" property="contact"/>
+        <result column="storeaddress" jdbcType="NVARCHAR" property="storeaddress"/>
+        <result column="phone" jdbcType="VARCHAR" property="phone"/>
+        <result column="mobile" jdbcType="VARCHAR" property="mobile"/>
+        <result column="fax" jdbcType="VARCHAR" property="fax"/>
+        <result column="storelevel" jdbcType="INTEGER" property="storelevel"/>
+        <result column="Buyerid" jdbcType="VARCHAR" property="buyerid"/>
+        <result column="createtime" jdbcType="TIMESTAMP" property="createtime"/>
+        <result column="creater" jdbcType="VARCHAR" property="creater"/>
+        <result column="lastediter" jdbcType="VARCHAR" property="lastediter"/>
+        <result column="lastedittime" jdbcType="TIMESTAMP" property="lastedittime"/>
+        <result column="storestate" jdbcType="INTEGER" property="storestate"/>
+        <result column="starttime" jdbcType="TIMESTAMP" property="starttime"/>
+        <result column="endtime" jdbcType="TIMESTAMP" property="endtime"/>
+        <result column="ContractPeriod" jdbcType="INTEGER" property="contractperiod"/>
+        <result column="storerent" jdbcType="NVARCHAR" property="storerent"/>
+        <result column="royaltyrate" jdbcType="NVARCHAR" property="royaltyrate"/>
+        <result column="storetypeid" jdbcType="INTEGER" property="storetypeid"/>
+        <result column="zoneid" jdbcType="INTEGER" property="zoneid"/>
+        <result column="Expr1" jdbcType="INTEGER" property="expr1"/>
+        <result column="ProDeptId" jdbcType="INTEGER" property="prodeptid"/>
+        <result column="post" jdbcType="NVARCHAR" property="post"/>
+        <result column="email" jdbcType="VARCHAR" property="email"/>
+        <result column="storearea" jdbcType="DECIMAL" property="storearea"/>
+        <result column="remark" jdbcType="NVARCHAR" property="remark"/>
+        <result column="store_ownership_name" jdbcType="VARCHAR" property="storeOwnershipName"/>
+        <result column="store_ownership_id" jdbcType="INTEGER" property="storeOwnershipId"/>
+        <result column="store_class_name" jdbcType="VARCHAR" property="storeClassName"/>
+        <result column="store_class_id" jdbcType="INTEGER" property="storeClassId"/>
+        <result column="store_category_name" jdbcType="VARCHAR" property="storeCategoryName"/>
+        <result column="store_category_id" jdbcType="INTEGER" property="storeCategoryId"/>
+        <result column="logo_version_name" jdbcType="VARCHAR" property="logoVersionName"/>
+        <result column="logo_version_id" jdbcType="INTEGER" property="logoVersionId"/>
+        <result column="mall_type_name" jdbcType="VARCHAR" property="mallTypeName"/>
+        <result column="mall_type_id" jdbcType="INTEGER" property="mallTypeId"/>
+        <result column="store_visualize_version_name" jdbcType="VARCHAR" property="storeVisualizeVersionName"/>
+        <result column="store_visualize_version_id" jdbcType="INTEGER" property="storeVisualizeVersionId"/>
+        <result column="manage_center_name" jdbcType="VARCHAR" property="manageCenterName"/>
+        <result column="manage_center_id" jdbcType="INTEGER" property="manageCenterId"/>
+        <result column="company_name" jdbcType="VARCHAR" property="companyName"/>
+        <result column="company_id" jdbcType="VARCHAR" property="companyId"/>
+        <result column="trim_visualize_name" jdbcType="VARCHAR" property="trimVisualizeName"/>
+        <result column="trim_visualize_id" jdbcType="VARCHAR" property="trimVisualizeId"/>
+        <result column="resp_center_name" jdbcType="VARCHAR" property="respCenterName"/>
+        <result column="resp_center_id" jdbcType="VARCHAR" property="respCenterId"/>
+        <result column="cost_center_name" jdbcType="VARCHAR" property="costCenterName"/>
+        <result column="cost_center_id" jdbcType="VARCHAR" property="costCenterId"/>
+        <result column="sub_zone_name" jdbcType="VARCHAR" property="subZoneName"/>
+        <result column="sub_zone_id" jdbcType="INTEGER" property="subZoneId"/>
+        <result column="country_name" jdbcType="VARCHAR" property="countryName"/>
+        <result column="country_id" jdbcType="INTEGER" property="countryId"/>
+        <result column="province_name" jdbcType="VARCHAR" property="provinceName"/>
+        <result column="province_id" jdbcType="INTEGER" property="provinceId"/>
+        <result column="floor" jdbcType="VARCHAR" property="floor"/>
+        <result column="last_trim_date" jdbcType="VARCHAR" property="lastTrimDate"/>
+        <result column="compare_store_id" jdbcType="VARCHAR" property="compareStoreId"/>
+        <result column="store_manage_model_name" jdbcType="VARCHAR" property="storeManageModelName"/>
+        <result column="store_manage_mode" jdbcType="VARCHAR" property="storeManageMode"/>
+        <result column="country_code" jdbcType="VARCHAR" property="countryCode"/>
+    </resultMap>
+
+    <select id="findStoreInfo" resultMap="BaseResultMap">
+        SELECT vs.*,c.country_code FROM v_Stores_v2 vs left join country c on vs.country_id=c.country_id where vs.storeid = #{storeid};
+    </select>
+
+
+</mapper>

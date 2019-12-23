@@ -1,0 +1,894 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icicle.masterdb.dao.masterdb.ProductMapper">
+    <resultMap id="BaseResultMap" type="com.icicle.masterdb.model.Product">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="product_code" jdbcType="VARCHAR" property="productCode"/>
+        <result column="product_name" jdbcType="NVARCHAR" property="productName"/>
+        <result column="uom" jdbcType="VARCHAR" property="uom"/>
+        <result column="unit_price" jdbcType="DECIMAL" property="unitPrice"/>
+        <result column="standard_cost" jdbcType="DECIMAL" property="standardCost"/>
+        <result column="cate_dl" jdbcType="VARCHAR" property="cateDl"/>
+        <result column="cate_zl" jdbcType="VARCHAR" property="cateZl"/>
+        <result column="cate_xl" jdbcType="VARCHAR" property="cateXl"/>
+        <result column="brand" jdbcType="VARCHAR" property="brand"/>
+        <result column="product_desc" jdbcType="NVARCHAR" property="productDesc"/>
+        <result column="status" jdbcType="BIT" property="status"/>
+        <result column="sync_status" jdbcType="INTEGER" property="syncStatus"/>
+        <result column="created_by" jdbcType="VARCHAR" property="createdBy"/>
+        <result column="product_category_code" jdbcType="VARCHAR" property="productCategoryCode"/>
+        <result column="creation_date" jdbcType="TIMESTAMP" property="creationDate"/>
+        <result column="last_updated_by" jdbcType="VARCHAR" property="lastUpdatedBy"/>
+        <result column="last_update_date" jdbcType="TIMESTAMP" property="lastUpdateDate"/>
+        <result column="sync_record" jdbcType="BIT" property="syncRecord"/>
+    </resultMap>
+    <update id="updateSynProduct">
+        update product set sync_status = 0,sync_record=1 ,last_updated_by=#{param1},last_update_date = #{param2} where
+        product_code in
+        <foreach open="(" separator="," close=")" collection="products" item="code">
+            #{code}
+        </foreach>
+    </update>
+
+    <update id="updateEditProduct" parameterType="java.util.List">
+        update product
+        <set>
+            <if test="cateDl!=null">cate_dl = #{cateDl},</if>
+            <if test="cateZl!=null">cate_zl = #{cateZl},</if>
+            <if test="cateXl!=null">cate_xl = #{cateXl},</if>
+            sync_status = 1,last_updated_by=#{lastUpdatedBy},last_update_date = #{lastUpdateDate}
+        </set>
+        where product_code=#{productCode}
+    </update>
+
+    <select id="selectProductCode" parameterType="java.util.List" resultType="java.lang.String">
+        SELECT product_code FROM product WHERE product_code IN
+        <foreach close=")" collection="list" index="index" item="item" open="(" separator=",">
+            #{item.productCode}
+        </foreach>
+    </select>
+
+    <select id="exictProductCode" parameterType="java.util.List" resultType="java.lang.String">
+        SELECT product_code FROM product WHERE product_code IN
+        <foreach close=")" collection="list" index="index" item="item" open="(" separator=",">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="findLegalProductCode" parameterType="java.util.List" resultType="java.lang.String">
+        SELECT product_code FROM product WHERE product_code IN
+        <foreach close=")" collection="list" index="index" item="item" open="(" separator=",">
+            #{item}
+        </foreach>
+    </select>
+
+
+    <select id="selectProduct" resultMap="BaseResultMap">
+        SELECT product_code FROM product WHERE product_code =#{productCode};
+    </select>
+    <update id="updateProductPart" parameterType="java.util.List">
+        <foreach collection="list" item="item" separator=";">
+            UPDATE product
+            <set>
+                <if test="item.productName!=null and item.productName!=''">product_name = #{item.productName},</if>
+                <if test="item.uom!=null and item.uom!='' ">uom =#{item.uom},</if>
+                <if test="item.unitPrice!= null">unit_price =#{item.unitPrice},</if>
+                <if test="item.standardCost!=null">standard_cost =#{item.standardCost},</if>
+                <if test="item.cateDl!=null and item.cateDl!=''">cate_dl = #{item.cateDl},</if>
+                <if test="item.cateZl!=null and item.cateZl!=''">cate_zl = #{item.cateZl},</if>
+                <if test="item.cateXl!=null and item.cateXl!=''">cate_xl = #{item.cateXl},</if>
+                <if test="item.categoryLevel1!=null and item.categoryLevel1!=''">category_level_1 = #{item.categoryLevel1},</if>
+                <if test="item.categoryLevel2!=null and item.categoryLevel2!=''">category_level_2 = #{item.categoryLevel2},</if>
+                <if test="item.productLineId!=null and item.productLineId!='' and item.productLineId!=0">product_line = #{item.productLineId},</if>
+                <if test="item.brand!=null and item.brand!=''">brand= #{item.brand},</if>
+                <if test="item.productDesc!=null and item.productDesc!=''">product_desc = #{item.productDesc},</if>
+                <if test="item.saleRate!=null">sale_rate = #{item.saleRate},</if>
+                status = #{item.status},
+                sync_status =1,
+                last_updated_by =#{item.lastUpdatedBy},
+                last_update_date = #{item.lastUpdateDate}
+            </set>
+            WHERE product_code= #{item.productCode}
+        </foreach>
+    </update>
+
+    <update id="updateDesc" parameterType="java.util.List">
+        <foreach collection="list" item="item" separator=";">
+            UPDATE product
+            <set>
+                product_desc =#{item.descs}
+            </set>
+            WHERE product_code= #{item.productCode}
+        </foreach>
+    </update>
+
+    <update id="updateDescOne">
+            UPDATE product
+            set last_updated_by =#{param3},last_update_date = #{param4} ,product_desc =#{param2} WHERE product_code= #{param1}
+    </update>
+
+    <insert id="insertProductAll" parameterType="java.util.List" >
+        INSERT INTO product
+        (product_code
+        ,product_name
+        ,uom
+        ,unit_price
+        ,standard_cost
+        ,cate_dl
+        ,cate_zl
+        ,cate_xl
+        ,category_level_1
+        ,category_level_2
+        ,brand
+        ,product_desc
+        ,status
+        ,sync_status
+        ,created_by
+        ,creation_date
+        ,last_updated_by
+        ,last_update_date
+        ,sync_record
+        ,product_category_code
+        ,product_line
+        ,sale_rate
+        )
+        VALUES
+        <foreach collection="list" item="item" separator="," index="index">
+            (#{item.productCode}
+            ,#{item.productName}
+            ,#{item.uom}
+            ,#{item.unitPrice}
+            ,#{item.standardCost}
+            ,#{item.cateDl}
+            ,#{item.cateZl}
+            ,#{item.cateXl}
+            ,#{item.categoryLevel1}
+            ,#{item.categoryLevel2}
+            ,#{item.brand}
+            ,#{item.productDesc}
+            ,#{item.status}
+            ,#{item.syncStatus}
+            ,#{item.createdBy}
+            ,#{item.creationDate}
+            ,#{item.createdBy}
+            ,#{item.creationDate}
+            ,#{item.syncRecord}
+            ,'P04'
+            ,#{item.productLineId}
+            ,#{item.saleRate}
+            )
+        </foreach>
+    </insert>
+
+    <update id="updatePrimarykey" >
+        UPDATE product
+        <set>
+            <if test="product_name != null  and product_name != '' ">product_name = #{product_name},</if>
+            <if test="uom != null  and uom != '' ">uom = #{uom},</if>
+            <if test="cate_dl != null  and cate_dl != '' ">category_level_1 = #{cate_dl},</if>
+            <if test="cate_zl != null  and cate_zl != '' ">category_level_2 = #{cate_zl},</if>
+            <if test="cate_xl != null  and cate_xl != '' ">category_level_3 = #{cate_xl},</if>
+            <if test="standard_cost != null">standard_cost = #{standard_cost},</if>
+            <if test="brand != null  and brand != '' ">brand = #{brand},</if>
+            <if test="status != null ">status = #{status},</if>
+            <if test="unit_price != null">unit_price = #{unit_price},</if>
+            <if test="security_code != null  and security_code != '' ">security_code = #{security_code},</if>
+            <if test="purchase_rate != null">purchase_rate = #{purchase_rate},</if>
+            <if test="sale_rate != null">sale_rate = #{sale_rate},</if>
+            <if test="sync_record != null  and sync_record != '' ">sync_record = #{sync_record},</if>
+            last_update_date = GETDATE(),
+            last_updated_by=#{created_by}
+        </set>
+        WHERE product_code= #{product_code}
+    </update>
+    <delete id="deleteUnSycn" parameterType="java.lang.String">
+          DELETE FROM dbo.product WHERE product_code=#{productCode}
+    </delete>
+
+    <select id="selectProductId" resultType="java.lang.String">
+        select product_id from product where product_code = #{product_code};
+    </select>
+
+    <select id="getAttributeDefinedList" resultType="java.lang.String" parameterType="java.lang.String">
+      SELECT NAME FROM SYSCOLUMNS WHERE ID=OBJECT_ID(#{productCategoryCode})
+    </select>
+
+    <select id="getExtendTableValue" resultType="java.util.Map">
+      select * from ${productCategoryCode} where product_code = #{productCode};
+    </select>
+
+    <select id="getExtendAttrCode" parameterType="java.util.List" resultType="com.icicle.masterdb.pojo.vo.ProductAttrDefCodeVO">
+
+        SELECT
+        pead.def_code defCode,
+        peai.code code,
+        peai.name name
+        FROM
+        product_extend_attribute_item peai
+        LEFT JOIN product_extend_attribute_defined pead ON peai.def_id = pead.id
+        WHERE
+        pead.def_code IN
+        <foreach close=")" collection="list" index="index" item="item" open="(" separator=",">
+            #{item}
+        </foreach>
+        and pead.has_item=1
+
+    </select>
+
+    <select id="selectWorkGroup" parameterType="java.lang.String" resultType="java.lang.String">
+      select item_value from select_work_group where item_key=#{workGroup};
+    </select>
+
+    <select id="getViewSelectTable" parameterType="java.lang.String" resultType="java.util.Map">
+      select id,item_key itemKey,item_value itemValue from ${tableName}
+    </select>
+
+    <select id="selectTableValues" parameterType="java.lang.String" resultType="java.util.Map">
+        select id,item_key itemKey,item_value itemValue,table_name tableName from view_select_item
+    </select>
+
+    <select id="selectItemkey" resultType="java.lang.String">
+      select item_key from ${tableName} where id= #{id};
+    </select>
+
+    <select id="selectProductDzl" resultType="java.util.Map">
+        SELECT
+            psc.product_sub_category_code,
+            psc.product_sub_category_name,
+            pc.category_name,
+            psc.category_code
+        FROM
+            product_sub_category psc
+        LEFT JOIN product_category pc on psc.category_code=pc.category_key
+        where lan_code='zhs'
+    </select>
+
+    <select id="getPrimarykeyAndCode" resultType="java.util.Map">
+      select product_code,product_id from product;
+    </select>
+
+
+    <insert id="inserMaterialIinfo" parameterType="java.util.List">
+        insert into product_material_contrain
+        ( product_id,store_class,store_type_id)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            #{item.product_id},
+            #{item.store_class},
+            #{item.store_type_id}
+            )
+        </foreach>
+    </insert>
+
+    <select id="selectProductIdCount" parameterType="java.lang.String" resultType="java.lang.Integer">
+      select count(1) from product_material_contrain where product_id=#{productId};
+    </select>
+
+    <delete id="deleteProductMaterialContrain">
+        delete from product_material_contrain where product_id=#{productId};
+    </delete>
+
+    <select id="getProductId" parameterType="java.lang.String" resultType="java.lang.String">
+      select product_id from product where product_code=#{productCode};
+    </select>
+
+    <select id="getProductSubCategoryName" parameterType="java.lang.String" resultType="java.lang.String">
+      select product_sub_category_name from product_sub_category where product_sub_category_code=#{bookFourthCategory} and lan_code='zhs'
+    </select>
+
+
+    <select id="findBaseProductValue" resultType="java.util.Map">
+        select product_code,standard_cost,category_level_1 cate_zl,category_level_2 cate_xl,product_desc,brand,status,unit_price,
+        sync_status,product_name,uom from product where product_code in
+        <foreach collection="list" index="index" item="item"   open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="selectBaseProductCodes" resultType="java.lang.String">
+        select  product_code from product;
+    </select>
+
+    <select id="selectExtendCodes" parameterType="java.lang.String" resultType="java.lang.String">
+        select product_code from ${productCategoryCode};
+    </select>
+
+    <select id="selectBaseProductCodesAndIds" resultType="java.util.Map">
+        select product_code,product_id from product
+    </select>
+
+
+    <insert id="batchInsertPrimarykey" parameterType="java.util.List">
+        insert into product
+        (product_code,product_name,uom,category_level_1,category_level_2,standard_cost,brand,status,product_line,sync_status,unit_price,product_desc,created_by,last_updated_by,creation_date,last_update_date,sync_record,product_category_code,sale_rate)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.product_code},#{item.product_name},#{item.uom},#{item.cate_zl},#{item.cate_xl},#{item.standard_cost},#{item.brand},#{item.status},#{item.product_line},'2',
+            #{item.unit_price},'',#{item.created_by},#{item.last_updated_by},GETDATE(),GETDATE(),'0',#{item.product_category_code},#{item.sale_tax_rate})
+        </foreach>
+    </insert>
+
+
+    <update id="batchUpdatePrimarykey" parameterType="java.util.List">
+        <foreach collection="list" separator=";" item="item">
+            update product
+            <set>
+                <if test="item.product_name != null  and item.product_name != '' ">product_name=#{item.product_name},</if>
+                <if test="item.uom != null  and item.uom != '' ">uom=#{item.uom},</if>
+                <if test="item.cate_zl != null  and item.cate_zl != '' ">category_level_1=#{item.cate_zl},</if>
+                <if test="item.cate_xl != null  and item.cate_xl != '' ">category_level_2=#{item.cate_xl},</if>
+                <if test="item.standard_cost != null">standard_cost=#{item.standard_cost},</if>
+                <if test="item.brand != null  and item.brand != '' ">brand=#{item.brand},</if>
+                <if test="item.status != null">status=#{item.status},</if>
+                <if test="item.unit_price != null ">unit_price=#{item.unit_price},</if>
+                <if test="item.product_line != null  and item.product_line != '' ">product_line=#{item.product_line},</if>
+                <if test="item.sale_tax_rate != null">sale_rate=#{item.sale_tax_rate},</if>
+                last_updated_by=#{item.last_updated_by},
+                last_update_date=#{item.last_update_date}
+            </set>
+            WHERE product_code=#{item.product_code}
+        </foreach>
+    </update>
+
+    <select id="selectProductLine" resultType="java.util.Map">
+        select product_line_no,product_line_name from product_line
+    </select>
+
+    <select id="getProductSecondLevel" resultType="java.lang.String" parameterType="java.lang.String">
+       SELECT psc.product_sub_category_code FROM product_sub_category psc LEFT JOIN product_sub_category psc1 ON
+       psc.pa_sub_category_code=psc1.product_sub_category_code WHERE psc.product_sub_category_name=#{categoryThirdLevel} AND psc1.product_sub_category_name=#{productKind}
+       AND psc.category_code='P04' AND psc.sub_category_level=2
+    </select>
+
+    <select id="getProductLineId" parameterType="java.lang.String" resultType="java.lang.Integer">
+      select product_line_id from select_line where item_key=#{productKind};
+    </select>
+
+    <select id="getBrandNameList" resultType="java.lang.String">
+      select item_value from select_brand;
+    </select>
+
+    <select id="getBrandKeyValue" resultType="java.util.Map">
+      select item_key,item_value from select_brand;
+    </select>
+
+
+    <select id="getCodeAndCategoryList" resultType="java.util.Map">
+      select product_code,product_category_code  from product;
+    </select>
+
+
+    <delete id="batchDeleteProduct">
+        delete from product where product_code in
+        <foreach collection="baseDeleteProductCodeList" open="(" close=")" index="index" item="item" separator=",">
+            #{item}
+        </foreach>
+    </delete>
+
+    <select id="getPropertyList" resultType="com.icicle.masterdb.pojo.vo.SyncPropertyVO">
+      SELECT id AS mainSysId,1 AS  operationStatus, 'M_DIM' AS tableName,
+      'DIM8' AS dimFlag, convert(nvarchar(20),item_key) as code, convert(nvarchar(50),item_value ) AS [description] FROM dbo.select_line WHERE status = 1
+      and id in (39,40)
+    </select>
+
+    <select id="getProductCodeList" resultType="java.lang.String">
+      select DISTINCT product_code from product_attribute
+    </select>
+
+    <select id="findByQueryCondition" parameterType="java.lang.String" resultType="com.icicle.masterdb.pojo.vo.ColorCardVO">
+        select c.color_card_code as colorCardCode,c.color_card_name as colorCardName,
+        case c.status when 1 then '有效' else '无效' end status,l.lan_name as [language],
+        c.created_date createdDate,c.last_update_date lastUpdateDate
+        from color_card c LEFT JOIN [language] l on c.language=l.lan_code where c.color_card_code is not NULL
+        and c.status=1
+        <if test="colorCardNameOrNo != null  and colorCardNameOrNo != '' "> and ( c.color_card_code like  '%'+#{colorCardNameOrNo}+'%' or c.color_card_name like  '%'+#{colorCardNameOrNo}+'%' ) </if>
+    </select>
+
+    <select id="getSaleRate" resultType='java.math.BigDecimal'>
+        select (ISNULL((select sale_tax_rate from product_sub_category where product_sub_category_name=#{categorySecondLevelCode}
+        and lan_code='zhs' and sub_category_level=2),ISNULL((select sale_tax_rate from product_sub_category where product_sub_category_code=#{productKind}
+        and lan_code='zhs' and sub_category_level=1), 0.00))) as  saleTaxRate
+    </select>
+
+    <select id="getProductCodeAndKey" resultType="java.util.Map">
+        select product_code,product_category_code from product
+    </select>
+
+    <select id="getProductCodeLine" resultType="java.util.Map">
+      select product_code,line from product_costume
+    </select>
+
+    <select id="findItemDataByQueryCondition" resultType="com.icicle.masterdb.pojo.vo.SelectItemVO">
+        select vsi.table_name as tableName,vsi.description,vsi.id,item_key as itemKey,vsi.item_value as itemValue,
+        case vsi.status when 1 then '有效' else '无效' end as status,l.lan_name language
+        from view_select_item vsi LEFT JOIN [language] l on vsi.language=l.lan_code where 1=1
+        <if test="itemCategory != null  and itemCategory != '' "> and ( vsi.description like  '%'+#{itemCategory}+'%' ) </if>
+        <if test="itemSelect != null  and itemSelect != '' "> and ( vsi.item_value like  '%'+#{itemSelect}+'%' ) </if>
+    </select>
+
+
+    <select id="generateNum" parameterType="java.util.Map"  statementType="CALLABLE" resultType="java.lang.String">
+        {call f_generate_num(
+        #{numkey, jdbcType=VARCHAR,mode = IN},
+        #{datecheck,jdbcType=INTEGER,mode=IN},
+        #{len,jdbcType=INTEGER,mode=IN},
+        #{num,jdbcType=VARCHAR,mode=OUT}
+        )}
+  </select>
+
+    <select id="getItemList" resultType="java.util.Map">
+      SELECT pead.def_code,peai.name as def_name FROM product_extend_attribute_defined pead LEFT JOIN product_extend_attribute_item peai ON pead.id=peai.def_id WHERE pead.has_item=1 AND pead.select_table IS NULL
+    </select>
+
+    <select id="getProductSubCategory" resultType="java.util.Map">
+      select category_code,sub_category_level,product_sub_category_name from product_sub_category where lan_code='zhs'
+    </select>
+
+    <select id="selectCostumeCategoryLevel1" resultType="java.lang.String">
+      select product_sub_category_name as def_name from product_sub_category where lan_code='zhs' and category_code='P04' and sub_category_level=1;
+    </select>
+
+    <select id="selectCostumeCategoryLevel2" resultType="java.lang.String">
+        select product_sub_category_name as def_name from product_sub_category where lan_code='zhs' and category_code='P04' and sub_category_level=2
+    </select>
+
+    <select id="selectBatchList" resultType="java.util.Map">
+      select item_key,item_value from select_batch
+    </select>
+
+    <select id="selectSaleTaxRate" resultType="java.util.Map">
+      select product_sub_category_code,category_code,sub_category_level,sale_tax_rate from product_sub_category where lan_code='zhs'
+    </select>
+
+    <select id="getProductKind" resultType="java.lang.String" parameterType="java.lang.String">
+        select product_sub_category_code from product_sub_category where lan_code='zhs' and category_code='P04' and
+        sub_category_level=1 and product_sub_category_name=#{productCategoryName};
+    </select>
+
+    <select id="selectSize" resultType="java.util.Map">
+        select size_code,size_desc,size_group_id from sku_size;
+    </select>
+
+    <select id="getProductCodeBySku" parameterType="java.lang.String" resultType="java.lang.String">
+        select product_code from product_info where sku=#{skuValue};
+    </select>
+
+    <select id="getMainProduct" parameterType="java.lang.String" resultType="com.icicle.masterdb.pojo.vo.SyncProductInfoVO">
+        select p.product_code,p.product_id,p.product_name,p.product_desc,p.uom,p.standard_cost,
+        ISNULL(p.purchase_rate,0.00) as pur_taxdis,
+        ISNULL(p.sale_rate,0.00) as sale_taxdis,
+        'N' as is_agt,
+        'N' as is_advanced_ord,
+        case p.product_category_code when 'P03' then 'N' else 'Y' end is_bigmoney,
+        case p.product_category_code when 'P03' then 'Y' else 'N' end is_material,
+        case (select is_gift from product_material where product_code=p.product_code) when 1 then 'Y' else 'N' end is_present,
+        ISNULL(p.product_category_code,'') as cate_dl_name,
+        ISNULL(p.category_level_1,'') as cate_zl_name,
+        ISNULL(p.category_level_2,'') as cate_xl_name,
+        ISNULL((select product_line_name from product_line WHERE product_line_no = p.product_line AND product_line_state=1),'') as product_line_name,
+        ISNULL((select item_value from select_brand where p.brand=item_key), '') as brand_name,p.status
+        from product p where p.product_code in
+        <foreach collection="productCodeList" index="index" open="(" close=")" item="item" separator=",">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="selectItemVoList" resultType="com.icicle.masterdb.pojo.vo.SelectItemVO">
+        select table_name as tableName,item_key as itemKey,item_value as itemValue from view_select_item
+    </select>
+
+
+    <select id="getMainProductInfo" parameterType="java.lang.Integer" resultType="com.icicle.masterdb.pojo.vo.SyncSkuVO">
+        SELECT pi.id,pi.product_code,pi.sku,p.product_category_code FROM product_info pi JOIN product p ON pi.product_code=p.product_code WHERE pi.id
+        IN
+        <foreach collection="ids" open="(" close=")" separator="," index="index" item="id">
+            #{id}
+        </foreach>
+    </select>
+
+
+    <select id="selectProductCodeSizeGroup" resultType="java.util.Map">
+      select size_group,product_code from product_costume
+    </select>
+
+    <select id="selectItemList" resultType="java.util.Map">
+        select table_name,item_key,item_value from view_select_item;
+    </select>
+
+    <select id="selectUomList" resultType="java.lang.String">
+      select item_value def_name from view_select_item where table_name='select_uom'
+    </select>
+
+    <select id="selectBrand" resultType="java.lang.String">
+      select item_value as def_name from select_brand
+    </select>
+
+    <select id="getProductSecondLevels" resultType="java.lang.String">
+        select top 1 product_sub_category_code from product_sub_category where lan_code='zhs' and category_code='P04' and
+        sub_category_level=2 and product_sub_category_name=#{categoryThirdLevel}
+    </select>
+
+    <select id="getSizeGroupList" resultType="java.util.Map">
+        select item_key,item_value from select_size_group;
+    </select>
+
+    <select id="getProductNameByCode" parameterType="java.lang.String" resultType="java.lang.String">
+        select product_name from product where product_code=#{productCode};
+    </select>
+
+    <select id="getProductDescriptions" resultType="com.icicle.masterdb.model.ViewProductDescription">
+        SELECT p.product_code as productCode,pc.wave+'/'+pc.band+'/'+pc.icicle_group+'/'+pc.model_no+'/'+pc.material_no+'/'+pc.color_card_no+'/'+p.product_name+'/'+
+        pc.colour_system+'/'+pc.color_name AS descs FROM product p LEFT JOIN product_costume pc ON p.product_code=pc.product_code
+        WHERE p.product_code in
+        <foreach collection="productCodeList" open="(" separator="," close=")" item="productCode">
+          #{productCode}
+        </foreach>
+    </select>
+
+    <select id="getProductList" resultType="java.lang.String">
+      select product_code from product
+    </select>
+
+    <select id="getProductMaterialCodeList" resultType="java.lang.String">
+        select product_code from product_material;
+    </select>
+
+    <select id="getCostumeSyncSkuVOList" resultType="com.icicle.masterdb.pojo.vo.SyncSkuVO">
+        SELECT pi.id,'ICICLE' AS customer_id,p.product_code,p.product_name,p.product_desc,p.brand,(SELECT top 1 item_value FROM
+        select_brand WHERE item_key=p.brand) AS brand_name,pi.sku,pi.size AS size_code,pi.size AS size_desc,pi.batch,pc.band,pc.wave,
+        pc.year,pc.material_no,p.product_line,(CONVERT (VARCHAR (4),pc.year)+CONVERT (VARCHAR (1),pc.wave)) AS year_wave,
+        isnull((SELECT product_sub_category_name FROM product_sub_category WHERE lan_code='zhs' AND category_code='P04'
+        AND sub_category_level=1 AND product_sub_category_code=pc.product_class),'') AS productclass_value,pc.nature_season,pc.dev_season,
+        pc.icicle_group,pc.color_name,pc.color_card_no,pi.security_code,pc.standard,pc.product_class,pi.sale_cost AS standard_cost,
+        pc.size_group,isnull((SELECT item_value FROM select_size_group WHERE item_key=pc.size_group),'') AS size_group_name,
+        pc.style_rule,pc.line,p.STATUS,isnull(swg.item_value,'') AS work_group_name,p.unit_price
+        FROM product_info pi JOIN product p ON pi.product_code=p.product_code JOIN product_costume pc ON p.product_code=pc.product_code
+        LEFT JOIN select_work_group swg ON swg.item_key=pc.work_group WHERE pi.sku NOT IN (
+        SELECT product_code FROM product_material) AND pi.id IN
+          <foreach collection="list" open="(" separator="," close=")" item="id">
+              #{id}
+          </foreach>
+    </select>
+
+    <select id="getMaterailSyncSkuVOList" resultType="com.icicle.masterdb.pojo.vo.SyncSkuVO">
+        SELECT pi.id,'ICICLE' AS customer_id,p.product_code,p.product_name,p.product_desc,p.product_line,p.brand,pi.sku,'FF' size_code,'FF'
+        AS size_desc,pi.batch,pi.color AS color_name,pi.security_code,isnull((SELECT TOP 1 item_value FROM select_brand WHERE item_key=p.brand),'') AS brand_name,
+        '物料' AS size_group_name,'' AS band,'' AS color_card_no,'' AS standard,'' AS [ YEAR ],'' AS wave,'' AS line,'' AS material_no,'' AS year_wave,'' AS product_class,
+        '' AS productclass_value,'' AS nature_season,'' AS dev_season,'' AS icicle_group,'' AS style_rule,'' AS work_group_name,pi.sale_cost AS standard_cost,
+        p.unit_price,p.status,'84' AS size_group,pm.sale_price AS priceactual,CASE pm.can_present WHEN 1 THEN 'Y' ELSE 'N' END AS is_allotgift
+        FROM product_info pi JOIN product p ON pi.sku =p.product_code AND p.product_category_code ='P03' JOIN product_material pm ON pm.product_code =pi.sku
+        AND pi.id IN
+        <foreach collection="list" open="(" separator="," close=")" item="id">
+            #{ id }
+        </foreach>
+    </select>
+
+    <select id="getCategorySyncSkuVOList" resultType="com.icicle.masterdb.pojo.vo.SyncSkuVO">
+        SELECT 'ICICLE' AS customer_id,pi.id,p.product_code,p.product_name,p.product_desc,p.brand,p.unit_price,p.STATUS,p.product_line,pi.size AS size_code,
+        (SELECT top 1 item_value FROM select_brand WHERE item_key=p.brand) AS brand_name,CASE product_category_code WHEN 'P01' THEN '图书' WHEN 'P02' THEN '家纺' ELSE '' END
+        AS size_group_name,pi.size AS size_desc,pi.batch,pi.security_code,pi.sale_cost AS standard_cost,pi.sku,'' AS band,'' AS standard,'' AS color_card_no,'' AS color_name,
+        '' AS [ YEAR ],'' AS year_wave,'' AS wave,'' AS line,'' AS material_no,'' AS style_rule,'' AS work_group_name,'' AS product_class,'' AS productclass_value,
+        '' AS nature_season,'' AS dev_season,'' AS icicle_group,'81' AS size_group FROM product_info pi JOIN product p ON pi.product_code=p.product_code AND pi.id IN
+        <foreach collection="list" open="(" separator="," close=")" item="id">
+            #{ id }
+        </foreach>
+    </select>
+
+    <select id="getextendProduct" parameterType="java.lang.String" resultType="com.icicle.masterdb.model.ProductAttribute">
+        select product_code as productCode,attr_code as attrCode,attr_value as attrValue from product_attribute where product_code in
+        <foreach collection="productCodeList" index="index" open="(" close=")" item="item" separator=",">
+            #{item}
+        </foreach>
+    </select>
+
+
+    <select id="getProductMaterialCodeListByCode" parameterType="java.lang.String" resultType="java.util.Map">
+      select p.product_code,pmc.store_type_id,pmc.store_class from product_material_contrain pmc join product p on pmc.product_id=p.product_id
+      where p.product_code in
+        <foreach collection="productCodeList" index="index" open="(" close=")" item="item" separator=",">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="getColorCardList" resultType="java.util.Map">
+        select DISTINCT color_card_code,color_card_name from color_card;
+    </select>
+
+    <insert id="insertColorCardList" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="id">
+      insert into color_card (color_card_code,color_card_name,status,language,created_by,created_date,last_update_by,last_update_date) values
+      <foreach collection="list" index="index" item="item" separator=",">
+          (#{item.colorCardCode},#{item.colorCardName},#{item.status},#{item.language},#{item.createdBy},#{item.createdDate},#{item.lastUpdateBy},#{item.lastUpdateDate})
+      </foreach>
+    </insert>
+
+    <select id="getCategoryLevel" resultType="com.icicle.masterdb.pojo.vo.ViewSelectItemVO">
+      SELECT product_sub_category_code AS itemKey,product_sub_category_name AS itemValue,sub_category_level AS subCategoryLevel,
+      pa_sub_category_code as paSubCategoryCode,category_code AS categoryCode FROM product_sub_category WHERE lan_code='zhs'
+    </select>
+
+    <update id="updateProduct">
+        update product set
+        <if test="productName!=null and productName!=''">product_name=#{productName},</if>
+        <if test="unitPrice!=null">unit_price=#{unitPrice},</if>
+        <if test="brand!=null and brand!=''">brand=#{brand},</if>
+        <if test="standardCost!=null">standard_cost=#{standardCost},</if>
+        <if test="syncStatus!=null">sync_status=#{syncStatus},</if>
+        <if test="cateZl!=null and cateZl!=''">category_level_1=#{cateZl},</if>
+        <if test="cateXl!=null and cateXl!=''">category_level_2=#{cateXl},</if>
+        <if test="uom!=null and uom!=''">uom=#{uom},</if>
+        <if test="productLineId!=null and productLineId!=''">product_line=#{productLineId},</if>
+        <if test="status!=null">status=#{status},</if>
+        last_updated_by = #{lastUpdatedBy},
+        last_update_date = #{lastUpdateDate}
+        where product_code=#{productCode}
+    </update>
+
+
+    <select id="getProductcategoryLevel2List" resultType="com.icicle.masterdb.pojo.vo.ViewSelectItemVO">
+        SELECT product_sub_category_code AS itemKey,product_sub_category_name AS itemValue FROM product_sub_category WHERE lan_code='zhs'
+        AND sub_category_level=2 AND pa_sub_category_code=#{ categoryLevel1Code } AND category_code=#{ productCategoryCode}
+    </select>
+
+    <select id="getExtendAttributeItemList" resultType="java.util.Map">
+        select pead.def_code,peai.code,peai.name from product_extend_attribute_item peai join product_extend_attribute_defined pead
+        on peai.def_id=pead.id
+    </select>
+
+    <select id="getColorsByProductCode" resultType="java.util.Map">
+        select product_code,color from product_info  where product_code in 
+        <foreach collection="list" open="(" separator="," close=")" item="productCode">
+          #{productCode}
+        </foreach>
+    </select>
+
+    <select id="getProductLineIdByLine" parameterType="java.lang.String" resultType="java.lang.String">
+        select product_line_id from select_line where item_key=#{productLine};
+    </select>
+
+    <select id="getBatchList" resultType="java.util.Map">
+      select item_key,item_value from select_batch
+    </select>
+
+    <select id="getSizeGroupByProductCode" resultType="java.lang.String" parameterType="java.lang.String">
+      SELECT pc.size_group FROM product_costume pc WHERE pc.product_code = #{productCode};
+    </select>
+
+    <select id="getSizeList" parameterType="java.lang.String" resultType="java.util.Map">
+      select size_code,size_desc from sku_size where size_group_id=#{sizeGroup}
+    </select>
+
+    <select id="getProductCategoryList" resultType="java.util.Map">
+        select category_key,category_name from product_category
+    </select>
+
+    <select id="getProductCategoryCodeList" resultType="java.util.Map">
+      select product_code,product_category_code from product where product_code in
+      <foreach collection="list" open="(" separator="," close=")" item="productCode">
+        #{productCode}
+      </foreach>
+    </select>
+
+    <select id="getProductInfoById" resultType="com.icicle.masterdb.model.ProductInfo" parameterType="java.lang.Integer">
+      SELECT id,product_code productCode,sku,color,size,batch,standard_price standardPrice,standard_cost standardCost,
+      sale_cost saleCost,security_code securityCode FROM product_info WHERE id=#{id};
+    </select>
+
+    <update id="updateProductInfo">
+        update product_info set
+        <if test="productCode!=null and productCode!=''">product_code=#{productCode},</if>
+        color=#{color},
+        <if test="sku!=null and sku!=''">sku=#{sku},</if>
+        <if test="size!=null and size!=''">size=#{size},</if>
+        <if test="batch!=null and batch!=''">batch=#{batch},</if>
+        <if test="standardCost!=null">standard_cost=#{standardCost},</if>
+        <if test="standardPrice!=null">standard_price=#{standardPrice},</if>
+        <if test="saleCost!=null">sale_cost=#{saleCost},</if>
+        <if test="securityCode!=null and securityCode!=''">security_code=#{securityCode},</if>
+        last_updated_by = #{lastUpdatedBy},
+        last_update_date = #{lastUpdateDate}
+        where id=#{id}
+    </update>
+
+    <select id="getexistsSkuCount" resultType="java.lang.Integer">
+      select id from product_info where sku = #{sku} and status=1
+    </select>
+
+    <select id="getItemTableList" resultType="java.lang.String">
+      select DISTINCT table_name from view_select_sync_item where tbl_num=1
+    </select>
+
+    <select id="getItemSyncList" resultType="com.icicle.masterdb.pojo.vo.SyncPropertyVO">
+      select id AS mainSysId,1 AS operationStatus,table_name AS tableName,item_key as code, item_value AS description
+      from view_select_sync_item where no in
+        <foreach collection="list" open="(" separator="," close=")" item="item">
+            #{item}
+        </foreach>
+    </select>
+
+
+    <select id="getProductSubCategoryLevelList" resultType="java.lang.Integer">
+      select DISTINCT sub_category_level from product_sub_category
+    </select>
+
+
+    <select id="getProductSubCategoryIdAndLevel" resultType="com.icicle.masterdb.model.ViewProductSubCategoryList">
+        select product_sub_category_id as productSubCategoryId,sub_category_level as subCategoryLevel from product_sub_category where product_sub_category_id in
+        <foreach collection="list" open="(" separator="," close=")" item="item">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="getSubCategoryLevel1List" resultType="com.icicle.masterdb.pojo.vo.SyncProductSubCategoryVO">
+        SELECT product_sub_category_id AS id,product_sub_category_code AS catalog_no,product_sub_category_name AS catalog_desc,ISNULL(product_category_id,'')
+        AS p_catalog_id,1 as operation_status FROM dbo.product_sub_category psc JOIN product_category pc ON psc.category_code=pc.category_key WHERE sub_category_level=1 AND sub_category_state=1
+        AND lan_code='zhs' and product_sub_category_id in
+        <foreach collection="list" open="(" separator="," close=")" item="item">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="getSubCategoryLevel2List" resultType="com.icicle.masterdb.pojo.vo.SyncProductSubCategoryVO">
+        SELECT psc.product_sub_category_id AS id,psc.product_sub_category_code AS catalog_no,psc.product_sub_category_name AS catalog_desc,ISNULL(psc2.product_sub_category_id,'')
+        AS p_catalog_id,1 as operation_status FROM dbo.product_sub_category psc JOIN product_sub_category psc2 ON psc.pa_sub_category_code=psc2.product_sub_category_code AND psc.lan_code=psc2.lan_code
+        WHERE psc.sub_category_level=2 AND psc2.sub_category_level=1 AND psc.lan_code='zhs' and psc.product_sub_category_id in
+        <foreach collection="list" open="(" separator="," close=")" item="item">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="getSubCategoryLevel3List" resultType="com.icicle.masterdb.pojo.vo.SyncProductSubCategoryVO">
+        SELECT psc.product_sub_category_id AS id,psc.product_sub_category_code AS catalog_no,psc.product_sub_category_name AS catalog_desc,ISNULL(psc2.product_sub_category_id,'')
+        AS p_catalog_id,1 as operation_status FROM dbo.product_sub_category psc JOIN product_sub_category psc2 ON psc.pa_sub_category_code=psc2.product_sub_category_code AND psc.lan_code=psc2.lan_code
+        WHERE psc.sub_category_level=3 AND psc2.sub_category_level=2 AND psc.lan_code='zhs' and psc.product_sub_category_id in
+        <foreach collection="list" open="(" separator="," close=")" item="item">
+            #{item}
+        </foreach>
+    </select>
+
+    <insert id="insertProductSubCategory" useGeneratedKeys="true" keyProperty="productSubCategoryId">
+      insert into product_sub_category (product_sub_category_code,product_sub_category_name,lan_code,category_code,pa_sub_category_code,sub_category_level,sale_tax_rate,
+      sub_category_key,sub_category_state,create_by,creation_date,last_update_by,last_update_date) values
+      (#{productSubCategoryCode},#{productSubCategoryName},#{lanCode},#{categoryCode},#{paSubCategoryCode},#{subCategoryLevel},#{saleTaxRate},
+      #{subCategoryKey},1,#{createBy},#{creationDate},#{lastUpdateBy},#{lastUpdateDate})
+    </insert>
+
+    <select id="checkProductSubCategory" resultType="java.lang.Integer">
+      select count(1) from product_sub_category where product_sub_category_code=#{productSubCategoryCode} and lan_code=#{lanCode};
+    </select>
+
+    <select id="checkPaSubcategoryCode" resultType="java.lang.Integer">
+      select count(1) from product_sub_category where lan_code=#{lanCode} and category_code=#{categoryCode} and product_sub_category_code=#{paSubCategoryCode} and sub_category_level=#{paCategoryLevel};
+    </select>
+
+    <select id="checkProdutCheckMaterialKey" parameterType="java.lang.String" resultType="java.lang.Integer">
+        select count(1) from product_sub_category where sub_category_key=#{subCategoryKey};
+    </select>
+
+    <update id="updateProductSubCategory">
+        update product_sub_category set
+        <if test="productSubCategoryCode!=null and productSubCategoryCode!=''">product_sub_category_code=#{productSubCategoryCode},</if>
+        <if test="productSubCategoryName!=null and productSubCategoryName!=''">product_sub_category_name=#{productSubCategoryName},</if>
+        <if test="lanCode!=null and lanCode!=''">lan_code=#{lanCode},</if>
+        <if test="categoryCode!=null and categoryCode!=''">category_code=#{categoryCode},</if>
+        <if test="paSubCategoryCode!=null and paSubCategoryCode!=''">pa_sub_category_code=#{paSubCategoryCode},</if>
+        <if test="subCategoryLevel!=null">sub_category_level=#{subCategoryLevel},</if>
+        <if test="saleTaxRate!=null">sale_tax_rate=#{saleTaxRate},</if>
+        <if test="subCategoryKey!=null and subCategoryKey!=''">sub_category_key=#{subCategoryKey},</if>
+        last_update_by = #{lastUpdateBy},
+        last_update_date = #{lastUpdateDate}
+        where product_sub_category_id=#{productSubCategoryId}
+    </update>
+
+    <update id="updateStandardPrice">
+        update product_info set standard_price=#{unitPrice},last_updated_by=#{lastUpdatedBy},
+                last_update_date=#{lastUpdateDate} where product_code=#{productCode};
+    </update>
+
+    <update id="batchUpdateStandardPrice" parameterType="java.util.List">
+        <foreach collection="list" separator=";" item="item">
+            update product_info
+            <set>
+                <if test="item.unitPrice != null">standard_price=#{item.unitPrice},</if>
+                last_updated_by=#{item.lastUpdatedBy},
+                last_update_date=#{item.lastUpdateDate}
+            </set>
+            WHERE product_code=#{item.productCode}
+        </foreach>
+    </update>
+
+    <select id="getProductCategoryCode" resultType="com.icicle.masterdb.pojo.vo.ProductVO">
+      SELECT pi.sku,p.product_category_code as productCategoryCode FROM product p
+      JOIN product_info pi ON p.product_code=pi.product_code WHERE pi.id in
+      <foreach collection="list" open="(" separator="," close=")" item="item">
+          #{item}
+      </foreach>
+    </select>
+
+    <select id="getSyncCostumeProductList" resultType="java.util.Map">
+      SELECT pi.sku,p.product_name AS PName,pi.size AS SkuSize,pc.sales_date AS MarketDate,pc.nature_season AS Seasonid,sns.item_value
+      AS Season,pc.wave AS boid,sw.item_value AS bo,p.unit_price AS DPrice,pc.line AS lineid,sl.item_value AS line,pc.product_class
+      AS Varietiesid,psc.product_sub_category_name AS Varieties,0 AS type,p.uom AS unit FROM product_info pi join product p ON
+      pi.product_code=p.product_code JOIN product_costume pc ON pi.product_code=pc.product_code JOIN select_nature_season sns
+      ON pc.nature_season=sns.item_key JOIN select_wave sw ON pc.wave=sw.item_key JOIN select_line sl ON pc.line=sl.item_key
+      JOIN product_sub_category psc ON pc.product_class=psc.product_sub_category_code WHERE psc.lan_code='zhs' AND psc.category_code='P04'
+      AND psc.sub_category_level=1 AND pi.sku IN
+      <foreach collection="list" open="(" separator="," close=")" item="item">
+         #{item}
+      </foreach>
+    </select>
+
+    <select id="getSyncMaterialProductList" resultType="java.util.Map">
+        SELECT pi.sku,p.product_name AS PName,1 AS type,p.uom AS unit,p.category_level_1 AS Varietiesid,psc.product_sub_category_name AS Varieties,
+        isnull(pm.specification,'') AS Specifications,isnull(pm.min_apply_count,0) AS MIN,isnull(pm.max_apply_count,0) AS MAX,pm.material_department
+        AS dept FROM product_info pi join product p ON pi.product_code=p.product_code JOIN product_sub_category psc ON p.category_level_1=psc.product_sub_category_code
+        JOIN product_material pm ON pi.product_code=pm.product_code WHERE psc.lan_code='zhs' AND psc.category_code='P03' AND psc.sub_category_level=1
+        AND pi.sku IN
+      <foreach collection="list" open="(" separator="," close=")" item="item">
+         #{item}
+      </foreach>
+    </select>
+
+    <select id="getSyncCategoryProductList" resultType="java.util.Map">
+        SELECT pi.sku,p.product_name AS PName,2 AS type,p.uom AS unit,p.category_level_1 AS Varietiesid,psc.product_sub_category_name AS Varieties FROM
+        product_info pi join product p ON pi.product_code=p.product_code JOIN product_sub_category psc ON p.category_level_1=psc.product_sub_category_code
+        WHERE psc.lan_code='zhs' AND psc.category_code=p.product_category_code AND psc.sub_category_level=1 AND pi.sku IN
+      <foreach collection="list" open="(" separator="," close=")" item="item">
+         #{item}
+      </foreach>
+    </select>
+
+    <select id="getProductCodeAndKeyList" resultType="com.icicle.masterdb.pojo.vo.ProductVO">
+      SELECT p.product_code as productCode,p.product_category_code as productCategoryCode FROM product p JOIN product_category pc ON p.product_category_code=pc.category_key
+      WHERE p.product_code IN
+        <foreach collection="list" open="(" separator="," close=")" item="item">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="getBookCodeList" resultType="java.lang.String">
+      select product_code from product_book where product_code in
+        <foreach collection="list" open="(" separator="," close=")" item="item">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="getHomeholdCodeList" resultType="java.lang.String">
+        select product_code from product_homehold where product_code in
+        <foreach collection="list" open="(" separator="," close=")" item="item">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="getMaterialCodeList" resultType="java.lang.String">
+        select product_code from product_material where product_code in
+        <foreach collection="list" open="(" separator="," close=")" item="item">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="getCostumeCodeList" resultType="java.lang.String">
+        select product_code from product_costume where product_code in
+        <foreach collection="list" open="(" separator="," close=")" item="item">
+            #{item}
+        </foreach>
+    </select>
+
+    <delete id="batchDeleteSku">
+        <foreach collection="list" separator=";" item="id">
+            update product_info set status=0 WHERE id=#{id}
+        </foreach>
+    </delete>
+
+    <select id="selectProductCodeAndSku" resultType="com.icicle.masterdb.pojo.vo.ProductInfoVO">
+      select id,product_code,sku from product_info;
+    </select>
+
+    <select id="selectProductAndSku" resultType="com.icicle.masterdb.pojo.vo.ProductInfoVO">
+      select product_code,sku from product_info;
+    </select>
+</mapper>
+
+

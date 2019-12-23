@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icicle.masterdb.dao.masterdb.MaterialFabricMapper">
+  <resultMap id="BaseResultMap" type="com.icicle.masterdb.model.MaterialFabric">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="material_code" jdbcType="VARCHAR" property="materialCode" />
+    <result column="fabric" jdbcType="NVARCHAR" property="fabric" />
+    <result column="language" jdbcType="VARCHAR" property="language" />
+  </resultMap>
+  <select id="findMaterialFabricByCode" resultMap="BaseResultMap">
+    select material_code,fabric from material_fabric where material_code = #{materialCode};
+  </select>
+</mapper>

@@ -1,0 +1,1 @@
+<script src="${base}/static/content/js/page/material/attribute.js?v=2018"></script>

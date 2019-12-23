@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icicle.masterdb.dao.masterdb.StoreComparisonMapper">
+  <resultMap id="BaseResultMap" type="com.icicle.masterdb.model.StoreComparison">
+    <id column="store_no" jdbcType="INTEGER" property="storeNo" />
+    <id column="compare_store_no" jdbcType="INTEGER" property="compareStoreNo" />
+    <id column="compare_store_name" jdbcType="VARCHAR" property="compareStoreName" />
+  </resultMap>
+
+
+  <select id="findCompareStoreNoListByStoreNo" resultMap="BaseResultMap">
+    select * from store_comparison where store_no = #{storeNo}
+  </select>
+
+  <delete id="deleteCompareStoreNoByStoreNo" parameterType="java.lang.String">
+    delete from store_comparison where store_no = #{storeNo}
+  </delete>
+
+  <insert id="addCompareStoreNoByStoreNo">
+    insert into store_comparison (store_no,compare_store_no) values (#{storeNo},#{compareStoreNo})
+  </insert>
+</mapper>

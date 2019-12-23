@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icicle.masterdb.dao.masterdb.ProductInfoMapper">
+    <resultMap id="BaseResultMap" type="com.icicle.masterdb.model.ProductInfo">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="product_code" jdbcType="VARCHAR" property="productCode"/>
+        <result column="sku" jdbcType="VARCHAR" property="sku"/>
+        <result column="color" jdbcType="NVARCHAR" property="color"/>
+        <result column="size" jdbcType="VARCHAR" property="size"/>
+        <result column="status" jdbcType="BIT" property="status"/>
+        <result column="created_by" jdbcType="VARCHAR" property="createdBy"/>
+        <result column="creation_date" jdbcType="TIMESTAMP" property="creationDate"/>
+        <result column="last_updated_by" jdbcType="VARCHAR" property="lastUpdatedBy"/>
+        <result column="last_update_date" jdbcType="TIMESTAMP" property="lastUpdateDate"/>
+    </resultMap>
+    <insert id="insertProductInfo">
+        INSERT INTO product_info (product_code,sku,color,size,batch,security_code,standard_price,standard_cost,sale_cost,status,created_by,creation_date,last_updated_by,last_update_date )
+        VALUES(#{productCode},#{sku},#{color},#{size},#{batch},#{securityCode},#{standardPrice},#{standardCost},#{saleCost},#{status},#{createdBy},#{creationDate},#{createdBy},#{creationDate});
+    </insert>
+    <update id="updateColor">
+        update product_info
+        set color=#{color},
+                last_updated_by= #{lastUpdatedBy},
+                last_update_date = #{lastUpdateDate}
+         where product_code=#{productCode};
+    </update>
+
+    <insert id="insertInfoAll">
+        INSERT INTO product_info
+        (product_code,sku,color,size,status,created_by,creation_date)
+        VALUES
+        <foreach collection="list" separator="," item="item">
+            (#{item.productCode},#{item.sku},#{item.color},#{item.size},#{item.status},#{item.createdBy},#{item.creationDate})
+        </foreach>
+    </insert>
+    <update id="updateInfoPart">
+        <foreach collection="list" item="item" separator=";">
+            UPDATE product_info
+            <set>
+                <if test="item.productCode!=null">product_code=#{item.productCode},</if>
+                <if test="item.color!=null">color = #{item.color},</if>
+                <if test="item.size!=null">size=#{item.size},</if>
+                <if test="item.status!=null">status =#{item.status},</if>
+                last_updated_by= #{item.lastUpdatedBy},
+                last_update_date = #{item.lastUpdateDate}
+            </set>
+            WHERE sku=#{item.sku}
+        </foreach>
+    </update>
+
+    <select id="selectProductInfo" parameterType="java.util.List" resultType="java.lang.String">
+        SELECT sku FROM product_info WHERE sku IN
+        <foreach close=")" collection="list" index="index" item="item" open="(" separator=",">
+            #{item.sku}
+        </foreach>
+    </select>
+
+    <update id="updateColorAll">
+        UPDATE  product_info
+            SET     color = b.color
+           FROM    product_info a ,
+        ( SELECT    id ,
+                    product_code ,
+                    color
+          FROM      product_info
+          WHERE     id IN ( SELECT  MAX(id) id
+                            FROM    product_info
+                            WHERE   1 = 1
+                            GROUP BY product_code )
+        ) b
+        WHERE   1 = 1
+        AND a.product_code = b.product_code;
+    </update>
+    <update id="updateStatus">
+       update product_info
+        set
+        product_code=#{productCode},
+        size=#{size},
+        color=#{color},
+        status=#{status},
+        last_updated_by= #{lastUpdatedBy},
+        last_update_date = #{lastUpdateDate}
+        where sku=#{sku};
+  </update>
+    
+    <select id="unvalidStatus" resultType="java.lang.String">
+      SELECT sku from product_info where sku=#{sku} and status=0;
+    </select>
+
+    <select id="getColor" resultType="java.lang.String">
+        SELECT max(color) as color FROM product_info WHERE id=#{id}
+    </select>
+</mapper>

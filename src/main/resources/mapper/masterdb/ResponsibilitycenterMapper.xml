@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icicle.masterdb.dao.masterdb.ResponsibilitycenterMapper">
+  <resultMap id="BaseResultMap" type="com.icicle.masterdb.model.Responsibilitycenter">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="respcenter_id" jdbcType="VARCHAR" property="respcenterId" />
+    <result column="lan_code" jdbcType="VARCHAR" property="lanCode" />
+    <result column="source_id" jdbcType="VARCHAR" property="sourceId" />
+    <result column="respcenter_name" jdbcType="NVARCHAR" property="respcenterName" />
+    <result column="respcenter_manager" jdbcType="VARCHAR" property="respcenterManager" />
+    <result column="department_id" jdbcType="VARCHAR" property="departmentId" />
+    <result column="respcenter_desc" jdbcType="NVARCHAR" property="respcenterDesc" />
+    <result column="respcenter_state" jdbcType="INTEGER" property="respcenterState" />
+    <result column="effective_date" jdbcType="TIMESTAMP" property="effectiveDate" />
+    <result column="reference_id1" jdbcType="VARCHAR" property="referenceId1" />
+    <result column="reference_id2" jdbcType="VARCHAR" property="referenceId2" />
+    <result column="reference_id3" jdbcType="VARCHAR" property="referenceId3" />
+    <result column="reference_id4" jdbcType="VARCHAR" property="referenceId4" />
+    <result column="reference_id5" jdbcType="VARCHAR" property="referenceId5" />
+    <result column="reference_attrib1" jdbcType="NVARCHAR" property="referenceAttrib1" />
+    <result column="reference_attrib2" jdbcType="NVARCHAR" property="referenceAttrib2" />
+    <result column="reference_attrib3" jdbcType="NVARCHAR" property="referenceAttrib3" />
+    <result column="reference_attrib4" jdbcType="NVARCHAR" property="referenceAttrib4" />
+    <result column="reference_attrib5" jdbcType="NVARCHAR" property="referenceAttrib5" />
+    <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="last_edit_by" jdbcType="VARCHAR" property="lastEditBy" />
+    <result column="last_edit_time" jdbcType="TIMESTAMP" property="lastEditTime" />
+  </resultMap>
+    
+    <select id="findRespcenterInfoByRespcenterId" parameterType="java.lang.String" resultType="com.icicle.masterdb.pojo.vo.RespCenterVO">
+     select distinct r.respcenter_id respcenterId ,r.source_id sourceId,l.lan_name lanCode,r.respcenter_name respcenterName,s.staff_name_local respcenterManager,
+        r.respcenter_desc respcenterDesc,case r.respcenter_state when '1' then '有效' when '0' then '无效' else '' end
+        respcenterState,r.effective_date effectiveDate
+        from responsibilitycenter r LEFT JOIN [language] l on r.lan_code=l.lan_code LEFT JOIN staff s on r.respcenter_manager=s.staff_num
+        where r.lan_code=#{lanCode} and r.respcenter_id=#{respcenterId}
+    </select>
+
+    <select id="findByQueryCondition" resultType="com.icicle.masterdb.pojo.vo.RespCenterVO">
+        select r.respcenter_id respcenterId,l.lan_name lanCode,r.respcenter_name respcenterName,
+        s.staff_name_local respcenterManager,
+        ISNULL((select department_name from department where lan_code='zhs' and department_id=r.department_id), '') departmentId,
+        r.respcenter_desc respcenterDesc,
+        case r.respcenter_state when 1 then '有效' else '无效' end respcenterState,
+        r.effective_date effectiveDate
+          from responsibilitycenter r
+        LEFT JOIN [language] l on r.lan_code=l.lan_code
+        LEFT JOIN staff s on r.respcenter_manager=s.staff_num where 1=1
+        <if test="respcenterIdOrName != null  and respcenterIdOrName != '' "> and ( r.respcenter_id like  '%'+#{respcenterIdOrName}+'%' or r.respcenter_name like  '%'+#{respcenterIdOrName}+'%' ) </if>
+        <if test="lanCode != null  and lanCode != '' "> and r.lan_code = #{lanCode}</if>
+    </select>
+</mapper>

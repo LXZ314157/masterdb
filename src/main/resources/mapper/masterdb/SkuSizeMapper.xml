@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icicle.masterdb.dao.masterdb.SkuSizeMapper">
+  <resultMap id="BaseResultMap" type="com.icicle.masterdb.model.SkuSize">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="size_code" jdbcType="VARCHAR" property="sizeCode" />
+    <result column="size_desc" jdbcType="NVARCHAR" property="sizeDesc" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="language" jdbcType="VARCHAR" property="language" />
+  </resultMap>
+  <select id="findBySize" resultMap="BaseResultMap">
+    select
+     size_code
+    ,size_desc
+    FROM sku_size where status=1
+  </select>
+</mapper>

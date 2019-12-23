@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icicle.masterdb.dao.masterdb.MaterialAttributeMapper">
+    <resultMap id="BaseResultMap" type="com.icicle.masterdb.model.MaterialAttribute">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="material_code" jdbcType="VARCHAR" property="materialCode"/>
+        <result column="attr_code" jdbcType="CHAR" property="attrCode"/>
+        <result column="atr_value" jdbcType="NVARCHAR" property="atrValue"/>
+    </resultMap>
+
+    <update id="updateAttributeList" parameterType="java.util.List">
+        <foreach collection="list" separator=";" item="item">
+            UPDATE material_attribute
+            SET
+            attr_code = #{item.attrCode},
+            atr_value = #{item.atrValue}
+            where id = #{item.id}
+        </foreach>
+    </update>
+
+</mapper>

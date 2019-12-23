@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icicle.masterdb.dao.masterdb.ViewMaterialAttrErpListMapper">
+    <resultMap id="BaseResultMap" type="com.icicle.masterdb.model.ViewMaterialAttrErpList">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <result column="material_code" jdbcType="VARCHAR" property="materialCode"/>
+        <result column="RECEIVING_ROUTING" jdbcType="NVARCHAR" property="receivingRouting"/>
+        <result column="ACCEPTABLE_EARLY_DAYS" jdbcType="NVARCHAR" property="acceptableEarlyDays"/>
+        <result column="PROCESS_DETAILS" jdbcType="NVARCHAR" property="processDetails"/>
+        <result column="CYCLE_COUNT_ENABLED_FLAG" jdbcType="NVARCHAR" property="cycleCountEnabledFlag"/>
+        <result column="ALLOW_SUBSTITUTE_RECEIPTS" jdbcType="NVARCHAR" property="allowSubstituteReceipts"/>
+        <result column="SHRINKAGE_RATE" jdbcType="NVARCHAR" property="shrinkageRate"/>
+        <result column="FIXED_DAYS_SUPPLY" jdbcType="NVARCHAR" property="fixedDaysSupply"/>
+        <result column="APPROVED_VENDOR_FLAG" jdbcType="NVARCHAR" property="approvedVendorFlag"/>
+        <result column="LEAD_TIME_LOT_SIZE" jdbcType="NVARCHAR" property="leadTimeLotSize"/>
+        <result column="FIXED_ORDER_QTY" jdbcType="NVARCHAR" property="fixedOrderQty"/>
+        <result column="LIST_PRICE" jdbcType="NVARCHAR" property="listPrice"/>
+        <result column="PLANNER" jdbcType="NVARCHAR" property="planner"/>
+        <result column="ROUTINE_FLAG" jdbcType="NVARCHAR" property="routineFlag"/>
+    </resultMap>
+
+    <select id="getMaterialAttrErpList" resultMap="BaseResultMap">
+        SELECT * FROM view_material_attr_erp_list WHERE material_code IN
+        <foreach open="(" separator="," close=")" collection="codes" item="code">
+            #{code}
+        </foreach>
+    </select>
+</mapper>

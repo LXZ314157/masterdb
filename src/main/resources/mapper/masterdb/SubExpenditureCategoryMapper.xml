@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icicle.masterdb.dao.masterdb.SubExpenditureCategoryMapper">
+  <resultMap id="BaseResultMap" type="com.icicle.masterdb.model.SubExpenditureCategory">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <result column="sub_excategory_id" jdbcType="VARCHAR" property="subExcategoryId" />
+    <result column="lan_code" jdbcType="VARCHAR" property="lanCode" />
+    <result column="source_id" jdbcType="VARCHAR" property="sourceId" />
+    <result column="sub_excategory_name" jdbcType="NVARCHAR" property="subExcategoryName" />
+    <result column="extype" jdbcType="INTEGER" property="extype" />
+    <result column="costcenter_id" jdbcType="VARCHAR" property="costcenterId" />
+    <result column="sub_excategory_desc" jdbcType="NVARCHAR" property="subExcategoryDesc" />
+    <result column="effective_date" jdbcType="TIMESTAMP" property="effectiveDate" />
+    <result column="reference_id1" jdbcType="VARCHAR" property="referenceId1" />
+    <result column="reference_id2" jdbcType="VARCHAR" property="referenceId2" />
+    <result column="reference_id3" jdbcType="VARCHAR" property="referenceId3" />
+    <result column="reference_id4" jdbcType="VARCHAR" property="referenceId4" />
+    <result column="reference_id5" jdbcType="VARCHAR" property="referenceId5" />
+    <result column="sub_excategory_state" jdbcType="INTEGER" property="subExcategoryState" />
+    <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="last_edit_by" jdbcType="VARCHAR" property="lastEditBy" />
+    <result column="last_edit_time" jdbcType="TIMESTAMP" property="lastEditTime" />
+  </resultMap>
+    
+    <select id="findsubExInfoBySubExcategoryId" parameterType="java.lang.String" resultType="com.icicle.masterdb.pojo.vo.SubExpenditureCategoryVO">
+        select distinct sec.sub_excategory_id subExcategoryId,l.lan_name lanCode,sec.source_id sourceId,sec.sub_excategory_name subExcategoryName,
+        c.cost_center_name costcenterId,sec.sub_excategory_desc subExcategoryDesc,sec.effective_date effectiveDate,
+        case sec.sub_excategory_state when '1' then '有效' when '0' then '无效' else '' end subExcategoryState
+        from sub_expenditure_category sec
+        LEFT JOIN [language] l on sec.lan_code=l.lan_code LEFT JOIN costcenter c on sec.costcenter_id=c.costcenter_id
+        where sec.lan_code=#{lanCode} and sec.sub_excategory_id=#{subExcategoryId};
+    </select>
+
+
+    <select id="getSyncSubExCategoryInfo" resultType="com.icicle.masterdb.pojo.vo.SyncPropertyVO">
+        select source_id AS mainSysId,
+        2 AS operationStatus,
+        'C_PAYSUBCLASS' AS tableName,
+        '' AS dimFlag,
+        convert(nvarchar(20),sub_excategory_id) as code,
+        convert(nvarchar(50),sub_excategory_name ) AS [description]
+        from dbo.sub_expenditure_category where sub_excategory_state = 1 and lan_code = #{lanCode}
+        and sub_excategory_id in
+        <foreach open="(" separator="," close=")" collection="subExcategoryIdList" item="item">
+            #{item}
+        </foreach>
+
+    </select>
+
+    <select id="findByQueryCondition" resultType="com.icicle.masterdb.pojo.vo.SubExpenditureCategoryVO">
+        select sc.sub_excategory_id subExcategoryId,l.lan_name lanCode,sc.sub_excategory_name subExcategoryName,
+        ISNULL((select cost_center_name from costcenter where costcenter_id=sc.costcenter_id and lan_code='zhs'), '') costcenterId,
+        sc.sub_excategory_desc subExcategoryDesc,sc.effective_date effectiveDate,
+        case sc.sub_excategory_state when 1 then '有效' else '无效' end subExcategoryState from sub_expenditure_category sc
+        LEFT JOIN [language] l on sc.lan_code=l.lan_code where 1=1
+        <if test="subExIdOrName != null  and subExIdOrName != '' "> and ( sc.sub_excategory_id like  '%'+#{subExIdOrName}+'%' or sc.sub_excategory_name like  '%'+#{subExIdOrName}+'%' ) </if>
+        <if test="lanCode != null  and lanCode != '' "> and sc.lan_code = #{lanCode}</if>
+
+    </select>
+</mapper>

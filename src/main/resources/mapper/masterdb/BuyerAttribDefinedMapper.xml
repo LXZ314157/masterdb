@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icicle.masterdb.dao.masterdb.BuyerAttribDefinedMapper">
+    <resultMap id="BaseResultMap" type="com.icicle.masterdb.model.BuyerAttribDefined">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="buyer_attrib_def_id" jdbcType="INTEGER" property="buyerAttribDefId"/>
+        <result column="buyer_attrib_def_code" jdbcType="VARCHAR" property="buyerAttribDefCode"/>
+        <result column="buyer_attrib_def_name" jdbcType="VARCHAR" property="buyerAttribDefName"/>
+        <result column="item_type" jdbcType="VARCHAR" property="itemType"/>
+        <result column="item_length" jdbcType="INTEGER" property="itemLength"/>
+        <result column="has_item" jdbcType="BIT" property="hasItem"/>
+        <result column="define_order" jdbcType="BIT" property="defineOrder"/>
+        <result column="is_sycn" jdbcType="BIT" property="isSycn"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="created_by" jdbcType="VARCHAR" property="createdBy"/>
+        <result column="creation_date" jdbcType="TIMESTAMP" property="creationDate"/>
+        <result column="last_updated_by" jdbcType="VARCHAR" property="lastUpdatedBy"/>
+        <result column="last_update_date" jdbcType="TIMESTAMP" property="lastUpdateDate"/>
+    </resultMap>
+    <insert id="saveBuyerDefine" useGeneratedKeys="true" keyProperty="buyerAttribDefId">
+     INSERT INTO buyer_attrib_defined
+     (buyer_attrib_def_code,buyer_attrib_def_name,item_type,item_length,has_item,status,created_by,creation_date,last_updated_by,last_update_date,define_order,is_sycn)
+     VALUES
+     (#{buyerAttribDefCode},#{buyerAttribDefName},#{itemType},#{itemLength},#{hasItem} ,#{status} ,#{createdBy},#{creationDate},#{lastUpdatedBy},#{lastUpdateDate},#{defineOrder},#{isSycn})
+  </insert>
+</mapper>

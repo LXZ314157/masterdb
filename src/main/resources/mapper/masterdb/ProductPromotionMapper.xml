@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icicle.masterdb.dao.masterdb.ProductPromotionMapper">
+    <resultMap id="BaseResultMap" type="com.icicle.masterdb.model.ProductPromotion">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="promotion_id" jdbcType="VARCHAR" property="promotionId"/>
+        <result column="promotion_code" jdbcType="VARCHAR" property="promotionCode"/>
+        <result column="promotion_img_name" jdbcType="VARCHAR" property="promotionImgName"/>
+        <result column="year" jdbcType="VARCHAR" property="year"/>
+        <result column="dev_season" jdbcType="VARCHAR" property="devSeason"/>
+        <result column="wave_band" jdbcType="VARCHAR" property="waveBand"/>
+        <result column="line" jdbcType="VARCHAR" property="line"/>
+        <result column="out_of_date" jdbcType="TIMESTAMP" property="outOfDate"/>
+        <result column="theme" jdbcType="INTEGER" property="theme"/>
+        <result column="show_type" jdbcType="INTEGER" property="showType"/>
+        <result column="createby" jdbcType="VARCHAR" property="createby"/>
+        <result column="creation_date" jdbcType="TIMESTAMP" property="creationDate"/>
+        <result column="last_up_date" jdbcType="TIMESTAMP" property="lastUpDate"/>
+        <result column="last_update_by" jdbcType="VARCHAR" property="lastUpdateBy"/>
+    </resultMap>
+    <select id="checkPromotionId" parameterType="java.lang.String" resultType="java.lang.Integer">
+      SELECT COUNT (promotion_id) from product_promotion where promotion_id=#{id}
+    </select>
+    <select id="checkPromotionCode" parameterType="java.lang.String" resultType="java.lang.Integer">
+        SELECT COUNT (promotion_code) from product_promotion where promotion_code=#{code}
+    </select>
+</mapper>

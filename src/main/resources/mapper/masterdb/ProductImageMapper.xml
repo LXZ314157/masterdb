@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icicle.masterdb.dao.masterdb.ProductImageMapper">
+    <resultMap id="BaseResultMap" type="com.icicle.masterdb.model.ProductImage">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="image_id" jdbcType="INTEGER" property="id"/>
+        <result column="image_url" jdbcType="VARCHAR" property="imageUrl"/>
+        <result column="image_type" jdbcType="INTEGER" property="imageType"/>
+        <result column="image_name" jdbcType="VARCHAR" property="imageName"/>
+        <result column="created_by" jdbcType="VARCHAR" property="createdBy"/>
+        <result column="created_date" jdbcType="TIMESTAMP" property="createdDate"/>
+        <result column="last_updated_by" jdbcType="VARCHAR" property="lastUpdatedBy"/>
+        <result column="last_updated_date" jdbcType="TIMESTAMP" property="lastUpdatedDate"/>
+    </resultMap>
+
+    <update id="deleteByImageId">
+        UPDATE product_image set status = 0 WHERE  image_id = #{imageId}
+    </update>
+
+    <select id="findProImgByMolCode" resultMap="BaseResultMap">
+            select
+             p.image_name,
+             p.image_url,
+             p.image_id,
+             p.image_type
+             from model_product_mapping m
+             inner join product_image p
+             on p.image_name = m.product_code
+             where m.model_code = #{modelCode}
+             and p.status = 1
+             and m.status = 1
+             and p.default_image = 1
+    </select>
+
+    <select id="findModImgByProCode" resultMap="BaseResultMap">
+            select
+             p.image_name,
+             p.image_url,
+             p.image_id,
+             p.image_type
+             from model_product_mapping m
+             inner join product_image p
+             on p.image_name = m.model_code
+             where m.product_code = #{productCode}
+             and p.status = 1
+             and m.status = 1
+             and p.default_image = 1
+    </select>
+
+    <select id="findOneByCode" resultMap="BaseResultMap">
+        select top 1 image_id,image_url,image_name,image_type FROM product_image where image_name = #{param1}
+    </select>
+
+    <select id="findDefaultImage" resultMap="BaseResultMap">
+        select image_id,image_url,image_type,image_name
+        from product_image
+        WHERE image_name = #{code}
+        and default_image = 1
+        and status = 1
+    </select>
+
+    <select id="findImageNotDefault" resultMap="BaseResultMap">
+        select image_id,image_url,image_type,image_name
+        from product_image
+        WHERE image_name = #{code}
+        and default_image = 0
+        and status = 1
+    </select>
+
+    <update id="updateList" parameterType="java.util.List">
+        <foreach collection="list" separator=";" item="item">
+            UPDATE product_image set last_updated_by = #{item.lastUpdatedBy},
+            last_updated_date = #{item.lastUpdatedDate},
+            status = 1
+            where image_url = #{item.imageUrl}
+        </foreach>
+    </update>
+
+    <update id="updateBatch" parameterType="java.util.List">
+
+        UPDATE product_image set last_updated_by = #{param1},
+        last_updated_date = #{param2},
+        status = 1
+        where image_url in
+        <foreach collection="imgurls" index="index" item="item"   open="(" separator="," close=")">
+            #{item}
+        </foreach>
+
+    </update>
+
+    <select id="findExistList" parameterType="java.util.List" resultType="java.lang.String">
+        SELECT image_url from product_image where image_url IN
+        <foreach collection="list" item="item" separator="," open="(" close=")">
+            #{item.imageUrl}
+        </foreach>
+    </select>
+
+</mapper>

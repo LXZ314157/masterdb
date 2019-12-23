@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icicle.masterdb.dao.masterdb.ProductDimensionMerchandisingMapper">
+    <resultMap id="BaseResultMap" type="com.icicle.masterdb.model.ProductDimensionMerchandising">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="product_code" jdbcType="VARCHAR" property="productCode"/>
+        <id column="language" jdbcType="VARCHAR" property="language"/>
+        <result column="single_search_cover" jdbcType="BIT" property="singleSearchCover"/>
+        <result column="planning_location" jdbcType="INTEGER" property="planningLocation"/>
+        <result column="purchase_location" jdbcType="INTEGER" property="purchaseLocation"/>
+        <result column="display_location" jdbcType="INTEGER" property="displayLocation"/>
+        <result column="series" jdbcType="INTEGER" property="series"/>
+        <result column="series_remark" jdbcType="NVARCHAR" property="seriesRemark"/>
+        <result column="eco_way_material" jdbcType="INTEGER" property="ecoWayMaterial"/>
+        <result column="eco_way_color" jdbcType="INTEGER" property="ecoWayColor"/>
+        <result column="eco_way_technics" jdbcType="INTEGER" property="ecoWayTechnics"/>
+        <result column="eco_way_remark" jdbcType="NVARCHAR" property="ecoWayRemark"/>
+        <result column="official_weibo" jdbcType="BIT" property="officialWeibo"/>
+        <result column="selling_point" jdbcType="INTEGER" property="sellingPoint"/>
+        <result column="record" jdbcType="NVARCHAR" property="record"/>
+    </resultMap>
+
+    <select id="findByCode" resultMap="BaseResultMap">
+    SELECT planning_location,purchase_location,display_location,
+            series,series_remark,eco_way_material,eco_way_color,
+            eco_way_technics,eco_way_remark,official_weibo,selling_point,
+            record,product_code
+    from product_dimension_merchandising
+    where product_code = #{param1}
+  </select>
+
+    <select id="findAllProductCode" resultType="java.lang.String">
+        select product_code from product_dimension_merchandising
+    </select>
+
+    <update id="updateMerchandising">
+        update  product_dimension_merchandising
+        set single_search_cover = #{singleSearchCover},
+         planning_location = #{planningLocation},
+         purchase_location = #{purchaseLocation},
+         display_location = #{displayLocation},
+         series = #{series},
+         eco_way_material = #{ecoWayMaterial},
+         eco_way_color = #{ecoWayColor},
+         eco_way_technics = #{ecoWayTechnics},
+         eco_way_remark = #{ecoWayRemark},
+         official_weibo = #{officialWeibo},
+         selling_point = #{sellingPoint},
+         record = #{record}
+        WHERE product_code = #{productCode}
+              and language = #{language}
+    </update>
+
+    <insert id="saveList" parameterType="java.util.List">
+        INSERT INTO product_dimension_merchandising (product_code,language,single_search_cover,
+        planning_location,purchase_location,display_location,series,series_remark,eco_way_material,
+        eco_way_color,eco_way_technics,eco_way_remark,official_weibo,selling_point,record ) VALUES
+        <foreach collection="list" separator="," item="item">
+            (#{item.productCode},#{item.language},#{item.singleSearchCover},#{item.planningLocation},#{item.purchaseLocation}
+            ,#{item.displayLocation},#{item.series},#{item.seriesRemark},#{item.ecoWayMaterial},#{item.ecoWayColor},#{item.ecoWayTechnics}
+            ,#{item.ecoWayRemark},#{item.officialWeibo},#{item.sellingPoint},#{item.record})
+        </foreach>
+    </insert>
+</mapper>

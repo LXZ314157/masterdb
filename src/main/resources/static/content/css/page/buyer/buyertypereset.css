@@ -1,0 +1,13 @@
+.form-group .controls{
+    padding:10px;
+}
+.form-horizontal .control-label {
+    padding:10px;
+}
+.edittype{
+    border: none;
+    background: none;
+}
+.typerow{
+    text-align: center;
+}

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icicle.masterdb.dao.masterdb.UomMappingMapper">
+  <resultMap id="BaseResultMap" type="com.icicle.masterdb.model.UomMapping">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="uom_code" jdbcType="VARCHAR" property="uomCode" />
+    <result column="erp_uom_code" jdbcType="VARCHAR" property="erpUomCode" />
+    <result column="plm_uom_code" jdbcType="VARCHAR" property="plmUomCode" />
+    <result column="wms_uom_code" jdbcType="VARCHAR" property="wmsUomCode" />
+  </resultMap>
+</mapper>

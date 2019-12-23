@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icicle.masterdb.dao.masterdb.ColorCardMapper">
+    <resultMap id="BaseResultMap" type="com.icicle.masterdb.model.ColorCard">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="color_card_code" jdbcType="VARCHAR" property="colorCardCode"/>
+        <result column="color_card_name" jdbcType="NVARCHAR" property="colorCardName"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="language" jdbcType="VARCHAR" property="language"/>
+        <result column="last_update_date" jdbcType="TIMESTAMP" property="lastUpdateDate"/>
+        <result column="last_update_by" jdbcType="NVARCHAR" property="lastUpdateBy"/>
+        <result column="created_by" jdbcType="NVARCHAR" property="createdBy"/>
+        <result column="created_date" jdbcType="TIMESTAMP" property="createdDate"/>
+    </resultMap>
+    <select id="selectCardPart" resultMap="BaseResultMap">
+    select
+     color_card_code
+    ,color_card_name
+    FROM color_card
+  </select>
+    <select id="searchByCondition" resultType="java.lang.Integer">
+        SELECT COUNT(id) FROM color_card WHERE (( color_card_code =#{colorCardCode} or color_card_name =#{colorCardName} ) AND id !=#{id})
+    </select>
+
+
+    <insert id="insertInfoAll">
+        INSERT INTO color_card
+        (color_card_code,color_card_name,language,status,created_by,created_date)
+        VALUES
+        <foreach collection="list" separator="," item="item">
+            (#{item.colorCardCode},#{item.colorCardName},#{item.language},#{item.status},#{item.createdBy},#{item.createdDate})
+        </foreach>
+    </insert>
+
+    <select id="searchCard" resultMap="BaseResultMap">
+        select
+        color_card_code
+        ,color_card_name
+        FROM color_card where color_card_code=#{colorCardCode}
+    </select>
+</mapper>

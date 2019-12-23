@@ -1,0 +1,344 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icicle.masterdb.dao.masterdb.ProductCategoryMapper">
+  <resultMap id="BaseResultMap" type="com.icicle.masterdb.model.ProductCategory">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <result column="product_category_id" jdbcType="INTEGER" property="productCategoryId" />
+    <result column="product_category_code" jdbcType="VARCHAR" property="productCategoryCode" />
+    <result column="category_name" jdbcType="NVARCHAR" property="categoryName" />
+    <result column="category_desc" jdbcType="NVARCHAR" property="categoryDesc" />
+    <result column="category_state" jdbcType="INTEGER" property="categoryState" />
+    <result column="load_url" jdbcType="VARCHAR" property="loadUrl" />
+    <result column="created_by" jdbcType="VARCHAR" property="createdBy" />
+    <result column="creation_date" jdbcType="TIMESTAMP" property="creationDate" />
+    <result column="last_updated_by" jdbcType="VARCHAR" property="lastUpdatedBy" />
+    <result column="last_update_date" jdbcType="TIMESTAMP" property="lastUpdateDate" />
+  </resultMap>
+
+
+  <insert id="saveProductCategory" useGeneratedKeys="true" keyProperty="productCategoryId">
+        INSERT  INTO  product_category
+         (product_category_code,category_name,category_desc,category_state,load_url,created_by,creation_date)
+          VALUES
+          (#{productCategoryCode},#{categoryName},#{categoryDesc},1,#{loadUrl},#{createdBy},#{creationDate})
+    </insert>
+
+    <select id="findAllAttributeDefied" resultMap="BaseResultMap">
+        SELECT id,def_code,def_name,def_desc,def_type,def_length,has_item,status,select_table
+        FROM dimension_attribute_defined where status=1 and def_group= 2
+    </select>
+
+    <update id="updateProductCategory">
+        UPDATE product_category
+        <set>
+            <if test="categoryName!=null">category_name =#{categoryName},</if>
+            <if test="categoryDesc!=null">category_desc=#{categoryDesc},</if>
+            <if test="categoryState!=null">category_state=#{categoryState},</if>
+            <if test="loadUrl!=null">load_url=#{loadUrl},</if>
+        </set>
+        ,last_updated_by =#{lastUpdatedBy}
+        ,last_update_date=#{lastUpdateDate}
+        WHERE product_category_id=#{productCategoryId}
+    </update>
+
+
+    <insert id="insertPrimarykey" >
+          INSERT  INTO  ${productCategoryCode}
+          (product_code,product_name,uom,standard_cost,brand,status,sync_status,security_code)
+          VALUES
+          (#{product_code},#{product_name},#{uom},#{standard_cost},#{brand},#{status},2,#{security_code})
+    </insert>
+
+
+    <select id="selectExistCount" resultType="java.lang.Integer">
+      select count(1) from product where product_code=#{product_code}
+    </select>
+
+    <select id="getTableCulomnsCount" resultType="java.lang.Integer">
+        select count(1) from syscolumns where id = object_id(#{tableName})
+    </select>
+
+    <update id="alterColumnValue">
+        UPDATE ${productCategoryCode}
+        <set>
+            <if test="attr_value!=null">${attr_code} =#{attr_value},</if>
+            last_update_date = GETDATE()
+        </set>
+        WHERE product_code=#{product_code}
+    </update>
+
+    <select id="getKeyList" resultType="java.util.HashMap">
+        select def_code,def_name from product_extend_attribute_defined where def_code in(select name from syscolumns where id = object_id(#{productCategoryCode}))
+    </select>
+
+    <select id="getSearchList" resultType="java.util.HashMap">
+      select * from  ${productCategoryCode} pcc left join product p
+        on pcc.product_code = p.product_code  where 1 = 1
+      <if test="sSearch != null  and sSearch != '' ">and ( pcc.product_code like  '%'+#{sSearch}+'%' or p.product_name like  '%'+#{sSearch}+'%' ) </if>
+    </select>
+
+    <select id="getProductName" resultType="java.lang.String">
+      select category_name from product_category where product_category_code = #{productCategoryCode}
+    </select>
+
+    <insert id="insertCategoryTable" parameterType="java.lang.String">
+      insert into ${tableName} (product_code,product_id,created_by,creation_date,last_update_date) values(#{productCode},#{productId},#{loginName},GETDATE(),GETDATE());
+    </insert>
+
+    <select id="findDzxlInfo" parameterType="java.lang.String" resultType="java.util.Map">
+      SELECT p3.category_key cateDl,p1.product_sub_category_code cateZl,p2.product_sub_category_code cateXl,p2.sub_category_key subCategoryKey FROM
+      product_sub_category p1 LEFT JOIN product_sub_category p2 ON p1.product_sub_category_code=p2.pa_sub_category_code LEFT JOIN product_category p3
+      ON p2.category_code=p3.category_key WHERE p1.product_sub_category_name=#{cateZl} AND p2.product_sub_category_name=#{cateXl} AND p1.lan_code='zhs'
+    </select>
+
+
+    <select id="getResultValue" resultType="java.util.Map">
+      SELECT PAD.def_code,pai.code,pai.name FROM product_extend_attribute_item pai
+      LEFT JOIN product_extend_attribute_defined PAD ON pai.def_id = PAD.id
+    </select>
+
+    <select id="getHasItemTable" resultType="java.util.Map">
+      select def_code,has_item,select_table from product_extend_attribute_defined
+    </select>
+    
+    <select id="selectTable" parameterType="java.lang.String" resultType="java.lang.Integer">
+        select count(1) count from syscolumns where id = object_id(#{productCategory});
+    </select>
+
+    <insert id="insertProductAttributeList" parameterType="java.util.List">
+        insert into product_attribute
+        ( product_code,attr_code,attr_value,base_attr)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            #{item.product_code},
+            #{item.attr_code},
+            #{item.attr_value},
+            0
+            )
+        </foreach>
+    </insert>
+
+
+    <update id="updateProductAttribute" parameterType="java.util.Map">
+        update product_attribute
+        set attr_value=#{attr_value},base_attr=0,last_updated_by=#{last_updated_by},last_update_date=GETDATE()
+        where product_code = #{product_code} and attr_code = #{attr_code};
+    </update>
+
+
+    <select id="getSelectTableName" parameterType="java.lang.String" resultType="java.util.Map">
+      select c.columnName,p.select_table selectTable from (
+    select COLUMN_NAME columnName from information_schema.COLUMNS where table_name = #{tableName}) c
+    LEFT JOIN product_extend_attribute_defined p on c.columnName=p.def_code where p.select_table is not null
+    </select>
+
+
+    <select id="findBookDzxlInfo" parameterType="java.lang.String" resultType="java.util.Map">
+        SELECT p4.category_key AS cateDl,p1.product_sub_category_code AS cateZl,p2.product_sub_category_code cateXl,p3.product_sub_category_code AS
+        category_level_third FROM product_sub_category p1 LEFT JOIN product_sub_category p2 ON p1.product_sub_category_code=p2.pa_sub_category_code
+        LEFT JOIN product_sub_category p3 ON p2.product_sub_category_code=p3.pa_sub_category_code LEFT JOIN product_category p4 ON p3.category_code=p4.category_key
+        WHERE p2.product_sub_category_name=#{cateXl} AND p3.product_sub_category_name=#{bookFourth} AND p1.lan_code='zhs'
+    </select>
+    
+    <select id="getProductInfoByProductCode" parameterType="java.lang.String" resultType="java.lang.Integer">
+      select count(1) from product_info where product_code = #{productCode};
+    </select>
+
+    <insert id="batchInsertProductInfo" parameterType="java.util.List">
+        insert into product_info (product_code,sku,color,batch,size,standard_price,standard_cost,sale_cost,status,security_code,created_by,last_updated_by,creation_date,last_update_date) values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.product_code},#{item.sku},#{item.color},#{item.batch},#{item.size},#{item.standard_price},#{item.standard_cost},#{item.sale_cost},#{item.status},#{item.security_code},#{item.created_by},#{item.last_updated_by},GETDATE(),GETDATE())
+        </foreach>
+    </insert>
+
+    <update id="batchUpdateProductInfo" parameterType="java.util.Map">
+        <foreach collection="list" item="item" separator=";">
+            update product_info
+            <set>
+                <if test="item.standard_price!=null and item.standard_price!=0" >standard_price = #{item.standard_price},</if>
+                <if test="item.standard_cost!=null and item.standard_cost!=0" >standard_cost = #{item.standard_cost},</if>
+                <if test="item.sale_cost!=null and item.sale_cost!=0" >sale_cost = #{item.sale_cost},</if>
+                <if test="item.security_code!=null and item.security_code!=''" >security_code = #{item.security_code},</if>
+                <if test="item.color!=null and item.color!=''" >color = #{item.color},</if>
+                <if test="item.batch!=null and item.batch!=''" >batch = #{item.batch},</if>
+                <if test="item.size!=null and item.size!=''" >size = #{item.size},</if>
+                <if test="item.status!=null" >status = #{item.status},</if>
+                last_updated_by = #{item.last_updated_by},
+                last_update_date = GETDATE()
+            </set>
+            where product_code=#{item.product_code} and sku = #{item.sku}
+        </foreach>
+    </update>
+
+    <select id="selectProductAttrCount" parameterType="java.lang.String" resultType="java.lang.Integer">
+      select count(1) from product_attribute where product_code = #{productCode} and attr_code = #{attrCode};
+    </select>
+
+    <select id="findHomeholdDzxlInfo" parameterType="java.lang.String" resultType="java.util.Map">
+        SELECT pc.category_key cateDl,psc.product_sub_category_code cateZl,CASE psc.sale_tax_rate WHEN NULL THEN '0.13' WHEN ''
+        THEN '0.13' WHEN '0' THEN '0.13' ELSE psc.sale_tax_rate END AS saleTaxRate FROM product_sub_category psc LEFT JOIN product_category pc
+        ON psc.category_code=pc.category_key WHERE psc.category_code='P02' AND psc.product_sub_category_name=#{cateZl}
+    </select>
+
+    <select id="searchByCondition" resultType="com.icicle.masterdb.model.ViewSelectproductinfo">
+      SELECT p.product_code productCode,p.product_name productName,p.uom,p.brand,p.unit_price unitPrice,p.standard_cost cost,p.product_desc productDesc,
+      p.creation_date creationDate,p.last_update_date lastUpdateDate,p.STATUS,p.sync_status syncStatus,pc.category_name c1,p.category_level_1 c2,
+      p.category_level_2 c3 FROM product p LEFT JOIN product_category pc ON p.product_category_code=pc.category_key WHERE product_code=#{productCode}
+    </select>
+
+    <select id="searchHomeholdByCondition" resultType="com.icicle.masterdb.model.ViewSelectproductinfo">
+      SELECT p.product_code productCode,p.product_name productName,p.uom,p.brand,p.unit_price unitPrice,p.standard_cost cost,p.product_desc productDesc,
+      p.creation_date creationDate,p.last_update_date lastUpdateDate,p.STATUS,p.sync_status syncStatus,pc.category_name c1,p.category_level_1 AS c2 FROM
+      product p LEFT JOIN product_category pc ON p.product_category_code=pc.category_key WHERE product_code=#{ productCode}
+    </select>
+
+    <select id="getItemkeys" resultType="java.util.Map">
+      select * from view_select_item
+    </select>
+
+    <insert id="batchInsertProductExtendAttributeList" parameterType="java.util.List">
+        insert into ${productCategoryCode}
+        (
+            <foreach collection="extendKeyList" index="index_key" item="keyItem" separator=",">
+                ${keyItem}
+            </foreach>
+            ,creation_date,last_update_date
+        )
+        values    
+          <foreach collection="extendValuesList" item="items" separator="," index="index1">
+        (
+              <foreach collection="items" separator="," item="item" index="index2">
+                '${item}'
+              </foreach> 
+          ,GETDATE(),GETDATE()
+        )
+          </foreach>  
+    </insert>
+
+    <update id="batchUpdateProductExtendAttributeList" parameterType="java.util.List">
+        <foreach collection="extendUpdateValuesMapList" separator=";" item="items">
+            update ${productCategoryCode} SET
+            <foreach collection="items" item="key" separator=",">
+                ${key} = #{items[${key}]}
+            </foreach>
+            WHERE product_code=#{items[product_code]}
+        </foreach>
+
+    </update>
+
+    <insert id="batchInsertProductAttributeList" parameterType="java.util.List">
+        insert into product_attribute ( product_code,attr_code,attr_value,base_attr)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.product_code},#{item.attr_code},#{item.attr_value},0)
+        </foreach>
+    </insert>
+
+    <select id="selectMaterialContrainProductIds" resultType="java.lang.String">
+        select product_id from product_material_contrain;
+    </select>
+
+
+    <delete id="batchDeleteMaterialContrain" parameterType="java.util.List">
+        delete from product_material_contrain
+        where product_id in
+        <foreach collection="list" index="index" item="item"   open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+
+    <insert id="batchInsertMaterialContrain" parameterType="java.util.List">
+        insert into product_material_contrain
+        ( product_id,store_class,store_type_id)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            #{item.product_id},
+            #{item.store_class},
+            #{item.store_type_id}
+            )
+        </foreach>
+    </insert>
+
+    <select id="getPrimaryNumkey" resultType="java.lang.String" parameterType="java.lang.String">
+        SELECT num_count FROM master_data_num WHERE num_key=#{subCategoryKey};
+    </select>
+
+    <select id="getProductCodeKey" resultType="java.lang.String">
+      select category_key from product_category where product_category_code=#{productCategoryCode};
+    </select>
+
+    <select id="getProductCategoryCode" resultType="java.lang.String" parameterType="java.lang.String">
+      select product_category_code from product_category where category_key=#{categoryKey};
+    </select>
+
+
+    <update id="updateProductExtendAttributeList">
+        update ${productCategoryCode}
+        <set>
+            <foreach collection="fields.entrySet()" index="key" item="value" separator=",">
+                <if test="value!=null and value!=''">
+                    ${key} = #{value}
+                </if>
+            </foreach>
+        </set>
+        WHERE
+        product_code = #{productCode};
+    </update>
+
+
+    <update id="batchUpdateProductAttributeList" parameterType="java.util.List">
+        <foreach collection="list" separator=";" item="item">
+            update product_attribute
+            set
+            attr_value=#{item.attr_value}
+            WHERE product_code=#{item.product_code} and attr_code = #{item.attr_code}
+        </foreach>
+    </update>
+
+
+    <delete id="batchDeleteProductAttributeList">
+        delete from product_attribute
+        where product_code in
+        <foreach collection="delProductCodeList" index="index" item="item"   open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+
+    <select id="setProductCodeAndSku" resultType="java.util.Map">
+        select product_code,sku from product_info
+    </select>
+
+    <delete id="deleteProductAttributeList" parameterType="java.lang.String">
+         delete from product_attribute where product_code in
+         <foreach collection="list" open="(" close=")" separator="," index="index" item="item">
+             #{item}
+         </foreach>
+    </delete>
+
+    <select id="getProductCodeAndCategoryCodeList" resultType="java.util.Map">
+        select product_code,product_category_code from product;
+    </select>
+
+    <select id="getProductCodeBySku" resultType="java.lang.String" parameterType="java.lang.String">
+      select product_code from product_info where sku=#{sku};
+    </select>
+
+    <update id="updateAttribute">
+      update product_attribute set attr_value= #{attr_value} where product_code=#{product_code} and attr_code=#{attr_code};
+    </update>
+
+
+</mapper>
+
+
+
+
+
+
+

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icicle.masterdb.dao.masterdb.ProductLineMapper">
+  <resultMap id="BaseResultMap" type="com.icicle.masterdb.model.ProductLine">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="product_line_no" jdbcType="INTEGER" property="productLineNo" />
+    <result column="product_line_name" jdbcType="VARCHAR" property="productLineName" />
+    <result column="product_line_state" jdbcType="INTEGER" property="productLineState" />
+    <result column="created_by" jdbcType="VARCHAR" property="createdBy" />
+    <result column="creation_date" jdbcType="TIMESTAMP" property="creationDate" />
+    <result column="last_updated_by" jdbcType="VARCHAR" property="lastUpdatedBy" />
+    <result column="last_update_date" jdbcType="TIMESTAMP" property="lastUpdateDate" />
+  </resultMap>
+</mapper>

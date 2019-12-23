@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icicle.masterdb.dao.masterdb.ManageCenterMapper">
+  <resultMap id="BaseResultMap" type="com.icicle.masterdb.model.ManageCenter">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="manager_center_id" jdbcType="INTEGER" property="managerCenterId" />
+    <result column="manager_center_name" jdbcType="NVARCHAR" property="managerCenterName" />
+    <result column="staff_num" jdbcType="VARCHAR" property="staffNum" />
+    <result column="manager_name" jdbcType="NVARCHAR" property="managerName" />
+    <result column="manage_center_state" jdbcType="INTEGER" property="manageCenterState" />
+    <result column="created_by" jdbcType="VARCHAR" property="createdBy" />
+    <result column="creation_date" jdbcType="TIMESTAMP" property="creationDate" />
+    <result column="last_updated_by" jdbcType="VARCHAR" property="lastUpdatedBy" />
+    <result column="last_update_date" jdbcType="TIMESTAMP" property="lastUpdateDate" />
+  </resultMap>
+
+
+  <insert id="saveManageCenter" parameterType="com.icicle.masterdb.model.ManageCenter" keyProperty="managerCenterId" useGeneratedKeys="true">
+    INSERT INTO manage_center
+    ( manager_center_name, staff_num, manager_name, manage_center_state, created_by,creation_date)
+    VALUES
+    ( #{managerCenterName}, #{staffNum}, #{managerName},  #{manageCenterState}, #{createdBy}, #{creationDate});
+  </insert>
+
+    <select id="getSyncBurgeonManageCenterById" resultType="com.icicle.masterdb.pojo.vo.SyncPropertyVO">
+        select manager_center_id AS mainSysId,
+        1 AS operationStatus,
+        'C_STOREATTRIBVALUE' AS tableName,
+        'DIM6' AS dimFlag,
+        convert(nvarchar(20),manager_center_id) as code,
+        convert(nvarchar(50),manager_center_name ) AS [description]
+        from manage_center where manage_center_state = 1 and manager_center_id=#{manageCenterId};
+    </select>
+
+    <select id="getSyncYxtMngById" parameterType="java.lang.Integer" resultType="com.icicle.masterdb.pojo.vo.SyncZoneVO">
+        SELECT mc.manager_center_id AS orgOuCode,mc.manager_center_name AS ouName,sf.staff_num AS userno,sf.staff_name_local
+         AS userName,sf.gender AS sex,sf.birthday,sf.mobile,sf.email AS mail,sf.join_date AS entrytime,sf.post_id AS postionNo,
+         sf.superior_num AS superiorNum FROM manage_center
+         mc LEFT JOIN staff sf ON mc.staff_num=sf.staff_num WHERE manager_center_id=#{managerCenterId}
+    </select>
+
+
+    <select id="getSyncYxtZoneById" parameterType="java.lang.Integer" resultType="com.icicle.masterdb.pojo.vo.SyncZoneVO">
+      SELECT z.zone_id AS orgOuCode,z.zone_name AS ouName,z.manage_center_id AS parentID,sf.staff_num AS userno,sf.staff_name_local
+      AS userName,sf.gender AS sex,sf.birthday,sf.mobile,sf.email AS mail,sf.join_date AS entrytime,sf.post_id AS postionNo,sf.superior_num AS superiorNum FROM zone2 z
+      LEFT JOIN staff sf ON z.manager_staff_num=sf.staff_num WHERE z.zone_id in
+      <foreach collection="zoneIdList" open="(" separator="," close=")" item="zoneId">
+          #{zoneId}
+      </foreach>
+    </select>
+
+    <select id="getSyncZoneList" resultType="com.icicle.masterdb.pojo.vo.SyncPropertyVO" parameterType="java.lang.Integer">
+      SELECT zone_id AS main_sys_id,1 AS operation_status,'C_STOREATTRIBVALUE' AS table_name,'DIM8' AS dim_flag,
+      CONVERT (nvarchar (20),zone_id) AS CODE,CONVERT (nvarchar (50),zone_name) AS [ description ] FROM zone2
+      WHERE zone_level=1 AND STATUS=1 AND zone_id=#{zoneId}
+    </select>
+
+
+    <select id="getSyncBurgeonZoneById" resultType="com.icicle.masterdb.pojo.vo.SyncPropertyVO" parameterType="java.lang.Integer">
+      SELECT zone_id as mainSysId,1 as operationStatus,'C_STOREATTRIBVALUE' AS tableName,
+      case zone_level when 1 then 'DIM8' when 2 then 'DIM9' end AS dimFlag,
+      CONVERT (nvarchar (20),zone_id) AS CODE,
+      CONVERT (nvarchar (50),zone_name) AS propertyName FROM zone2 WHERE STATUS=1 AND zone_id=#{zoneId}
+    </select>
+
+    <select id="getSyncYxtStoreByNo" resultType="com.icicle.masterdb.pojo.vo.SyncZoneVO">
+      SELECT s.store_id AS orgOuCode,s.store_name AS ouName,CASE s.store_ownership WHEN 2 THEN (
+      SELECT buyer_id FROM store WHERE store_no=s.store_no) ELSE s.zone2_id END AS parentID,sf.staff_num AS userno,
+      sf.staff_name_local AS userName,sf.gender AS sex,sf.birthday,sf.mobile,sf.email AS mail,sf.join_date AS entrytime,
+      sf.post_id AS postionNo,sf.superior_num AS superiorNum FROM store s LEFT JOIN staff sf ON s.manager_num =sf.staff_num
+      WHERE s.store_no = #{storeNo}
+    </select>
+</mapper>

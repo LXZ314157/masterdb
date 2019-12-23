@@ -1,0 +1,1 @@
+<script src="${base}/static/content/js/page/store/storeattributes.js?v=20180828"></script>

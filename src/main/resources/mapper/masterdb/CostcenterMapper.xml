@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icicle.masterdb.dao.masterdb.CostcenterMapper">
+  <resultMap id="BaseResultMap" type="com.icicle.masterdb.model.Costcenter">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="costcenter_id" jdbcType="VARCHAR" property="costcenterId" />
+    <result column="lan_code" jdbcType="VARCHAR" property="lanCode" />
+    <result column="source_id" jdbcType="VARCHAR" property="sourceId" />
+    <result column="cost_center_name" jdbcType="NVARCHAR" property="costCenterName" />
+    <result column="department_id" jdbcType="VARCHAR" property="departmentId" />
+    <result column="costcenter_manager" jdbcType="VARCHAR" property="costcenterManager" />
+    <result column="costcenter_chief" jdbcType="VARCHAR" property="costcenterChief" />
+    <result column="costcenter_vp" jdbcType="VARCHAR" property="costcenterVp" />
+    <result column="costcenter_desc" jdbcType="NVARCHAR" property="costcenterDesc" />
+    <result column="costcenter_state" jdbcType="INTEGER" property="costcenterState" />
+    <result column="reference_id" jdbcType="VARCHAR" property="referenceId" />
+    <result column="reference_id2" jdbcType="VARCHAR" property="referenceId2" />
+    <result column="reference_id3" jdbcType="VARCHAR" property="referenceId3" />
+    <result column="reference_id4" jdbcType="VARCHAR" property="referenceId4" />
+    <result column="reference_id5" jdbcType="VARCHAR" property="referenceId5" />
+    <result column="creater" jdbcType="VARCHAR" property="creater" />
+    <result column="createtime" jdbcType="TIMESTAMP" property="createtime" />
+    <result column="lasteditor" jdbcType="VARCHAR" property="lasteditor" />
+    <result column="lastedittime" jdbcType="TIMESTAMP" property="lastedittime" />
+  </resultMap>
+
+    <select id="getSyncCostcenterInfo" resultType="com.icicle.masterdb.pojo.vo.CostcenterVO">
+        select c.costcenter_id costcenterId, c.lan_code lanCode,c.source_id sourceId,c.cost_center_name costCenterName,c.cost_center_name costCenterNameEN,
+        c.department_id departmentId,c.costcenter_manager costcenterManager,s.staff_name_local managerName,c.costcenter_chief costcenterChief,s1.staff_name_local chiefName,
+        c.costcenter_vp costcenterVp,s2.staff_name_local vpName,c.costcenter_desc costcenterDesc,c.costcenter_desc costcenterDescEN,c.costcenter_state costcenterState,
+        c.reference_id referenceId,c.reference_id2 referenceId2,c.reference_id3 referenceId3,c.reference_id4 referenceId4,c.reference_id5 referenceId5
+        from costcenter c
+        LEFT JOIN staff s on c.costcenter_manager=s.staff_num
+        LEFT JOIN staff s1 on c.costcenter_manager=s1.staff_num
+        LEFT JOIN staff s2 on c.costcenter_manager=s2.staff_num
+        where c.lan_code = #{lanCode} and c.costcenter_id in
+        <foreach collection="costcenterIdList" open="(" close=")" separator="," index="index" item="item">
+            #{item}
+        </foreach>
+    </select>
+
+</mapper>

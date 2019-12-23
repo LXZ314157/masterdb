@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icicle.masterdb.dao.masterdb.ViewPostListMapper">
+  <resultMap id="BaseResultMap" type="com.icicle.masterdb.model.ViewPostList">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <result column="post_id" jdbcType="VARCHAR" property="postId" />
+    <result column="lan_name" jdbcType="NVARCHAR" property="lanName" />
+    <result column="source_id" jdbcType="VARCHAR" property="sourceId" />
+    <result column="post_name" jdbcType="VARCHAR" property="postName" />
+    <result column="department_name" jdbcType="NVARCHAR" property="departmentName" />
+    <result column="pa_post_id" jdbcType="VARCHAR" property="paPostId" />
+    <result column="staff_name_local" jdbcType="NVARCHAR" property="staffNameLocal" />
+  </resultMap>
+
+
+    <select id="findPostInfoByPostId" parameterType="java.lang.String" resultType="com.icicle.masterdb.pojo.vo.PostVO">
+        select distinct p.post_id postId,l.lan_name lanCode,p.source_id sourceId,p.post_name postName,d.department_name departmentId,
+        p1.post_name paPostId,s.staff_name_local charger,case p.post_state when '1' then '有效' when '0' then '无效' else ''
+        end postState from  post p LEFT JOIN [language] l on p.lan_code=l.lan_code LEFT JOIN department d on p.department_id=d.department_id
+        LEFT JOIN post p1 on p.pa_post_id=p1.post_id LEFT JOIN staff s on p.charger=s.staff_num
+        where d.lan_code='zhs' and p.post_id=#{postId} and p.lan_code=#{lanCode};
+    </select>
+
+
+    <select id="findByQueryCondition" parameterType="java.lang.String" resultType="com.icicle.masterdb.pojo.vo.PostVO">
+        select p.post_id postId,l.lan_name lanCode,p.post_name postName,d.department_name departmentId,
+        ISNULL(p1.post_name, '') paPostId,ISNULL(sf.staff_name_local, '')charger from post p LEFT JOIN [language] l on p.lan_code=l.lan_code
+        LEFT JOIN (select department_id,department_name from department where lan_code='zhs') d
+        on p.department_id=d.department_id LEFT JOIN (select staff_num,staff_name_local from staff) sf on p.charger=sf.staff_num
+        LEFT JOIN post p1 on p.pa_post_id=p1.post_id where 1=1
+        <if test="postIdOrName != null  and postIdOrName != '' "> and ( p.post_id like  '%'+#{postIdOrName}+'%' or p.post_name like  '%'+#{postIdOrName}+'%' ) </if>
+        <if test="lanCode != null  and lanCode != '' "> and p.lan_code = #{lanCode}</if>
+
+    </select>
+</mapper>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icicle.masterdb.dao.masterdb.ViewDepartmentMatrixListMapper">
+  <resultMap id="BaseResultMap" type="com.icicle.masterdb.model.ViewDepartmentMatrixList">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <result column="department_id" jdbcType="VARCHAR" property="departmentId" />
+    <result column="principal_level1" jdbcType="NVARCHAR" property="principalLevel1" />
+    <result column="principal_level1_code" jdbcType="NVARCHAR" property="principalLevel1Code" />
+    <result column="principal_level2" jdbcType="NVARCHAR" property="principalLevel2" />
+    <result column="principal_level2_code" jdbcType="NVARCHAR" property="principalLevel2Code" />
+    <result column="chief" jdbcType="NVARCHAR" property="chief" />
+    <result column="chief_code" jdbcType="NVARCHAR" property="chiefCode" />
+    <result column="vice_president" jdbcType="NVARCHAR" property="vicePresident" />
+    <result column="vice_president_code" jdbcType="NVARCHAR" property="vicePresidentCode" />
+    <result column="president" jdbcType="NVARCHAR" property="president" />
+    <result column="president_code" jdbcType="NVARCHAR" property="presidentCode" />
+    <result column="hr_bp" jdbcType="NVARCHAR" property="hrBp" />
+    <result column="hr_bp_code" jdbcType="NVARCHAR" property="hrBpCode" />
+    <result column="member01" jdbcType="NVARCHAR" property="member01" />
+    <result column="member02" jdbcType="NVARCHAR" property="member02" />
+    <result column="member03" jdbcType="NVARCHAR" property="member03" />
+    <result column="member04" jdbcType="NVARCHAR" property="member04" />
+    <result column="member05" jdbcType="NVARCHAR" property="member05" />
+    <result column="member06" jdbcType="NVARCHAR" property="member06" />
+    <result column="member07" jdbcType="NVARCHAR" property="member07" />
+    <result column="member08" jdbcType="NVARCHAR" property="member08" />
+    <result column="member09" jdbcType="NVARCHAR" property="member09" />
+    <result column="member10" jdbcType="NVARCHAR" property="member10" />
+
+    <result column="member01_code" jdbcType="NVARCHAR" property="member01Code" />
+    <result column="member02_code" jdbcType="NVARCHAR" property="member02Code" />
+    <result column="member03_code" jdbcType="NVARCHAR" property="member03Code" />
+    <result column="member04_code" jdbcType="NVARCHAR" property="member04Code" />
+    <result column="member05_code" jdbcType="NVARCHAR" property="member05Code" />
+    <result column="member06_code" jdbcType="NVARCHAR" property="member06Code" />
+    <result column="member07_code" jdbcType="NVARCHAR" property="member07Code" />
+    <result column="member08_code" jdbcType="NVARCHAR" property="member08Code" />
+    <result column="member09_code" jdbcType="NVARCHAR" property="member09Code" />
+    <result column="member10_code" jdbcType="NVARCHAR" property="member10Code" />
+  </resultMap>
+</mapper>

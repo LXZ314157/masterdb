@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icicle.masterdb.dao.masterdb.ViewMaterialAttrCatanoMapper">
+    <resultMap id="BaseResultMap" type="com.icicle.masterdb.model.ViewMaterialAttrCatano">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <result column="material_code" jdbcType="VARCHAR" property="materialCode"/>
+        <result column="attr_code" jdbcType="VARCHAR" property="attrCode"/>
+        <result column="atr_value" jdbcType="NVARCHAR" property="atrValue"/>
+        <result column="erp_code" jdbcType="VARCHAR" property="erpCode"/>
+        <result column="attr_name" jdbcType="NVARCHAR" property="attrName"/>
+        <result column="attr_type" jdbcType="VARCHAR" property="attrType"/>
+    </resultMap>
+
+    <select id="getMaterialAttrCatano" resultMap="BaseResultMap">
+        SELECT * FROM view_material_attr_catano WHERE material_code IN
+        <foreach open="(" separator="," close=")" collection="codes" item="code">
+            #{code}
+        </foreach>
+    </select>
+</mapper>

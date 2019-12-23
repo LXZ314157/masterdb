@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icicle.masterdb.dao.masterdb.FabricMapper">
+    <resultMap id="BaseResultMap" type="com.icicle.masterdb.model.Fabric">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="fabric_code" jdbcType="VARCHAR" property="fabricCode"/>
+        <result column="fabric_name" jdbcType="NVARCHAR" property="fabricName"/>
+        <result column="fabric_feature" jdbcType="NVARCHAR" property="fabricFeature"/>
+        <result column="language" jdbcType="VARCHAR" property="language"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="last_update_date" jdbcType="TIMESTAMP" property="lastUpdateDate"/>
+        <result column="last_update_by" jdbcType="NVARCHAR" property="lastUpdateBy"/>
+        <result column="created_by" jdbcType="NVARCHAR" property="createdBy"/>
+        <result column="created_date" jdbcType="TIMESTAMP" property="createdDate"/>
+        <result column="has_feature" jdbcType="BIT" property="hasFeature"/>
+    </resultMap>
+
+    <insert id="saveFabric">
+      insert into fabric(fabric_code,fabric_name,fabric_feature,has_feature,language,created_date,created_by)
+          VALUES
+      (#{fabricCode},#{fabricName},#{fabricFeature},#{hasFeature},#{language},#{createdDate},#{createdBy})
+    </insert>
+
+    <insert id="batchUpdateFabric">
+        <foreach collection="list" index="index" item="item" separator=";">
+            UPDATE fabric SET fabric_name = #{item.fabricName}, last_update_by = 'opr', last_update_date=GETDATE()
+            WHERE fabric_code = #{item.fabricCode}
+        </foreach>
+    </insert>
+
+    <select id="selectFabricPart" resultMap="BaseResultMap">
+        select
+          fabric_code
+          ,fabric_name
+        FROM fabric
+    </select>
+
+    <select id="checkFabricCode" parameterType="java.util.List" resultType="java.lang.String">
+        SELECT fabric_code from fabric WHERE
+        fabric_code IN
+        <foreach collection="list" item="item" open="(" close=")" separator=",">
+            #{item.fabricCode}
+        </foreach>
+    </select>
+
+    <select id="searchFabric" resultMap="BaseResultMap">
+        select
+        fabric_code
+        ,fabric_name
+        FROM fabric where fabric_code=#{fabricCode}
+    </select>
+
+    <select id="findByQueryCondition" parameterType="java.lang.String" resultType="com.icicle.masterdb.pojo.vo.FabricVO">
+        select fabric_code fabricCode,fabric_name fabricName from fabric where fabric_code is not null and fabric_code !=''
+        <if test="fabiricNameOrNo != null  and fabiricNameOrNo != '' "> and ( fabric_code like  '%'+#{fabiricNameOrNo}+'%' or fabric_name like  '%'+#{fabiricNameOrNo}+'%' ) </if>
+    </select>
+
+</mapper>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icicle.masterdb.dao.masterdb.ViewProductSubCategoryListMapper">
+
+
+    <select id="getProductSubCategeryList" parameterType="java.lang.String" resultType="com.icicle.masterdb.model.ViewProductSubCategoryList">
+      select product_sub_category_id as productSubCategoryId,product_sub_category_code as productSubCategoryCode,product_sub_category_name as productSubCategoryName,lan_code as lanCode,lan_name as lanName,category_code as categoryCode,category_name as categoryName,sub_category_level
+      as subCategoryLevel,pa_sub_category_code as paSubCategoryCode,pa_sub_category_name as paSubCategoryName,sub_category_state as subCategoryState,
+      sale_tax_rate as saleTaxRate,sub_category_key as subCategoryKey from view_product_sub_category where 1=1
+        <if test="codeOrName != null  and codeOrName != '' "> and ( product_sub_category_code like  '%'+#{codeOrName}+'%' or product_sub_category_name like  '%'+#{codeOrName}+'%' ) </if>
+        <if test="key != null  and key != '' "> and category_code = #{key} </if>
+        <if test="lanCode != null  and lanCode != '' "> and  lan_code = #{lanCode} </if>
+        <if test="subCategoryLevel != null  and subCategoryLevel != '' "> and sub_category_level = #{subCategoryLevel}</if>
+    </select>
+
+</mapper>

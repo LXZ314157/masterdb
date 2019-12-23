@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icicle.masterdb.dao.masterdb.BuyerAttributeMapper">
+    <resultMap id="BaseResultMap" type="com.icicle.masterdb.model.BuyerAttribute">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="buyer_no" jdbcType="INTEGER" property="buyerNo"/>
+        <result column="attrib_def_id" jdbcType="INTEGER" property="attribDefId"/>
+        <result column="attrib_item_id" jdbcType="INTEGER" property="attribItemId"/>
+        <result column="buyer_attri_value" jdbcType="NVARCHAR" property="buyerAttriValue"/>
+        <result column="created_by" jdbcType="VARCHAR" property="createdBy"/>
+        <result column="creation_date" jdbcType="TIMESTAMP" property="creationDate"/>
+        <result column="last_updated_by" jdbcType="VARCHAR" property="lastUpdatedBy"/>
+        <result column="last_update_date" jdbcType="TIMESTAMP" property="lastUpdateDate"/>
+    </resultMap>
+
+
+    <update id="updateBuyerAttribute" parameterType="java.util.List">
+        <foreach collection="list" item="item" separator=";">
+            update buyer_attribute
+            <set>
+                <if test="item.attribItemId!=null">attrib_item_id = #{item.attribItemId},</if>
+                <if test="item.buyerAttriValue!=null">buyer_attri_value = #{item.buyerAttriValue},</if>
+                last_updated_by=#{item.lastUpdatedBy},last_update_date = GETDATE()
+            </set>
+            where buyer_no=#{item.buyerNo} and attrib_def_id=#{item.attribDefId}
+        </foreach>
+    </update>
+
+    <delete id="batchDeleteBuyerAttribute">
+        delete from buyer_attribute where buyer_no=#{buyerNo} and attrib_def_id in
+        <foreach collection="list" open="(" separator="," close=")" item="item">
+          #{item}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icicle.masterdb.dao.masterdb.ViewSearchimagesElasticMapper">
+  <resultMap id="BaseResultMap" type="com.icicle.masterdb.model.ViewSearchimagesElastic">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <result column="image_id" jdbcType="INTEGER" property="imageId" />
+    <result column="image_url" jdbcType="VARCHAR" property="imageUrl" />
+    <result column="image_name" jdbcType="VARCHAR" property="imageName" />
+    <result column="image_type" jdbcType="INTEGER" property="imageType" />
+    <result column="product_name" jdbcType="NVARCHAR" property="productName" />
+    <result column="year" jdbcType="INTEGER" property="year" />
+    <result column="dev_season" jdbcType="VARCHAR" property="devSeason" />
+    <result column="line" jdbcType="VARCHAR" property="line" />
+    <result column="wave_band" jdbcType="VARCHAR" property="waveBand" />
+    <result column="product_class" jdbcType="NVARCHAR" property="productClass" />
+    <result column="dev_no" jdbcType="VARCHAR" property="devNo" />
+    <result column="style_no" jdbcType="VARCHAR" property="styleNo" />
+    <result column="model_no" jdbcType="VARCHAR" property="modelNo" />
+    <result column="material_no" jdbcType="VARCHAR" property="materialNo" />
+    <result column="material_name" jdbcType="NVARCHAR" property="materialName" />
+    <result column="color_name" jdbcType="NVARCHAR" property="colorName" />
+    <result column="color_card_no" jdbcType="VARCHAR" property="colorCardNo" />
+    <result column="colour_system" jdbcType="NVARCHAR" property="colourSystem" />
+    <result column="planning_location" jdbcType="INTEGER" property="planningLocation" />
+    <result column="purchase_location" jdbcType="INTEGER" property="purchaseLocation" />
+    <result column="display_location" jdbcType="INTEGER" property="displayLocation" />
+    <result column="series" jdbcType="INTEGER" property="series" />
+    <result column="eco_way_material" jdbcType="INTEGER" property="ecoWayMaterial" />
+    <result column="eco_way_color" jdbcType="INTEGER" property="ecoWayColor" />
+    <result column="eco_way_technics" jdbcType="INTEGER" property="ecoWayTechnics" />
+    <result column="selling_point" jdbcType="INTEGER" property="sellingPoint" />
+    <result column="position" jdbcType="INTEGER" property="position" />
+    <result column="default_image" jdbcType="BIT" property="defaultImage" />
+  </resultMap>
+
+  <select id="getList" resultMap="BaseResultMap">
+    SELECT * FROM view_searchimages_elastic WHERE image_name IN
+    <foreach close=")" collection="products" item="code" open="(" separator=",">
+      #{code}
+    </foreach>
+  </select>
+</mapper>

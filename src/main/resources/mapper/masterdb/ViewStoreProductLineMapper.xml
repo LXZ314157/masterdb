@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icicle.masterdb.dao.masterdb.ViewStoreProductLineMapper">
+  <resultMap id="BaseResultMap" type="com.icicle.masterdb.model.ViewStoreProductLine">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <result column="store_no" jdbcType="INTEGER" property="storeNo" />
+    <result column="product_line_no" jdbcType="INTEGER" property="productLineNo" />
+    <result column="product_line_name" jdbcType="VARCHAR" property="productLineName" />
+  </resultMap>
+
+  <select id="findProductLineByStoreNo" resultMap="BaseResultMap">
+      select spl.store_no,spl.product_line_no,pl.product_line_name from store_product_line spl LEFT JOIN
+      product_line pl on spl.product_line_no= pl.product_line_no WHERE spl.store_no= #{storeNo};
+    </select>
+</mapper>

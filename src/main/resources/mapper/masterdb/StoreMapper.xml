@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icicle.masterdb.dao.masterdb.StoreMapper">
+  <resultMap id="BaseResultMap" type="com.icicle.masterdb.model.Store">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="store_id" jdbcType="VARCHAR" property="storeId" />
+    <result column="store_no" jdbcType="INTEGER" property="storeNo" />
+    <result column="store_name" jdbcType="VARCHAR" property="storeName" />
+    <result column="store_short_name" jdbcType="VARCHAR" property="storeShortName" />
+    <result column="store_spell" jdbcType="VARCHAR" property="storeSpell" />
+    <result column="buyer_id" jdbcType="VARCHAR" property="buyerId" />
+    <result column="zone_id" jdbcType="INTEGER" property="zoneId" />
+    <result column="store_type_id" jdbcType="INTEGER" property="storeTypeId" />
+    <result column="store_level_id" jdbcType="INTEGER" property="storeLevelId" />
+    <result column="store_contact" jdbcType="VARCHAR" property="storeContact" />
+    <result column="store_phone" jdbcType="VARCHAR" property="storePhone" />
+    <result column="store_fax" jdbcType="VARCHAR" property="storeFax" />
+    <result column="store_mobile" jdbcType="VARCHAR" property="storeMobile" />
+    <result column="manager_num" jdbcType="VARCHAR" property="managerNum" />
+    <result column="store_email" jdbcType="VARCHAR" property="storeEmail" />
+    <result column="store_desc" jdbcType="NVARCHAR" property="storeDesc" />
+    <result column="pro_dept_id" jdbcType="INTEGER" property="proDeptId" />
+    <result column="city_id" jdbcType="INTEGER" property="cityId" />
+    <result column="open_date" jdbcType="TIMESTAMP" property="openDate" />
+    <result column="close_date" jdbcType="TIMESTAMP" property="closeDate" />
+    <result column="contract_period" jdbcType="INTEGER" property="contractPeriod" />
+    <result column="store_size" jdbcType="DECIMAL" property="storeSize" />
+    <result column="store_state" jdbcType="INTEGER" property="storeState" />
+    <result column="bu_id" jdbcType="INTEGER" property="buId" />
+    <result column="created_by" jdbcType="VARCHAR" property="createdBy" />
+    <result column="creation_date" jdbcType="TIMESTAMP" property="creationDate" />
+    <result column="last_updated_by" jdbcType="VARCHAR" property="lastUpdatedBy" />
+    <result column="last_update_date" jdbcType="TIMESTAMP" property="lastUpdateDate" />
+
+  </resultMap>
+
+    <insert id="saveStore" keyProperty="storeNo" useGeneratedKeys="true">
+    insert into store(store_id ,store_name,store_image_category,logo_version,install_version,manager_num,store_short_name,store_spell ,buyer_id ,zone2_id ,store_type_id ,store_level_id ,store_contact
+      ,store_phone ,store_fax ,store_mobile ,store_email ,store_desc ,pro_dept_id ,city_id  ,open_date ,close_date ,contract_period ,store_size
+      ,store_state ,bu_id ,created_by ,creation_date ,last_updated_by ,last_update_date,store_ownership,store_category,mall_type,manage_center_id,
+      company_id,resp_center_id,cost_center_id,store_address,floor,deposit,rental,sale_point,store_class,recent_reset_time,decoration_standard,
+      decoration_limit_years,store_address_longitude,store_address_latitude)
+      VALUES (
+          #{storeId},#{storeName},#{storeImageCategory},#{logoVersion},#{installVersion},#{managerNum},#{storeShortName},#{storeSpell},#{buyerId},#{zoneId},#{storeTypeId},#{storeLevelId},#{storeContact},#{storePhone},#{storeFax}
+          ,#{storeMobile},#{storeEmail},#{storeDesc},#{proDeptId},#{cityId},#{openDate},#{closeDate},#{contractPeriod},#{storeSize},
+          #{storeState},#{buId},#{createdBy},#{creationDate},#{lastUpdatedBy},#{lastUpdateDate} ,#{storeOwnership},#{storeCategory},#{mallType},#{manageCenterId},
+          #{companyId},#{respCenterId},#{costCenterId},#{storeAddress},#{floor},#{deposit},#{rental},#{salePoint},#{storeClass},#{recentResetTime},#{decorationStandard},
+          #{decorationLimitYears},#{storeAddressLongitude},#{storeAddressLatitude}
+      );
+   </insert>
+
+    <update id="updateStore">
+    UPDATE store
+    <set>
+        <if test="storeName!=null">store_name = #{storeName} ,</if>
+        <if test="storeShortName!=null">store_short_name = #{storeShortName},</if>
+        <if test="storeSpell!=null">store_spell = #{storeSpell},</if>
+        <if test="buyerId!=null">buyer_id = #{buyerId},</if>
+        <if test="zoneId!=null">zone2_id = #{zoneId},</if>
+        <if test="storeTypeId!=null">store_type_id = #{storeTypeId},</if>
+        <if test="storeLevelId!=null">store_level_id = #{storeLevelId},</if>
+        <if test="storeContact!=null">store_contact = #{storeContact},</if>
+        <if test="storePhone!=null">store_phone = #{storePhone},</if>
+        <if test="storeFax!=null">store_fax = #{storeFax},</if>
+        <if test="storeMobile!=null">store_mobile = #{storeMobile},</if>
+        <if test="storeEmail!=null">store_email = #{storeEmail},</if>
+        <if test="storeDesc!=null">store_desc = #{storeDesc},</if>
+        <if test="proDeptId!=null">pro_dept_id = #{proDeptId},</if>
+        <if test="cityId!=null">city_id = #{cityId},</if>
+        <if test="openDate!=null">open_date = #{openDate},</if>
+        <if test="closeDate!=null">close_date = #{closeDate},</if>
+        <if test="contractPeriod!=null">contract_period = #{contractPeriod},</if>
+        <if test="storeState!=null">store_state = #{storeState},</if>
+        <if test="storeSize!=null">store_size = #{storeSize},</if>
+        <if test="buId!=null">bu_id = #{buId},</if>
+        <if test="managerNum!=null">manager_num = #{managerNum},</if>
+        <if test="lastUpdatedBy!=null">last_updated_by = #{lastUpdatedBy},</if>
+        <if test="lastUpdateDate!=null">last_update_date = #{lastUpdateDate},</if>
+
+        <if test="storeOwnership!=null">store_ownership = #{storeOwnership},</if>
+        <if test="storeCategory!=null">store_category = #{storeCategory},</if>
+        <if test="mallType!=null">mall_type = #{mallType},</if>
+        <if test="manageCenterId!=null">manage_center_id = #{manageCenterId},</if>
+        <if test="companyId!=null">company_id = #{companyId},</if>
+        <if test="respCenterId!=null">resp_center_id = #{respCenterId},</if>
+        <if test="costCenterId!=null">cost_center_id = #{costCenterId},</if>
+        <if test="storeAddress!=null">store_address = #{storeAddress},</if>
+        <if test="floor!=null">floor = #{floor},</if>
+        <if test="deposit!=null">deposit = #{deposit},</if>
+        <if test="rental!=null">rental = #{rental},</if>
+        <if test="salePoint!=null">sale_point = #{salePoint},</if>
+        <if test="storeClass!=null">store_class = #{storeClass},</if>
+        <if test="recentResetTime!=null">recent_reset_time = #{recentResetTime},</if>
+        <if test="decorationStandard!=null">decoration_standard = #{decorationStandard},</if>
+        <if test="decorationLimitYears!=null">decoration_limit_years = #{decorationLimitYears},</if>
+        <if test="storeAddressLongitude!=null">store_address_longitude = #{storeAddressLongitude},</if>
+        <if test="storeAddressLatitude!=null">store_address_latitude = #{storeAddressLatitude},</if>
+
+        <if test="storeImageCategory!=null">store_image_category = #{storeImageCategory},</if>
+        <if test="logoVersion!=null">logo_version = #{logoVersion},</if>
+        <if test="installVersion!=null">install_version = #{installVersion},</if>
+    </set>
+      WHERE store_no = #{storeNo}
+   </update>
+
+    <delete id="deleteProductLineByStoreNo" parameterType="java.lang.String">
+          DELETE FROM dbo.store_product_line WHERE store_no=#{storeNo}
+    </delete>
+
+    <select id="findStoreList" resultType="com.icicle.masterdb.pojo.vo.StoreVO">
+      select store_id  storeId,store_no storeNo, store_name storeName from store
+    </select>
+
+
+    <insert id="addStoreProductLine" >
+    insert into dbo.store_product_line (store_no,product_line_no)VALUES (#{storeNo},#{productLine}
+      );
+   </insert>
+    
+    <select id="findBaseAttributeList" resultType="java.util.HashMap">
+        SELECT sad.store_attrib_def_id,sad.store_attrib_def_code,sai.store_attrib_item_code,sai.store_attrib_item_name FROM store_attrib_defined sad LEFT JOIN
+        store_attrib_item sai ON sad.store_attrib_def_id =sai.store_attrib_def_id WHERE sad.status=1;
+    </select>
+
+    <select id="verifysotreid" parameterType="java.lang.String" resultType="java.lang.Integer">
+      select count(1) from store where store_id = #{storeId};
+    </select>
+
+    <update id="updateStoreId">
+      update store set store_id = #{storeId},last_update_date=GETDATE() where store_no=#{storeNo};
+    </update>
+    
+    <select id="getStoreAttribMapList" resultType="java.util.Map">
+        select sai.store_attrib_def_id,sad.store_attrib_def_code,sad.store_attrib_def_name,sai.store_attrib_item_code,sai.store_attrib_item_name from store_attrib_defined sad
+        LEFT JOIN store_attrib_item sai on sad.store_attrib_def_id=sai.store_attrib_def_id
+        where sad.status=1 and sad.has_item=1
+    </select>
+
+    <select id="getStoreComparasionList" resultType="com.icicle.masterdb.model.StoreComparison">
+        select sc.store_no storeNo,sc.compare_store_no compareStoreNo,
+        s.store_name compareStoreName
+        from store_comparison sc LEFT JOIN store s
+        on sc.compare_store_no=s.store_no
+    </select>
+
+
+    <select id="getStoreIdByStoreNo" parameterType="java.lang.Integer" resultType="java.lang.String">
+        select top 1 store_id from store where store_no=${storeNo};
+    </select>
+
+    <select id="getStoreIdByAddressId" parameterType="java.lang.Integer" resultType="java.lang.String">
+        select store_id from store s left join store_address sa on s.store_no=sa.store_no where sa.address_id=#{addressId}
+    </select>
+
+
+
+</mapper>

@@ -1,0 +1,1 @@
+<script src="${base}/static/content/js/page/hr/postinfo.js?v=20180124"/></script>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icicle.masterdb.dao.masterdb.ViewMaterialMapper">
+    <resultMap id="BaseResultMap" type="com.icicle.masterdb.model.ViewMaterial">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <result column="material_code" jdbcType="VARCHAR" property="materialCode"/>
+        <result column="material_name" jdbcType="NVARCHAR" property="materialName"/>
+        <result column="cate_dl_name" jdbcType="NVARCHAR" property="cateDlName"/>
+        <result column="cate_zl_name" jdbcType="NVARCHAR" property="cateZlName"/>
+        <result column="cate_xl_name" jdbcType="NVARCHAR" property="cateXlName"/>
+        <result column="sync_status" jdbcType="INTEGER" property="syncStatus"/>
+        <result column="last_sync_date" jdbcType="TIMESTAMP" property="lastSyncDate"/>
+        <result column="uom" jdbcType="VARCHAR" property="uom"/>
+    </resultMap>
+
+    <resultMap id="ViewMaterialDetailResult" type="com.icicle.masterdb.pojo.vo.ViewMaterialDetailVO">
+        <result column="material_code" jdbcType="VARCHAR" property="materialCode"/>
+        <result column="material_name" jdbcType="NVARCHAR" property="materialName"/>
+        <result column="cate_dl_name" jdbcType="NVARCHAR" property="cateDlName"/>
+        <result column="cate_zl_name" jdbcType="NVARCHAR" property="cateZlName"/>
+        <result column="cate_xl_name" jdbcType="NVARCHAR" property="cateXlName"/>
+        <result column="sync_status" jdbcType="INTEGER" property="syncStatus"/>
+        <result column="vendor_price" jdbcType="DECIMAL" property="vendorPrice"/>
+        <result column="unit_price" jdbcType="DECIMAL" property="unitPrice"/>
+        <result column="uom" jdbcType="VARCHAR" property="uom"/>
+        <result column="material_desc" jdbcType="NVARCHAR" property="materialDesc"/>
+    </resultMap>
+
+    <select id="findMateriaByCode" resultMap="ViewMaterialDetailResult">
+        SELECT  a.material_code,
+        a.material_name,
+        b.catalog_desc AS cate_dl_name,
+        b1.catalog_desc AS cate_zl_name,
+        b2.catalog_desc AS cate_xl_name,
+        a.uom ,
+        a.sync_status,
+        a.material_desc,
+        a.unit_price,
+        a.vendor_price
+FROM    material a
+        LEFT JOIN [catalog] AS b ON a.cate_dl = b.catalog_no
+                                    AND b.catalog_level = 1
+        LEFT JOIN [catalog] AS b1 ON a.cate_zl = b1.catalog_no
+                                     AND b1.catalog_level = 2
+        LEFT JOIN [catalog] AS b2 ON a.cate_xl = b2.catalog_no
+                                     AND b2.catalog_level = 3 AND b2.p_catalog_id=b1.id
+        WHERE a.material_code = #{materialCode}
+    </select>
+
+</mapper>

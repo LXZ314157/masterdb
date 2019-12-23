@@ -1,0 +1,29 @@
+.control-label {
+    text-align: right;
+}
+.align{
+    margin-right: 5px;
+}
+.table-scrollable .table > tbody > tr >.left {
+    text-align: left !important;
+    /*max-width: 1200px !important;*/
+    /*overflow:hidden;*/
+    word-break: keep-all;
+    white-space: nowrap;
+}
+.form .form-bordered .form-group>div {
+    padding: 15px;
+    border-left: none !important;
+}
+.fileinput .form-control{
+    margin-left: 25px;
+}
+#edui1{
+z-index: 0 !important;
+}
+
+
+
+
+
+

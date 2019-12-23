@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icicle.masterdb.dao.log.OplogMapper">
+    <resultMap id="BaseResultMap" type="com.icicle.masterdb.model.Oplog">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="uid" jdbcType="INTEGER" property="uid"/>
+        <result column="optitle" jdbcType="NVARCHAR" property="optitle"/>
+        <result column="opmethod" jdbcType="VARCHAR" property="opmethod"/>
+        <result column="opresult" jdbcType="INTEGER" property="opresult"/>
+        <result column="desc" jdbcType="NVARCHAR" property="desc"/>
+        <result column="opr" jdbcType="NVARCHAR" property="opr"/>
+        <result column="opip" jdbcType="VARCHAR" property="opip"/>
+        <result column="opdate" jdbcType="TIMESTAMP" property="opdate"/>
+        <result column="sysid" jdbcType="INTEGER" property="sysid"/>
+    </resultMap>
+
+    <insert id="writeLOg" useGeneratedKeys="true" keyProperty="uid">
+        INSERT INTO oplog SELECT #{optitle}, #{opmethod}, #{opresult}, #{desc}, #{opr}, #{opip}, #{opdate}, #{sysid};
+    </insert>
+</mapper>

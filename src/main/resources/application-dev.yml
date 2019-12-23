@@ -1,0 +1,143 @@
+#mybatis
+mybatis:
+  type-aliases-package: com.icicle.masterdb.model
+  config-locations: classpath:mybatis/mybatis-config.xml
+
+#mssql
+spring:
+  jmx:
+    enabled: false
+  datasource:
+    masterdb:
+#云开发
+      driverClassName: com.microsoft.sqlserver.jdbc.SQLServerDriver
+      url: jdbc:sqlserver://rm-uf69hsr5q3li1ygau.sqlserver.rds.aliyuncs.com:3433;databaseName=masterdbv2;
+      username: devuser
+      password: 5XpZ0e6Uihs
+
+    log:
+      driverClassName: com.microsoft.sqlserver.jdbc.SQLServerDriver
+      url: jdbc:sqlserver://192.168.0.39:1433;databaseName=operatelog;
+      username: sa
+      password: icicle@2012
+    imagesearch:
+      driverClassName: com.microsoft.sqlserver.jdbc.SQLServerDriver
+      url: jdbc:sqlserver://192.168.0.39:1433;databaseName=imagesearch;
+      username: sa
+      password: icicle@2012
+  freemarker:
+    request-context-attribute: request
+    cache: false
+  http:
+    multipart:
+      max-file-size: 10Mb
+      max-request-size: 1024Mb
+  redis:
+    database: 3
+    host: r-uf6c4q78ip3548innh.redis.rds.aliyuncs.com
+    timeout: 0
+    port: 6379
+    password: QBoVwzaSs2
+    pool:
+      max-active: 8
+      max-wait: -1
+      max-idle: 8
+      min-idle: 0
+#mapper
+mapper:
+    mappers:
+        - com.icicle.masterdb.core.MyMapper
+    not-empty: false
+    identity: SQLSERVER
+
+#pagehelper
+pagehelper:
+    helperDialect: SqlServer
+    reasonable: true
+    supportMethodsArguments: true
+    params: count=countSql
+
+logging:
+  config: classpath:logback-boot-dev.xml
+  level:
+    com.icicle.masterdb.dao: DEBUG
+
+#syn 消息中心同步参数
+syn:
+  host: http://192.168.0.31:8080/messageproxy/
+  mproxy: mproxy/
+  storeEmax: ITMS.Emax.StoreSync
+  storeItransfer: ITMS.Transfer.StoreSync
+  buyerEmax: ITMS.Emax.BuyerSync
+  buyerWms: masterdb.wms.customer
+  buyerItransfer: ITMS.Transfer.BuyerSync
+  buyerRFID: masterdb.rfid.businessunit
+  storeRFID: masterdb.rfid.warehouse
+  materialUpdateService: MaterialUpdateService
+  productUpdateService: SKUUpdateService
+  productUpgradeService: SKUUpgradeService
+  fabricUpgradeService: FabricUpgradeService
+  syncZone: ITMS.ZoneSync
+  areaSyncEmax: ITMS.Emax.AreaSync
+  citySyncEmax: ITMS.Emax.CitySync
+  citySyncBurgeon: masterdb.burgeon.city
+  storeTypeSyncEmax: ITMS.Emax.StoreTypeSync
+  postSync2OA: masterdb.Jobtitle.sync
+  propertySyncBurgeon: masterdb.burgeon.property
+  storeAddrSync2Burgeon: masterdb.burgeon.storeaddress
+  syncSizeGroup2Burgeon: masterdb.burgeon.sizegroup
+  syncSize2Burgeon: masterdb.burgeon.size
+  syncProduct2Buygeon: masterdb.burgeon.product
+  syncSku: masterdb.sync.sku
+  staffSync2OAIsm: masterdb.staff.batchsync
+  staffSync2CH: masterdb.staff.single
+  departmentMatrixSync2OA: masterdb.departmentMatrix.sync
+  currencySync2Burgeon: masterdb.burgeon.currency
+  exchangeRateSync2Burgeon: masterdb.burgeon.currencyrate
+  costcenterSync: masterdb.costcenter.sync
+  departmentSync2OA: masterdb.department.sync
+  departmentSync2CH: masterdb.dept.sync2ch
+  buyerBurgeon: masterdb.burgeon.customer
+  storeBuygeon: masterdb.burgeon.store
+  zoneSync2Yxt: masterdb.zone.sync
+  supplierSync2Burgeon: masterdb.burgeon.supplier
+  supplierSync2WMS: masterdb.wms.customer
+  supplierSync2RFID: masterdb.rfid.businessunit
+  productLineSync2Burgeon: masterdb.burgeon.productline
+  burgeonMaterialContrain: masterdb.burgeon.productmat
+  delOus: masterdb.delous.sync
+  onecategorySync2Burgeon: masterdb.burgeon.onecategory
+  secondcategorySync2Burgeon: masterdb.burgeon.seccategory
+  thirdcategorySync2Burgeon: masterdb.burgeon.thirdcategory
+  fourthcategorySync2Burgeon: masterdb.burgeon.fourthcategory
+  storeSkuSync2Oa: masterdb.store.sku.sync
+  storeSync2XiaoTai: masterdb.store.sync
+  buyerSync2XiaoTai: masterdb.buyer.sync
+
+#sso服务
+icicle:
+  systemId: 30
+  services:
+    sso: http://192.168.0.39/ssologinv2
+    permission: http://192.168.0.39/permissionv2
+  cookie:
+    name: sso_session
+    domain: localhost
+    path: /
+  messagecenter: http://192.168.0.31:8080/messageproxy/
+  key: e10adc3949ba59abbe56e057f20f883e
+  #小钛店铺同步测试地址
+  xtstoreurl: http://172.20.140.101/api/store_plugins.php
+  #小钛经销商同步测试地址
+  xtbuyerurl: http://172.20.140.101/api/buyer_plugins.php
+
+#ftp服务器相关配置
+ftp:
+  host: 192.168.0.31
+  port: 21
+  username: ftpuser
+  password: ftpuser@2017
+  basepath: /FTP/img/base
+  imageurl: http://192.168.0.31:9081/
+
+

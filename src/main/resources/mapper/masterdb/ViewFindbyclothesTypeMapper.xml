@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icicle.masterdb.dao.masterdb.ViewFindbyclothesTypeMapper">
+  <resultMap id="BaseResultMap" type="com.icicle.masterdb.model.ViewFindbyclothesType">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <result column="systemid" jdbcType="INTEGER" property="systemid" />
+    <result column="master_type_id" jdbcType="VARCHAR" property="masterTypeId" />
+    <result column="system_code" jdbcType="VARCHAR" property="systemCode" />
+    <result column="ca1" jdbcType="VARCHAR" property="ca1" />
+    <result column="ca2" jdbcType="VARCHAR" property="ca2" />
+    <result column="ca3" jdbcType="VARCHAR" property="ca3" />
+  </resultMap>
+</mapper>

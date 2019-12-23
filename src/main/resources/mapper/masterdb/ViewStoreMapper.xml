@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icicle.masterdb.dao.masterdb.ViewStoreMapper">
+  <resultMap id="BaseResultMap" type="com.icicle.masterdb.model.ViewStore">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <result column="store_id" jdbcType="VARCHAR" property="storeId" />
+    <result column="store_no" jdbcType="INTEGER" property="storeNo" />
+    <result column="store_name" jdbcType="VARCHAR" property="storeName" />
+    <result column="store_short_name" jdbcType="VARCHAR" property="storeShortName" />
+    <result column="store_spell" jdbcType="VARCHAR" property="storeSpell" />
+    <result column="buyer_id" jdbcType="VARCHAR" property="buyerId" />
+    <result column="buyer_name" jdbcType="NVARCHAR" property="buyerName" />
+    <result column="zone_id" jdbcType="INTEGER" property="zoneId" />
+    <result column="zone_name" jdbcType="VARCHAR" property="zoneName" />
+    <result column="store_type_id" jdbcType="INTEGER" property="storeTypeId" />
+    <result column="store_type_name" jdbcType="VARCHAR" property="storeTypeName" />
+    <result column="store_level_id" jdbcType="INTEGER" property="storeLevelId" />
+    <result column="store_level_name" jdbcType="VARCHAR" property="storeLevelName" />
+    <result column="store_contact" jdbcType="VARCHAR" property="storeContact" />
+    <result column="manager_num" jdbcType="VARCHAR" property="managerNum" />
+    <result column="store_phone" jdbcType="VARCHAR" property="storePhone" />
+    <result column="store_fax" jdbcType="VARCHAR" property="storeFax" />
+    <result column="store_mobile" jdbcType="VARCHAR" property="storeMobile" />
+    <result column="store_email" jdbcType="VARCHAR" property="storeEmail" />
+    <result column="store_desc" jdbcType="NVARCHAR" property="storeDesc" />
+    <result column="pro_dept_id" jdbcType="INTEGER" property="proDeptId" />
+    <result column="pro_dept_name" jdbcType="VARCHAR" property="proDeptName" />
+    <result column="city_id" jdbcType="INTEGER" property="cityId" />
+    <result column="city_name" jdbcType="NVARCHAR" property="cityName" />
+    <result column="open_date" jdbcType="TIMESTAMP" property="openDate" />
+    <result column="close_date" jdbcType="TIMESTAMP" property="closeDate" />
+    <result column="contract_period" jdbcType="INTEGER" property="contractPeriod" />
+    <result column="store_size" jdbcType="DECIMAL" property="storeSize" />
+    <result column="store_state" jdbcType="INTEGER" property="storeState" />
+    <result column="bu_id" jdbcType="INTEGER" property="buId" />
+    <result column="bu_name" jdbcType="VARCHAR" property="buName" />
+    <result column="created_by" jdbcType="VARCHAR" property="createdBy" />
+    <result column="creation_date" jdbcType="TIMESTAMP" property="creationDate" />
+    <result column="last_updated_by" jdbcType="VARCHAR" property="lastUpdatedBy" />
+    <result column="last_update_date" jdbcType="TIMESTAMP" property="lastUpdateDate" />
+  </resultMap>
+
+</mapper>

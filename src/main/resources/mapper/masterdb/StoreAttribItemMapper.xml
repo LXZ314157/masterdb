@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icicle.masterdb.dao.masterdb.StoreAttribItemMapper">
+    <resultMap id="BaseResultMap" type="com.icicle.masterdb.model.StoreAttribItem">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="store_attrib_item_id" jdbcType="INTEGER" property="storeAttribItemId"/>
+        <result column="store_attrib_def_id" jdbcType="INTEGER" property="storeAttribDefId"/>
+        <result column="store_attrib_item_code" jdbcType="VARCHAR" property="storeAttribItemCode"/>
+        <result column="store_attrib_item_name" jdbcType="VARCHAR" property="storeAttribItemName"/>
+        <result column="store_attrib_item_desc" jdbcType="VARCHAR" property="storeAttribItemDesc"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="created_by" jdbcType="VARCHAR" property="createdBy"/>
+        <result column="creation_date" jdbcType="TIMESTAMP" property="creationDate"/>
+        <result column="last_updated_by" jdbcType="VARCHAR" property="lastUpdatedBy"/>
+        <result column="last_update_date" jdbcType="TIMESTAMP" property="lastUpdateDate"/>
+    </resultMap>
+
+    <insert id="saveStoreAttribDef" useGeneratedKeys="true" keyProperty="storeAttribItemId">
+    insert INTO store_attrib_item
+    (store_attrib_def_id,store_attrib_item_code,store_attrib_item_name,store_attrib_item_desc,status,created_by,creation_date)
+    VALUES
+    (#{storeAttribDefId},#{storeAttribItemCode},#{storeAttribItemName},#{storeAttribItemDesc},#{status},#{createdBy},#{creationDate});
+   </insert>
+
+    <update id="updateList" parameterType="java.util.List">
+        <foreach collection="list" item="item" separator=";">
+            UPDATE store_attrib_item
+            set store_attrib_item_name = #{item.storeAttribItemName},
+            store_attrib_item_desc = #{item.storeAttribItemDesc},
+            status = #{item.status},
+            last_updated_by = #{item.lastUpdatedBy},
+            last_update_date = #{item.lastUpdateDate}
+            where store_attrib_item_id = #{item.storeAttribItemId}
+        </foreach>
+    </update>
+</mapper>

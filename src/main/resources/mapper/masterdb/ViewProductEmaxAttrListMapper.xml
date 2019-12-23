@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icicle.masterdb.dao.masterdb.ViewProductEmaxAttrListMapper">
+    <resultMap id="BaseResultMap" type="com.icicle.masterdb.model.ViewProductEmaxAttrList">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <result column="product_code" jdbcType="VARCHAR" property="productCode"/>
+        <result column="attr_code" jdbcType="VARCHAR" property="attrCode"/>
+        <result column="attr_value" jdbcType="NVARCHAR" property="attrValue"/>
+    </resultMap>
+
+    <select id="getEmaxAttrList" resultMap="BaseResultMap">
+        SELECT * FROM view_product_emax_attr_list WHERE product_code IN
+        <foreach open="(" separator="," close=")" collection="products" item="code">
+            #{code}
+        </foreach>
+    </select>
+</mapper>

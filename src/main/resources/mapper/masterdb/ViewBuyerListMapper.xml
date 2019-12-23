@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icicle.masterdb.dao.masterdb.ViewBuyerListMapper">
+  <resultMap id="BaseResultMap" type="com.icicle.masterdb.model.ViewBuyerList">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <result column="buyer_id" jdbcType="VARCHAR" property="buyerId" />
+    <result column="buyer_no" jdbcType="INTEGER" property="buyerNo" />
+    <result column="buyer_type_id" jdbcType="INTEGER" property="buyerTypeId" />
+    <result column="buyer_full_name" jdbcType="NVARCHAR" property="buyerFullName" />
+    <result column="buyer_name" jdbcType="NVARCHAR" property="buyerName" />
+    <result column="buyer_short_name" jdbcType="NVARCHAR" property="buyerShortName" />
+    <result column="buyer_spell" jdbcType="VARCHAR" property="buyerSpell" />
+    <result column="buyer_state" jdbcType="INTEGER" property="buyerState" />
+    <result column="buyer_contact" jdbcType="NVARCHAR" property="buyerContact" />
+    <result column="buyer_phone" jdbcType="VARCHAR" property="buyerPhone" />
+    <result column="buyer_mobile" jdbcType="VARCHAR" property="buyerMobile" />
+    <result column="buyer_email" jdbcType="VARCHAR" property="buyerEmail" />
+    <result column="buyer_fax" jdbcType="VARCHAR" property="buyerFax" />
+    <result column="city_id" jdbcType="INTEGER" property="cityId" />
+    <result column="zone_id" jdbcType="INTEGER" property="zoneId" />
+    <result column="buyer_deposit" jdbcType="DECIMAL" property="buyerDeposit" />
+    <result column="buyer_joinning_fee" jdbcType="DECIMAL" property="buyerJoinningFee" />
+    <result column="buyer_desc" jdbcType="NVARCHAR" property="buyerDesc" />
+    <result column="buyer_start_date" jdbcType="TIMESTAMP" property="buyerStartDate" />
+    <result column="buyer_end_date" jdbcType="TIMESTAMP" property="buyerEndDate" />
+    <result column="attrdeposit" jdbcType="NVARCHAR" property="attrdeposit" />
+    <result column="dealerplatformflag" jdbcType="VARCHAR" property="dealerplatformflag" />
+    <result column="depositratio" jdbcType="NVARCHAR" property="depositratio" />
+    <result column="created_by" jdbcType="VARCHAR" property="createdBy" />
+    <result column="creation_date" jdbcType="TIMESTAMP" property="creationDate" />
+    <result column="last_updated_by" jdbcType="VARCHAR" property="lastUpdatedBy" />
+    <result column="last_update_date" jdbcType="TIMESTAMP" property="lastUpdateDate" />
+  </resultMap>
+</mapper>

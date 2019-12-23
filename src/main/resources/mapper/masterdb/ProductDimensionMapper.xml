@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icicle.masterdb.dao.masterdb.ProductDimensionMapper">
+    <resultMap id="BaseResultMap" type="com.icicle.masterdb.model.ProductDimension">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="class_dimension_code" jdbcType="VARCHAR" property="classDimensionCode"/>
+        <result column="class_dimension_name" jdbcType="NVARCHAR" property="classDimensionName"/>
+        <result column="class_dimension_desc" jdbcType="NVARCHAR" property="classDimensionDesc"/>
+        <result column="status" jdbcType="BIT" property="status"/>
+        <result column="created_by" jdbcType="VARCHAR" property="createdBy"/>
+        <result column="creation_date" jdbcType="TIMESTAMP" property="creationDate"/>
+        <result column="last_updated_by" jdbcType="VARCHAR" property="lastUpdatedBy"/>
+        <result column="last_update_date" jdbcType="TIMESTAMP" property="lastUpdateDate"/>
+    </resultMap>
+    <resultMap id="ProductDimensionVO" type="com.icicle.masterdb.pojo.vo.ProductDimensionVO">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="class_dimension_code" jdbcType="VARCHAR" property="classDimensionCode"/>
+        <result column="class_dimension_name" jdbcType="NVARCHAR" property="classDimensionName"/>
+        <result column="class_dimension_desc" jdbcType="NVARCHAR" property="classDimensionDesc"/>
+        <result column="status" jdbcType="BIT" property="status"/>
+    </resultMap>
+    <select id="findAllDimension" resultMap="ProductDimensionVO">
+        SELECT id,class_dimension_code,class_dimension_name,class_dimension_desc,status FROM product_dimension
+    </select>
+
+    <insert id="saveDimension" useGeneratedKeys="true" keyProperty="id">
+        INSERT  INTO  product_dimension
+         (class_dimension_code,class_dimension_name,class_dimension_desc,status,created_by,creation_date)
+          VALUES
+          (#{classDimensionCode},#{classDimensionName},#{classDimensionDesc},1,#{createdBy},#{creationDate})
+    </insert>
+    <update id="updateDimension">
+        UPDATE product_dimension
+         <set>
+        <if test="classDimensionName!=null">class_dimension_name =#{classDimensionName},</if>
+        <if test="classDimensionDesc!=null">class_dimension_desc=#{classDimensionDesc},</if>
+        <if test="status!=null">status=#{status},</if>
+        </set>
+        ,last_updated_by =#{lastUpdatedBy}
+        ,last_update_date=#{lastUpdateDate}
+        WHERE id=#{id}
+    </update>
+</mapper>

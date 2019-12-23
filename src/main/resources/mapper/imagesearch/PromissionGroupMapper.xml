@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icicle.masterdb.dao.imagesearch.PromissionGroupMapper">
+  <resultMap id="BaseResultMap" type="com.icicle.masterdb.model.PromissionGroup">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="group_code" jdbcType="VARCHAR" property="groupCode" />
+    <result column="group_name" jdbcType="NVARCHAR" property="groupName" />
+    <result column="group_desc" jdbcType="NVARCHAR" property="groupDesc" />
+  </resultMap>
+</mapper>

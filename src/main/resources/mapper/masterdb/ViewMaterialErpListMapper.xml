@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icicle.masterdb.dao.masterdb.ViewMaterialErpListMapper">
+    <resultMap id="BaseResultMap" type="com.icicle.masterdb.model.ViewMaterialErpList">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <result column="material_code" jdbcType="VARCHAR" property="materialCode"/>
+        <result column="material_desc" jdbcType="NVARCHAR" property="materialDesc"/>
+        <result column="cate_dl" jdbcType="CHAR" property="cateDl"/>
+        <result column="cate_zl" jdbcType="CHAR" property="cateZl"/>
+        <result column="cate_xl" jdbcType="CHAR" property="cateXl"/>
+        <result column="uom" jdbcType="VARCHAR" property="uom"/>
+        <result column="item_template_type" jdbcType="INTEGER" property="itemTemplateType"/>
+        <result column="item_template_type_desc" jdbcType="NVARCHAR" property="itemTemplateTypeDesc"/>
+        <result column="catalog_type" jdbcType="INTEGER" property="catalogType"/>
+        <result column="catalog_type_desc" jdbcType="NVARCHAR" property="catalogTypeDesc"/>
+        <result column="min_order_qty" jdbcType="VARCHAR" property="minOrderQty"/>
+        <result column="full_lead_time" jdbcType="VARCHAR" property="fullLeadTime"/>
+        <result column="storage_class" jdbcType="NVARCHAR" property="storageClass"/>
+    </resultMap>
+
+    <select id="getMaterialErpList" resultMap="BaseResultMap">
+        SELECT * FROM view_material_erp_list WHERE material_code IN
+        <foreach open="(" separator="," close=")" collection="codes" item="code">
+            #{code}
+        </foreach>
+    </select>
+</mapper>

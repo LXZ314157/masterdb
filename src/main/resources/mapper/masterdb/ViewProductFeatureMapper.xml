@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icicle.masterdb.dao.masterdb.ViewProductFeatureMapper">
+  <resultMap id="BaseResultMap" type="com.icicle.masterdb.model.ViewProductFeature">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <result column="product_code" jdbcType="VARCHAR" property="productCode" />
+    <result column="product_name" jdbcType="NVARCHAR" property="productName" />
+    <result column="wave" jdbcType="VARCHAR" property="wave" />
+    <result column="band" jdbcType="VARCHAR" property="band" />
+    <result column="unit_price" jdbcType="DECIMAL" property="unitPrice" />
+    <result column="color_name" jdbcType="NVARCHAR" property="colorName" />
+    <result column="material_no" jdbcType="VARCHAR" property="materialNo" />
+    <result column="material_name" jdbcType="NVARCHAR" property="materialName" />
+    <result column="fabric_feature" jdbcType="NVARCHAR" property="fabricFeature" />
+    <result column="product_feature" jdbcType="NVARCHAR" property="productFeature" />
+    <result column="product_recommend" jdbcType="VARCHAR" property="productRecommend" />
+    <result column="image_id" jdbcType="INTEGER" property="imageId" />
+    <result column="image_url" jdbcType="VARCHAR" property="imageUrl" />
+  </resultMap>
+  <select id="searchByProductCode" resultMap="BaseResultMap">
+    SELECT product_code,product_name,wave,band,unit_price,color_name,material_no,material_name,fabric_feature,product_feature,product_recommend,image_id,image_url from view_product_feature where product_code=#{productCode}
+  </select>
+  <select id="getRecommend" resultType="java.lang.String">
+    SELECT product_recommend from view_product_feature where product_code=#{productCode}
+  </select>
+
+  <select id="getImageUrl" resultMap="BaseResultMap">
+    SELECT product_code,image_url from view_product_feature where product_code=#{productCode}
+  </select>
+
+</mapper>

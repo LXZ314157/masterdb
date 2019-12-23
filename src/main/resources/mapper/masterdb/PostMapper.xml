@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icicle.masterdb.dao.masterdb.PostMapper">
+  <resultMap id="BaseResultMap" type="com.icicle.masterdb.model.Post">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="post_id" jdbcType="VARCHAR" property="postId" />
+    <result column="lan_code" jdbcType="VARCHAR" property="lanCode" />
+    <result column="source_id" jdbcType="VARCHAR" property="sourceId" />
+    <result column="post_name" jdbcType="VARCHAR" property="postName" />
+    <result column="post_state" jdbcType="INTEGER" property="postState" />
+    <result column="department_id" jdbcType="VARCHAR" property="departmentId" />
+    <result column="pa_post_id" jdbcType="VARCHAR" property="paPostId" />
+    <result column="charger" jdbcType="VARCHAR" property="charger" />
+    <result column="is_main" jdbcType="BIT" property="isMain" />
+    <result column="reference_id1" jdbcType="VARCHAR" property="referenceId1" />
+    <result column="reference_id2" jdbcType="VARCHAR" property="referenceId2" />
+    <result column="reference_id3" jdbcType="VARCHAR" property="referenceId3" />
+    <result column="reference_id4" jdbcType="VARCHAR" property="referenceId4" />
+    <result column="reference_id5" jdbcType="VARCHAR" property="referenceId5" />
+    <result column="creater" jdbcType="VARCHAR" property="creater" />
+    <result column="createtime" jdbcType="TIMESTAMP" property="createtime" />
+    <result column="lasteditor" jdbcType="VARCHAR" property="lasteditor" />
+    <result column="lastedittime" jdbcType="TIMESTAMP" property="lastedittime" />
+  </resultMap>
+
+
+    <select id="getSyncPostInfo" resultMap="BaseResultMap">
+        SELECT * FROM post WHERE lan_code = #{lanCode} and post_id IN
+        <foreach open="(" separator="," close=")" collection="postIdList" item="code">
+            #{code}
+        </foreach>
+    </select>
+
+    <update id="updateSynPost">
+        update post set reference_id2=1 ,lasteditor=#{lastUpdateBy},lastedittime = GETDATE() where
+        lan_code = #{lanCode} and post_id in
+        <foreach open="(" separator="," close=")" collection="postIdList" item="postId">
+            #{postId}
+        </foreach>
+    </update>
+
+    <select id="getPostList" resultType="com.icicle.masterdb.pojo.vo.PostVO">
+        select post_id postId,lan_code lanCode,post_name postName,charger,reference_id1 referenceId1 from post
+    </select>
+
+
+</mapper>

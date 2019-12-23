@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icicle.masterdb.dao.masterdb.ViewProductDescMapper">
+  <resultMap id="BaseResultMap" type="com.icicle.masterdb.model.ViewProductDesc">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <result column="product_code" jdbcType="VARCHAR" property="productCode" />
+    <result column="product_name" jdbcType="NVARCHAR" property="productName" />
+    <result column="material_no" jdbcType="VARCHAR" property="materialNo" />
+    <result column="model_no" jdbcType="VARCHAR" property="modelNo" />
+    <result column="color_name" jdbcType="NVARCHAR" property="colorName" />
+    <result column="color_card_no" jdbcType="VARCHAR" property="colorCardNo" />
+    <result column="colour_system" jdbcType="NVARCHAR" property="colourSystem" />
+    <result column="wave" jdbcType="VARCHAR" property="wave" />
+    <result column="band" jdbcType="VARCHAR" property="band" />
+    <result column="icicle_group" jdbcType="VARCHAR" property="icicleGroup" />
+  </resultMap>
+  <select id="findByCondition" resultMap="BaseResultMap">
+    SELECT     product_code
+    ,product_name
+    ,material_no
+    ,model_no
+    ,color_name
+    ,color_card_no
+    ,colour_system
+    ,wave
+    ,band
+    ,icicle_group
+    FROM view_product_desc WHERE product_code=#{productCode}
+  </select>
+
+</mapper>

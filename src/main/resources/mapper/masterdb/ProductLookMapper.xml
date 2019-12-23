@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icicle.masterdb.dao.masterdb.ProductLookMapper">
+    <resultMap id="BaseResultMap" type="com.icicle.masterdb.model.ProductLook">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="look_id" jdbcType="INTEGER" property="lookId"/>
+        <result column="look_code" jdbcType="VARCHAR" property="lookCode"/>
+        <result column="look_photo_name" jdbcType="VARCHAR" property="lookPhotoName"/>
+        <result column="line" jdbcType="VARCHAR" property="line"/>
+        <result column="wave_band" jdbcType="VARCHAR" property="waveBand"/>
+        <result column="position" jdbcType="INTEGER" property="position"/>
+        <result column="position_desc" jdbcType="NVARCHAR" property="positionDesc"/>
+        <result column="current_season" jdbcType="BIT" property="currentSeason"/>
+        <result column="dev_season" jdbcType="VARCHAR" property="devSeason"/>
+        <result column="year" jdbcType="VARCHAR" property="year"/>
+    </resultMap>
+
+    <select id="checkLookId" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM dbo.product_look WHERE 1 = 1 AND look_id = #{lookId}
+    </select>
+
+    <select id="checkLookIds" parameterType="java.util.List" resultType="java.lang.Integer">
+        SELECT look_id FROM product_look WHERE look_id IN
+        <foreach close=")" collection="list" index="index" item="item" open="(" separator=",">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="checkLookCode" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM dbo.product_look WHERE 1 = 1 AND look_code = #{lookCode}
+    </select>
+
+    <select id="checkLookCodes" parameterType="java.util.List" resultType="java.lang.String">
+        SELECT look_code FROM product_look WHERE look_code IN
+        <foreach close=")" collection="list" index="index" item="item" open="(" separator=",">
+            #{item}
+        </foreach>
+    </select>
+
+    <insert id="bahctInsert">
+        INSERT INTO product_look (look_id, look_code, look_photo_name, line, wave_band, position, current_season,year,dev_season) VALUES
+        <foreach collection="list" item="item" separator=",">
+            (#{item.lookId}
+            ,#{item.lookCode}
+            ,#{item.lookPhotoName}
+            ,#{item.line}
+            ,#{item.waveBand}
+            ,#{item.position}
+            ,#{item.currentSeason}
+            ,#{item.year}
+            ,#{item.devSeason})
+        </foreach>
+    </insert>
+</mapper>

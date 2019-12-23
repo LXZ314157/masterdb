@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icicle.masterdb.dao.masterdb.ZoneMapper">
+  <resultMap id="BaseResultMap" type="com.icicle.masterdb.model.Zone">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="zone_id" jdbcType="INTEGER" property="zoneId" />
+    <result column="zone_name" jdbcType="VARCHAR" property="zoneName" />
+    <result column="zoneper" jdbcType="INTEGER" property="zoneper" />
+    <result column="pa_zone_id" jdbcType="INTEGER" property="paZoneId" />
+    <result column="zone_level" jdbcType="INTEGER" property="zoneLevel" />
+    <result column="zone_desc" jdbcType="VARCHAR" property="zoneDesc" />
+    <result column="bu_id" jdbcType="INTEGER" property="buId" />
+    <result column="pro_dept_id" jdbcType="INTEGER" property="proDeptId" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="created_by" jdbcType="VARCHAR" property="createdBy" />
+    <result column="creation_date" jdbcType="TIMESTAMP" property="creationDate" />
+    <result column="last_updated_by" jdbcType="VARCHAR" property="lastUpdatedBy" />
+    <result column="last_update_date" jdbcType="TIMESTAMP" property="lastUpdateDate" />
+    <result column="manager_staff_num" jdbcType="VARCHAR" property="managerStaffNum" />
+    <result column="manager_staff_name" jdbcType="VARCHAR" property="managerStaffName" />
+    <result column="manage_center_id" jdbcType="INTEGER" property="manageCenterId" />
+  </resultMap>
+
+  <insert id="saveZone" keyProperty="zoneId" useGeneratedKeys="true" >
+    INSERT INTO zone2
+    ( zone_name, zoneper, pa_zone_id, zone_level, zone_desc, bu_id, pro_dept_id, status, manage_center_id,created_by, creation_date, manager_staff_num, manager_staff_name)
+    VALUES
+    ( #{zoneName}, #{zoneper}, #{paZoneId}, #{zoneLevel}, #{zoneDesc}, #{buId}, #{proDeptId}, #{status},#{manageCenterId}, #{createdBy}, #{creationDate},#{managerStaffNum},#{managerStaffName});
+  </insert>
+
+  <update id="updateChildrenZone" parameterType="java.lang.String">
+    update zone2 set manage_center_id = #{manageCenterId} where zone_id in (select zone_id from zone2 where pa_zone_id = #{zoneId})
+  </update>
+  
+  <select id="selectChildrenZone" parameterType="java.lang.String" resultType="com.icicle.masterdb.model.Zone">
+    select zone_id zoneId, zone_name zoneName,pa_zone_id paZoneId, zone_level zoneLevel, zone_desc zoneDesc, status status, manage_center_id manageCenterId from zone2 where zone_id in (select zone_id from zone2 where pa_zone_id = #{zoneId})
+  </select>
+  
+  <select id="findStoreByZoneId" parameterType="java.lang.String" resultType="java.lang.Integer">
+    select count(1) from store where zone2_id= #{zoneId}
+  </select>
+
+    <select id="findZone2List" resultType="com.icicle.masterdb.model.Zone">
+        select zone_id zoneId,zone_name zoneName,pa_zone_id paZoneId,zone_level zoneLevel,zoneper,zone_desc zoneDesc,status,manager_staff_num managerStaffNum,
+        manager_staff_name managerStaffName,manage_center_id manageCenterId from zone2
+    </select>
+
+    <update id="updateZone" parameterType="com.icicle.masterdb.model.Zone">
+      update zone2 set manage_center_id = #{manageCenterId},manager_staff_name=#{managerStaffName},manager_staff_num=#{managerStaffNum},
+      pa_zone_id=#{paZoneId},zone_desc=#{zoneDesc},zone_level=#{zoneLevel},zone_name=#{zoneName} where zone_id=#{zoneId};
+    </update>
+
+    <select id="findZoneById" resultType="com.icicle.masterdb.model.Zone">
+        select zone_id zoneId,zone_name zoneName,pa_zone_id paZoneId,zone_level zoneLevel,status,manager_staff_num managerStaffNum,
+        manager_staff_name managerStaffName,manage_center_id manageCenterId from zone2 where zone_id=#{id};
+    </select>
+
+    <update id="updateZoneStatus" >
+        update zone2 set status = #{status},last_updated_by = #{lastUpdatedBy},last_update_date=#{lastUpdateDate} where zone_id = #{zoneId};
+    </update>
+
+    <select id="findZone2ListByCondition" resultType="com.icicle.masterdb.model.Zone">
+        select zone_id zoneId,zone_name zoneName,pa_zone_id paZoneId,zone_level zoneLevel,status,manager_staff_num managerStaffNum,
+        manager_staff_name managerStaffName,manage_center_id manageCenterId from zone2 where status=1 and zone_level=2
+    </select>
+
+    <select id="findAllZone2List" resultMap="BaseResultMap">
+        select * from zone2;
+    </select>
+
+  <select id="getProductLineByStoreNo" parameterType="java.lang.Integer" resultType="com.icicle.masterdb.pojo.vo.SyncProductLineVO">
+      SELECT sp.store_product_id,s.store_name,pl.product_line_name AS product_line,sp.product_line_no FROM dbo.store_product_line sp
+      JOIN dbo.product_line pl ON sp.product_line_no=pl.product_line_no JOIN dbo.store s ON s.store_no=sp.store_no where s.store_no=#{storeNo};
+  </select>
+
+  <select id="findZoneListByManageCenterId" parameterType="java.lang.String" resultType="com.icicle.masterdb.pojo.vo.ZoneVO">
+    select zone_id as zoneId,zone_name as zoneName from zone2 where manage_center_id =#{manageCenterId} and zone_level=2 and status=1
+  </select>
+
+</mapper>

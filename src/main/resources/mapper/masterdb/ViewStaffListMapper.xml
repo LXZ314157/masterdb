@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icicle.masterdb.dao.masterdb.ViewStaffListMapper">
+
+  <resultMap id="BaseResultMap" type="com.icicle.masterdb.model.ViewStaffList">
+    <result column="staff_num" jdbcType="VARCHAR" property="staffNum" />
+    <result column="staff_name_local" jdbcType="NVARCHAR" property="staffNameLocal" />
+    <result column="join_date" jdbcType="TIMESTAMP" property="joinDate" />
+    <result column="gender" jdbcType="VARCHAR" property="gender" />
+    <result column="credential_num" jdbcType="VARCHAR" property="credentialNum" />
+    <result column="company" jdbcType="NVARCHAR" property="company" />
+    <result column="mobile" jdbcType="VARCHAR" property="mobile" />
+    <result column="department_name" jdbcType="VARCHAR" property="departmentName" />
+  </resultMap>
+
+  <select id="findViewStaffVO" resultMap="BaseResultMap">
+      SELECT * from view_staff_list
+    </select>
+
+
+    <select id="deptStaffList" resultType="com.icicle.masterdb.pojo.vo.StaffVO">
+
+    select s.staff_num staffNum,s.staff_name_local staffNameLocal, case s.gender when 'M' then '男' when 'F' then '女' else ''
+      end gender ,s.mobile,s1.staff_name_local superiorName, p.post_name postName from staff s  LEFT JOIN post p on s.post_id=p.post_id
+      LEFT JOIN department d on s.department_id=d.department_id LEFT JOIN staff s1 on s.superior_num = s1.staff_num
+      where s.department_id=#{departmentId} and p.lan_code='zhs' and d.lan_code='zhs'
+    </select>
+
+
+    <select id="findStaffInfoByStaffNum" parameterType="java.lang.String" resultType="com.icicle.masterdb.pojo.vo.StaffVO">
+      SELECT sf.staff_num staffNum,sf.staff_name_local staffNameLocal,cr.cost_center_name costCenterId,sai.staff_attrib_item_desc credentialType,sf.credential_num credentialNum,
+      sf.birthday,sf.mobile,sf.email,sf.phone,sf.extnum,sf.doorcontrolnum,sf.join_date joinDate,sf.demission_date demissionDate,
+      case sf.gender when 'M' then '男' when 'F' then '女' else '' end gender,
+      case sf.is_director when '0' then '否' when '1' then '是' else '否' end isDirector,p.post_name postName,sf.staff_level staffLevel,c.company_name_local company,
+      sf1.staff_name_local superiorNum,sai1.staff_attrib_item_desc officeLocation ,sai2.staff_attrib_item_desc staffType ,d.department_name departmentId,sai3.staff_attrib_item_desc
+      jobSequence ,sai4.staff_attrib_item_desc league ,sai5.staff_attrib_item_desc nationality ,sai6.staff_attrib_item_desc ethnic,case sf.staff_state when 1 then '在职' when 0 then '离职'
+      else '离职' end staffState
+      FROM staff sf
+          LEFT JOIN (select costcenter_id,cost_center_name from costcenter where lan_code='zhs') cr ON sf.cost_center_id = cr.costcenter_id
+          LEFT JOIN staff_attrib_item sai on sf.credential_type=sai.staff_attrib_item_code
+          LEFT JOIN (select post_id,post_name from post where lan_code='zhs') p on sf.post_id= p.post_id
+          LEFT JOIN company c on sf.company=c.company_id
+          LEFT JOIN staff sf1 on sf.superior_num=sf1.staff_num
+          LEFT JOIN staff_attrib_item sai1 on sf.credential_type=sai1.staff_attrib_item_code
+          LEFT JOIN staff_attrib_item sai2 on sf.credential_type=sai2.staff_attrib_item_code
+          LEFT JOIN staff_attrib_item sai3 on sf.credential_type=sai3.staff_attrib_item_code
+          LEFT JOIN staff_attrib_item sai4 on sf.credential_type=sai4.staff_attrib_item_code
+          LEFT JOIN staff_attrib_item sai5 on sf.credential_type=sai5.staff_attrib_item_code
+          LEFT JOIN staff_attrib_item sai6 on sf.credential_type=sai6.staff_attrib_item_code
+          LEFT JOIN (select department_id,department_name from department where lan_code='zhs') d
+			on sf.department_id=d.department_id
+      where sai.staff_attrib_def_key='IDType' and sai1.staff_attrib_def_key='A8' and sai2.staff_attrib_def_key='Category'
+      and sai3.staff_attrib_def_key='Project_Group' and sai4.staff_attrib_def_key='League' and sai5.staff_attrib_def_key='Nationality' and sai6.staff_attrib_def_key='Ethnic'
+      and sai.staff_attrib_item_lan_code='zhs' and sai1.staff_attrib_item_lan_code='zhs' and sai2.staff_attrib_item_lan_code='zhs' and sai3.staff_attrib_item_lan_code='zhs'
+      and sai4.staff_attrib_item_lan_code='zhs'and sai5.staff_attrib_item_lan_code='zhs' and sai6.staff_attrib_item_lan_code='zhs'
+      and sf.staff_num = #{staffNum};
+    </select>
+
+    <select id="findByQueryCondition" parameterType="java.lang.String" resultType="com.icicle.masterdb.pojo.vo.StaffVO">
+        SELECT sf.staff_num staffNum,sf.staff_name_local staffNameLocal,cr.cost_center_name costCenterId,
+        ISNULL((select staff_attrib_item_desc from staff_attrib_item where staff_attrib_def_key='IDType' and staff_attrib_item_lan_code='zhs'
+        and staff_attrib_item_code=sf.credential_type), '') as credentialType,
+        ISNULL((select staff_attrib_item_desc from staff_attrib_item where staff_attrib_def_key='A8' and staff_attrib_item_lan_code='zhs'
+        and staff_attrib_item_code=sf.credential_type), '') as officeLocation,
+        ISNULL((select staff_attrib_item_desc from staff_attrib_item where staff_attrib_def_key='Category' and staff_attrib_item_lan_code='zhs'
+        and staff_attrib_item_code=sf.credential_type), '') as staffType,
+        ISNULL((select staff_attrib_item_desc from staff_attrib_item where staff_attrib_def_key='Project_Group' and staff_attrib_item_lan_code='zhs'
+        and staff_attrib_item_code=sf.credential_type), '') as jobSequence,
+        ISNULL((select staff_attrib_item_desc from staff_attrib_item where staff_attrib_def_key='League' and staff_attrib_item_lan_code='zhs'
+        and staff_attrib_item_code=sf.credential_type), '') as league,
+        ISNULL((select staff_attrib_item_desc from staff_attrib_item where staff_attrib_def_key='Nationality' and staff_attrib_item_lan_code='zhs'
+        and staff_attrib_item_code=sf.credential_type), '') as nationality,
+        ISNULL((select staff_attrib_item_desc from staff_attrib_item where staff_attrib_def_key='Ethnic' and staff_attrib_item_lan_code='zhs'
+        and staff_attrib_item_code=sf.credential_type), '') as ethnic,
+        sf.credential_num credentialNum,sf.birthday,sf.mobile,sf.email,sf.phone,sf.extnum,sf.doorcontrolnum,sf.join_date joinDate,sf.demission_date demissionDate,
+        CASE sf.gender WHEN 'M' THEN '男' WHEN 'F' THEN  '女' ELSE '' END gender,CASE sf.is_director WHEN '0' THEN '否' WHEN '1' THEN '是' ELSE '否' END isDirector,
+        p.post_name postName,sf.staff_level staffLevel,c.company_name_local company,sf1.staff_name_local superiorNum,d.department_name departmentId,
+        CASE sf.staff_state WHEN 1 THEN '在职' WHEN 0 THEN '离职' ELSE '离职' END staffState
+        FROM staff sf LEFT JOIN ( SELECT costcenter_id,cost_center_name FROM costcenter WHERE lan_code = 'zhs' ) cr ON sf.cost_center_id = cr.costcenter_id
+        LEFT JOIN (SELECT post_id,post_name FROM post WHERE lan_code = 'zhs') p ON sf.post_id = p.post_id
+        LEFT JOIN company c ON sf.company = c.company_id
+        LEFT JOIN staff sf1 ON sf.superior_num = sf1.staff_num
+        LEFT JOIN (SELECT department_id, department_name FROM department WHERE lan_code = 'zhs') d ON sf.department_id = d.department_id
+        <if test="staffNumOrName != null  and staffNumOrName != '' "> and ( sf.staff_num like  '%'+#{staffNumOrName}+'%' or sf.staff_name_local like  '%'+#{staffNumOrName}+'%' ) </if>
+        <if test="staffState != null  and staffState != '' "> and sf.staff_state = #{staffState}</if>
+
+
+    </select>
+
+</mapper>

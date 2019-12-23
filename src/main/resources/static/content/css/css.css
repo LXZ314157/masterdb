@@ -1,0 +1,164 @@
+﻿body {
+    font-family: "Open+Sans","Oswald","Arial","方正兰亭黑简体","微软雅黑" !important;
+}
+
+.modal-header {
+    padding: 8px !important;
+    background: #9A12B3;
+}
+
+    .modal-header h4 {
+        color: #fff;
+        font-size: 18px;
+    }
+
+    .modal-header .close {
+        width: 25px;
+        height: 25px;
+        background-image: url(../assets/global/img/remove-icon.png)!important;
+    }
+
+.modal-footer {
+    padding: 8px !important;
+}
+
+.portlet.light .dataTables_wrapper .col-md-12 .dt-buttons {
+    margin-top: -53px;
+}
+
+div .dt-buttons {
+    margin-right: 2px;
+}
+
+.table-scrollable .table > thead > tr > th {
+    text-align: center;
+}
+
+.table-scrollable .table > tfoot > tr > th {
+    text-align: center;
+}
+
+.table-scrollable .table > tbody > tr > td {
+    text-align: center;
+    vertical-align: middle;
+    word-break: keep-all;
+    white-space: nowrap;
+}
+
+div .portlet-body {
+    padding-bottom: 5px;
+}
+
+.page-fixed-main-content.row.portlet {
+    margin-bottom: 0;
+}
+
+.form-group.col-md-4 .form-control {
+    display: inline;
+}
+
+.row .portlet {
+    margin-bottom: 0;
+}
+
+.page-logo .logo-default {
+    fill: #fff;
+    width: 150px;
+    height: 40px;
+    transition: fill .4s ease;
+    margin: 5px 0 0 !important;
+}
+
+.input-125 {
+    width: 135px !important;
+}
+
+.page-wrapper .page-header.navbar.navbar-fixed-top {
+    z-index: 1;
+}
+
+
+body .sweet-alert {
+    z-index: 90052;
+}
+
+body .sweet-overlay {
+    z-index: 90051;
+}
+
+.table-scrollable .table .onelinedetails {
+    padding-left: 8px;
+    text-align: left;
+    word-break: break-all;
+    white-space: normal;
+}
+
+.table-scrollable .table .detailsleft {
+    text-align: left;
+}
+
+.tooltip {
+    z-index: 999999 !important;
+}
+
+.table > tbody > tr > td.newvip {
+    background-color: #f1ffe5;
+}
+
+.table > tbody > tr > td.oldvip {
+    background-color: #fff7e5;
+}
+
+.table > tbody > tr > td.jobstat {
+    background-color: #e5f3fe;
+}
+
+.portlet.light.blue-custom {
+    background-color: #6084fb;
+}
+
+.portlet.light.green-custom {
+    background-color: #8ac053;
+}
+
+.panel.panel-success-custom {
+    border-color: #e5f3fe;
+}
+
+    .panel.panel-success-custom > .panel-heading {
+        background-color: #e5f3fe;
+        border-color: #e5f3fe;
+        color: #3d54aa;
+    }
+
+.desc.underline {
+    text-decoration: underline;
+}
+
+.page-content .row .portlet .portlet-title .caption .caption-helper {
+    color: #000;
+}
+
+table.dataTable.no-footer{
+    border-bottom-color: #e7ecf1 !important;
+}
+
+div.dt-button-collection > a.dt-button {
+    background: #cccccc !important;
+}
+
+div.dt-button-collection > a.dt-button > span {
+    color: grey !important;
+}
+
+div.dt-button-collection > a.dt-button:hover {
+    background: #c1e0e8;
+}
+
+body > div.dt-button-collection > a.dt-button.active {
+    background: #FEAE1B !important;
+}
+
+div.dt-button-collection > a.dt-button.active > span {
+    color: black !important;
+}

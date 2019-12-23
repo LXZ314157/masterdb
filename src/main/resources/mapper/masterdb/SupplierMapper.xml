@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icicle.masterdb.dao.masterdb.SupplierMapper">
+  <resultMap id="BaseResultMap" type="com.icicle.masterdb.model.Supplier">
+    <id column="supplier_id" jdbcType="INTEGER" property="supplierId" />
+    <result column="supplier_source_code" jdbcType="VARCHAR" property="supplierSourceCode" />
+    <result column="supplier_code" jdbcType="VARCHAR" property="supplierCode" />
+    <result column="supplier_name" jdbcType="NVARCHAR" property="supplierName" />
+    <result column="supplier_description" jdbcType="NVARCHAR" property="supplierDescription" />
+    <result column="supplier_c_suppliertype_id" jdbcType="NVARCHAR" property="supplierCSuppliertypeId" />
+    <result column="supplier_legalperson" jdbcType="NVARCHAR" property="supplierLegalperson" />
+    <result column="supplier_contacter" jdbcType="NVARCHAR" property="supplierContacter" />
+    <result column="supplier_address" jdbcType="NVARCHAR" property="supplierAddress" />
+    <result column="supplier_postal" jdbcType="NVARCHAR" property="supplierPostal" />
+    <result column="supplier_phone" jdbcType="NVARCHAR" property="supplierPhone" />
+    <result column="supplier_mobile" jdbcType="NVARCHAR" property="supplierMobile" />
+    <result column="supplier_c_country_id" jdbcType="NVARCHAR" property="supplierCCountryId" />
+    <result column="supplier_c_province_id" jdbcType="NVARCHAR" property="supplierCProvinceId" />
+    <result column="supplier_c_city_id" jdbcType="NVARCHAR" property="supplierCCityId" />
+    <result column="supplier_email" jdbcType="NVARCHAR" property="supplierEmail" />
+    <result column="supplier_fax" jdbcType="NVARCHAR" property="supplierFax" />
+    <result column="supplier_deposit_bank" jdbcType="NVARCHAR" property="supplierDepositBank" />
+    <result column="supplier_account" jdbcType="NVARCHAR" property="supplierAccount" />
+    <result column="supplier_taxno" jdbcType="NVARCHAR" property="supplierTaxno" />
+    <result column="supplier_companyname" jdbcType="NVARCHAR" property="supplierCompanyname" />
+    <result column="supplier_data_status" jdbcType="INTEGER" property="supplierDataStatus" />
+  </resultMap>
+
+    <select id="getBurgeonSupplier" resultMap="BaseResultMap">
+        select * from supplier where supplier_code in
+        <foreach collection="supplierCodeList" open="(" separator="," close=")" item="supplierCode">
+            #{supplierCode}
+        </foreach>
+    </select>
+
+</mapper>

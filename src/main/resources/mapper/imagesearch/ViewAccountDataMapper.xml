@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icicle.masterdb.dao.imagesearch.ViewAccountDataMapper">
+  <resultMap id="BaseResultMap" type="com.icicle.masterdb.model.ViewAccountData">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <result column="id" jdbcType="INTEGER" property="id" />
+    <result column="loginname" jdbcType="VARCHAR" property="loginname" />
+    <result column="truename" jdbcType="NVARCHAR" property="truename" />
+    <result column="domain_name" jdbcType="VARCHAR" property="domainName" />
+    <result column="group_name" jdbcType="NVARCHAR" property="groupName" />
+    <result column="domain_id" jdbcType="INTEGER" property="domainId" />
+    <result column="group_id" jdbcType="INTEGER" property="groupId" />
+    <result column="manager" jdbcType="BIT" property="manager" />
+  </resultMap>
+
+  <select id="findAll" resultMap="BaseResultMap">
+    SELECT id, loginname, truename, domain_name, group_name, domain_id, group_id FROM view_account_data ORDER BY id
+  </select>
+</mapper>

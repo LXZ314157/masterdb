@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icicle.masterdb.dao.masterdb.ViewProductDimensionMapper">
+    <resultMap id="BaseResultMap" type="com.icicle.masterdb.model.ViewProductDimension">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <result column="id" jdbcType="INTEGER" property="id"/>
+        <result column="def_code" jdbcType="VARCHAR" property="defCode"/>
+        <result column="def_type" jdbcType="VARCHAR" property="defType"/>
+        <result column="def_name" jdbcType="NVARCHAR" property="defName"/>
+        <result column="has_item" jdbcType="INTEGER" property="hasItem"/>
+        <result column="status" jdbcType="BIT" property="status"/>
+        <result column="class_dimension_code" jdbcType="VARCHAR" property="classDimensionCode"/>
+    </resultMap>
+
+    <select id="findByDimensionCode" resultMap="BaseResultMap">
+      SELECT  id,def_code,def_type,def_name,has_item,status,class_dimension_code,select_table
+       from view_product_dimension
+       WHERE class_dimension_code = #{dimensionCode}
+  </select>
+</mapper>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icicle.masterdb.dao.masterdb.ViewStoreaddrListMapper">
+  <resultMap id="BaseResultMap" type="com.icicle.masterdb.model.ViewStoreaddrList">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <result column="address_id" jdbcType="INTEGER" property="addressId" />
+    <result column="store_no" jdbcType="INTEGER" property="storeNo" />
+    <result column="address_type" jdbcType="INTEGER" property="addressType" />
+    <result column="address_type_name" jdbcType="VARCHAR" property="addressTypeName" />
+    <result column="is_default" jdbcType="BIT" property="isDefault" />
+    <result column="contact" jdbcType="NVARCHAR" property="contact" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="mobile_phone" jdbcType="VARCHAR" property="mobilePhone" />
+    <result column="address" jdbcType="NVARCHAR" property="address" />
+    <result column="address_state" jdbcType="INTEGER" property="addressState" />
+  </resultMap>
+  
+  <select id="findAddrListByStoreNo" resultMap="BaseResultMap">
+    select * from view_storeaddr_list where store_no = #{storeNo} ORDER BY address_id asc
+  </select>
+
+    <select id="findStoreAddrTypeList" resultType="com.icicle.masterdb.model.ViewStoreaddrList">
+        select sai.store_attrib_item_code addressType,store_attrib_item_name addressTypeName from store_attrib_item sai LEFT JOIN store_attrib_defined sad
+        on sai.store_attrib_def_id=sad.store_attrib_def_id where sad.store_attrib_def_code='address_type'
+    </select>
+</mapper>
